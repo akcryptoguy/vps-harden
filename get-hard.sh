@@ -87,7 +87,7 @@ SSHDFILE='/etc/ssh/sshd_config'
 # Create Log File and Begin
 	# echo -e "\n" >> $LOGFILE 2>&1
 	rm /var/log/server_hardening.log
-	printf "${lightcyan}"
+	printf "${cyan}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : SCRIPT STARTED SUCCESSFULLY " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
@@ -102,7 +102,7 @@ SSHDFILE='/etc/ssh/sshd_config'
 function update_upgrade() {
 
 # NOTE I learned the hard way that you must put a "\" BEFORE characters "\" and "`"
-printf "${lightcyan}  ___  ____    _   _           _       _ \n" | tee -a "$LOGFILE"
+printf "${cyan}  ___  ____    _   _           _       _ \n" | tee -a "$LOGFILE"
 printf " / _ \/ ___|  | | | |_ __   __| | __ _| |_ ___ \n" | tee -a "$LOGFILE"
 printf "| | | \\___ \\  | | | | '_ \\ / _\` |/ _\` | __/ _ \\ \n" | tee -a "$LOGFILE"
 printf "| |_| |___) | | |_| | |_) | (_| | (_| | ||  __/ \n" | tee -a "$LOGFILE"
@@ -135,8 +135,9 @@ printf "${white}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : SYSTEM UPDATED SUCCESSFULLY " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-	printf "${yellow}"
+	printf "${cyan}"
 	figlet System Upgrade | tee -a "$LOGFILE"
+	printf "${yellow}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : INITIATING SYSTEM UPGRADE " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
@@ -160,7 +161,7 @@ printf "${nocolor}"
 
 function favored_packages() {
 # install my favorite and commonly used packages
-printf "${lightcyan}"
+printf "${cyan}"
 figlet Install Favored | tee -a "$LOGFILE"
 printf "${yellow}"
 echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
