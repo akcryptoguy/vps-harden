@@ -61,6 +61,24 @@ nocolor='\033[0m'    # no color
 # printf " ${black}Black${nocolor}\n"
 # figlet " hello $(whoami)" -f small
 
+printf "${lightred}"
+printf "${red}"
+printf "${lightgreen}"
+printf "${green}"
+printf "${lightblue}"
+printf "${blue}"
+printf "${lightpurple}"
+printf "${purple}"
+printf "${lightcyan}"
+printf "${cyan}Cyan"
+printf "${lightgray}"
+printf "${white}"
+printf "${lightbrown}"
+printf "${yellow}"
+printf "${darkgray}"
+printf "${black}"
+printf "${nocolor}"
+
 clear
 # Set Vars
 LOGFILE='/var/log/server_hardening.log'
@@ -69,11 +87,13 @@ SSHDFILE='/etc/ssh/sshd_config'
 # Create Log File and Begin
 	# echo -e "\n" >> $LOGFILE 2>&1
 	rm /var/log/server_hardening.log
+	printf "${lightcyan}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : SCRIPT STARTED SUCCESSFULLY " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e "------- AKcryptoGUY's VPS Hardening Script --------- " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	printf "${nocolor}"
 	
 ##########################
 ## 1. UPDATE & UPGRADE ###
@@ -81,7 +101,7 @@ SSHDFILE='/etc/ssh/sshd_config'
 
 function update_upgrade() {
 # must manually enter OS Update banner because figlet not installed yet
-
+printf "${lightyellow}"
 cat << "EOF" | tee -a "$LOGFILE"
   ___  ____    _   _           _       _
  / _ \/ ___|  | | | |_ __   __| | __ _| |_ ___
@@ -93,35 +113,46 @@ EOF
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo " `date +%d.%m.%Y_%H:%M:%S` : INITIATING SYSTEM UPDATE " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+printf "${white}"
 	# remove grub to prevent interactive user prompt: https://tinyurl.com/y9pu7j5s
 	echo '# rm /boot/grub/menu.lst     (prevent update issue)' | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
  	rm /boot/grub/menu.lst
  	echo '# update-grub-legacy-ec2 -y  (prevent update issue)' | tee -a "$LOGFILE"
 	echo -e "----------------------------------------------------------- " | tee -a "$LOGFILE"
+	printf "${nocolor}"
  	update-grub-legacy-ec2 -y | tee -a "$LOGFILE"
+	printf "${white}"
 	echo '# apt-get -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update' | tee -a "$LOGFILE"
 	echo -e "----------------------------------------------------------- " | tee -a "$LOGFILE"
+	printf "${nocolor}"
 	apt-get -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update | tee -a "$LOGFILE"
+	printf "${white}"
 	echo -e "------------------------------------------------------------------------- " | tee -a "$LOGFILE"
 	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install figlet' | tee -a "$LOGFILE"
+	printf "${nocolor}"
 	apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install figlet | tee -a "$LOGFILE"
-	# figlet complete | tee -a "$LOGFILE"
+	printf "${lightgreen}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : SYSTEM UPDATED SUCCESSFULLY " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	printf "${lightyellow}"
 	figlet System Upgrade | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : INITIATING SYSTEM UPGRADE " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	printf "${white}"
 	echo ' # apt-get upgrade -y' | tee -a "$LOGFILE"
 	# the next line seemed to break it so I install without new-pkgs
 	# echo ' # apt-get --with-new-pkgs upgrade -y' | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	printf "${nocolor}"
 	apt-get upgrade -y | tee -a "$LOGFILE"
+printf "${lightgreen}"	
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : SYSTEM UPGRADED SUCCESSFULLY " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+printf "${nocolor}"
 }
 
 #
