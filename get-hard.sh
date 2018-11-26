@@ -268,7 +268,7 @@ printf "${lightcyan}"
 		printf "${yellow}"
 		echo -e " Great; let's set one up now... \n"
 		printf "${cyan}"
-		read -p " Enter New Username: ${nocolor}" UNAME
+		read -p " Enter New Username: " UNAME
                 while [[ "$UNAME" =~ [^0-9A-Za-z]+ ]] || [ -z $UNAME ]; do echo -e "\n"
                 printf "${lightred}"
 		read -p " --> Please enter a username that contains only letters or numbers: " UNAME
@@ -341,41 +341,53 @@ echo -e "---------------------------------------------------- " | tee -a "$LOGFI
 echo -e " --> Your current SSH port number is" $SSHPORTWAS  | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
 printf "${nocolor}"
+	printf "${lightcyan}"
 	echo -e " By default, SSH traffic occurs on port 22, so hackers are always"
 	echo -e " scanning port 22 for vulnerabilities. If you change your server to"
 	echo -e " use a different port, you can gain some security through obscurity.\n"
 	while :; do
+		printf "${cyan}"
 		read -p " Enter a custom port for SSH between 11000 and 65535 or use 22: " SSHPORT
-		[[ $SSHPORT =~ ^[0-9]+$ ]] || { echo -e " --> Try harder, that's not even a number. \n";continue; }
+		[[ $SSHPORT =~ ^[0-9]+$ ]] || { printf "${lightred}";echo -e " --> Try harder, that's not even a number. \n";printf "${nocolor}";continue; }
 		if (($SSHPORT >= 11000 && $SSHPORT <= 65535)); then break
 		elif [ $SSHPORT = 22 ]; then break
-		else echo -e " --> That number is out of range, try again. \n"
+		else printf "${lightred}"
+			echo -e " --> That number is out of range, try again. \n"
 			echo "---------------------------------------------------- " >> $LOGFILE 2>&1
 			echo " `date +%d.%m.%Y_%H:%M:%S` : ERROR: User entered: $SSHPORT " >> $LOGFILE 2>&1
 			echo "---------------------------------------------------- " >> $LOGFILE 2>&1
+			printf "${nocolor}"
 		fi
 	done
 		# Take a backup of the existing config
 		BTIME=$(date +%F_%R)
 		cat $SSHDFILE > $SSHDFILE.$BTIME.bak
 		echo -e "\n"
+		printf "${yellow}"
 		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 		echo -e "     SSH config file backed up to :" | tee -a "$LOGFILE"
 		echo -e " $SSHDFILE.$BTIME.bak" | tee -a "$LOGFILE"
         	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+		printf "${nocolor}"
 		sed -i "s/$SSHPORTWAS/Port $SSHPORT/" $SSHDFILE >> $LOGFILE 2>&1
+		clear
 			# Error Handling
-			clear
-        		echo -e "---------------------------------------------------- "
 			if [ $? -eq 0 ]
 	        	then
-	                echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : SSH port set to $SSHPORT " | tee -a "$LOGFILE"
+	                printf "${lightgreen}"
+			echo -e "---------------------------------------------------- "
+			echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : SSH port set to $SSHPORT " | tee -a "$LOGFILE"
+			echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+			printf "${nocolor}"
 			else
+			printf "${lightred}"
 			echo -e "---------------------------------------------------- "
 	                echo -e " ERROR: SSH Port couldn't be changed. Check log file for details."
                 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : ERROR: SSH port couldn't be changed " | tee -a "$LOGFILE"
-			fi
 			echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+			printf "${nocolor}"
+			fi
+			
 # Set SSHPORTIS to the final value of the SSH port
 SSHPORTIS=$(sed -n -e '/^Port /p' $SSHDFILE)
 }
