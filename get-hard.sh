@@ -104,7 +104,7 @@ function update_upgrade() {
 printf "${lightyellow}"
 echo -e "  ___  ____    _   _           _       _\n" | tee -a "$LOGFILE"
 echo -e " / _ \/ ___|  | | | |_ __   __| | __ _| |_ ___\n" | tee -a "$LOGFILE"
-echo -e "| | | \___ \  | | | | '_ \ / _` |/ _` | __/ _ \\n" | tee -a "$LOGFILE"
+echo -e "| | | \___ \  | | | | '_ \ / _` |/ _` | __/ _ \ \n" | tee -a "$LOGFILE"
 echo -e "| |_| |___) | | |_| | |_) | (_| | (_| | ||  __/\n" | tee -a "$LOGFILE"
 echo -e "\___/|____/   \___/| .__/ \__,_|\__,_|\__\___|\n" | tee -a "$LOGFILE"
 echo -e "                    |_|\n" | tee -a "$LOGFILE"
