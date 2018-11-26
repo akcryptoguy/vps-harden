@@ -239,11 +239,13 @@ printf "${nocolor}"
 
 function add_user() {
 # query user to setup a non-root user account or not
-
+printf "${lightcyan}"
 figlet User Setup | tee -a "$LOGFILE"
+printf "${yellow}"
 echo -e "----------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : QUERY TO CREATE NON-ROOT USER " | tee -a "$LOGFILE"
 echo -e "----------------------------------------------------- \n"
+printf "${lightcyan}"
 	echo " Conventional wisdom would encourage you to disable root login over SSH"
 	echo " because it makes accessing your server more difficult if you use password"
 	echo " authentication. Since using RSA public-private key authentication is"
@@ -251,34 +253,47 @@ echo -e "----------------------------------------------------- \n"
 	echo " use an RSA key and continue to login as root.  I am able to create a "
 	echo " non-root user if you want me to, but it is not required. "
 	echo -e "\n"
+	printf "${cyan}"
         read -p " Would you like to add a non-root user? y/n  " ADDUSER
+	printf "${nocolor}"
 	
 	while [ "${ADDUSER,,}" != "yes" ] && [ "${ADDUSER,,}" != "no" ] && [ "${ADDUSER,,}" != "y" ] && [ "${ADDUSER,,}" != "n" ]; do
+	printf "${lightred}"
 	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " ADDUSER
+	printf "${nocolor}"
 	done
         # check if ADDUSER is valid
         if [ "${ADDUSER,,}" = "yes" ] || [ "${ADDUSER,,}" = "y" ]
         then echo -e "\n"
+		printf "${cyan}"
 		echo -e " Great; let's set one up now... \n"
-                read -p " Enter New Username: " UNAME
+		read -p " Enter New Username: " UNAME
                 while [[ "$UNAME" =~ [^0-9A-Za-z]+ ]] || [ -z $UNAME ]; do echo -e "\n"
-                read -p " --> Please enter a username that contains only letters or numbers: " UNAME
-                done
+                printf "${lightred}"
+		read -p " --> Please enter a username that contains only letters or numbers: " UNAME
+                printf "${nocolor}"
+		done
 		echo -e "\n"
+		printf "${yellow}"
 		echo  " User elected to create a new user named ${UNAME,,}. \n" >> $LOGFILE 2>&1
-                id -u ${UNAME,,} >> $LOGFILE > /dev/null 2>&1
+                printf "${cyan}"
+		id -u ${UNAME,,} >> $LOGFILE > /dev/null 2>&1
                 if [ $? -eq 0 ]
                 then
+		printf "${yellow}"
                 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 		echo " SKIPPING. User Already Exists." | tee -a "$LOGFILE"
                 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
                 echo " `date +%d.%m.%Y_%H:%M:%S` : SKIPPING : User Already Exists ! " | tee -a "$LOGFILE"
+		printf "${nocolor}"
                 else
+		printf "${cyan}"
 		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
                 adduser --gecos "" ${UNAME,,} | tee -a "$LOGFILE"
                 usermod -aG sudo ${UNAME,,} | tee -a "$LOGFILE"
+		printf "${lightgreen}"
 		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-		echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : New user '${UNAME,,}' has been added to SUDO group" | tee -a "$LOGFILE"
+		echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : '${UNAME,,}' added to SUDO group" | tee -a "$LOGFILE"
 		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 			# copy SSH keys if they exist
 			if [ -n /root/.ssh/authorized_keys ]
@@ -290,17 +305,21 @@ echo -e "----------------------------------------------------- \n"
                         chmod 400 /home/${UNAME,,}/.ssh/authorized_keys
                         chown ${UNAME,,}:${UNAME,,} /home/${UNAME,,} -R
                         echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : SSH keys were copied to ${UNAME,,}'s profile" | tee -a "$LOGFILE"
-                        else echo " `date +%d.%m.%Y_%H:%M:%S` : RSA keys not present for root, so none were copied." | tee -a "$LOGFILE"
+                        else printf "${yellow}"
+			echo " `date +%d.%m.%Y_%H:%M:%S` : RSA keys not present for root, so none were copied." | tee -a "$LOGFILE"
                         fi   
-                fi
-        else 	echo  "---------------------------------------------------- " >> $LOGFILE 2>&1
+		fi
+        else 	printf "${yellow}"
+		echo  "---------------------------------------------------- " >> $LOGFILE 2>&1
 		echo  "    ** User chose not to create a new user **" >> $LOGFILE 2>&1
 		echo  -e "---------------------------------------------------- \n" >> $LOGFILE 2>&1
         fi
 	clear
+	printf "${lightgreen}"
 	echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : USER SETUP IS COMPLETE " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
+	printf "${nocolor}"
 }
 
 #################### 
@@ -309,14 +328,17 @@ echo -e "----------------------------------------------------- \n"
 
 function collect_sshd() {
 # Prompt for custom SSH port between 11000 and 65535
-
+printf "${lightcyan}"
 figlet SSH Config | tee -a "$LOGFILE"
+printf "${nocolor}"
 SSHPORTWAS=$(sed -n -e '/^Port /p' $SSHDFILE)
+printf "${yellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : CONFIGURE SSH SETTINGS " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " --> Your current SSH port number is" $SSHPORTWAS  | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+printf "${nocolor}"
 	echo -e " By default, SSH traffic occurs on port 22, so hackers are always"
 	echo -e " scanning port 22 for vulnerabilities. If you change your server to"
 	echo -e " use a different port, you can gain some security through obscurity.\n"
