@@ -250,7 +250,7 @@ printf "${lightcyan}"
 	echo " because it makes accessing your server more difficult if you use password"
 	echo " authentication. Since using RSA public-private key authentication is"
 	echo " infinitely more secure, I will not think less of you if you choose to"
-	echo " use an RSA key and continue to login as root.  I am able to create a "
+	echo " use an RSA key and continue to login as root. I am able to create a "
 	echo " non-root user if you want me to, but it is not required. "
 	echo -e "\n"
 	printf "${cyan}"
@@ -281,11 +281,11 @@ printf "${lightcyan}"
 		id -u ${UNAME,,} >> $LOGFILE > /dev/null 2>&1
                 	if [ $? -eq 0 ]
                 	then
+			clear
 			printf "${yellow}"
                 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-			echo " SKIPPING. User Already Exists." | tee -a "$LOGFILE"
-                	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-                	echo " `date +%d.%m.%Y_%H:%M:%S` : SKIPPING : User Already Exists ! " | tee -a "$LOGFILE"
+                	echo " `date +%d.%m.%Y_%H:%M:%S` : SKIPPING : User Already Exists " | tee -a "$LOGFILE"
+			echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
 			printf "${nocolor}"
                 	else
 			printf "${cyan}"
@@ -310,13 +310,14 @@ printf "${lightcyan}"
                         	else printf "${yellow}"
 				echo " `date +%d.%m.%Y_%H:%M:%S` : RSA keys not present for root, so none were copied." | tee -a "$LOGFILE"
                         	fi   
+			clear
 			fi
         else 	printf "${yellow}"
 		echo  "---------------------------------------------------- " >> $LOGFILE 2>&1
 		echo  "    ** User chose not to create a new user **" >> $LOGFILE 2>&1
 		echo  -e "---------------------------------------------------- \n" >> $LOGFILE 2>&1
         fi
-	clear
+# remove clear
 	printf "${lightgreen}"
 	echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : USER SETUP IS COMPLETE " | tee -a "$LOGFILE"
