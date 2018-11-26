@@ -342,7 +342,7 @@ printf "${nocolor}"
 	printf "${lightcyan}"
 	echo -e " By default, SSH traffic occurs on port 22, so hackers are always"
 	echo -e " scanning port 22 for vulnerabilities. If you change your server to"
-	echo -e " use a different port, you can gain some security through obscurity.\n"
+	echo -e " use a different port, you gain some security through obscurity.\n"
 	while :; do
 		printf "${cyan}"
 		read -p " Enter a custom port for SSH between 11000 and 65535 or use 22: " SSHPORT
@@ -392,12 +392,14 @@ SSHPORTIS=$(sed -n -e '/^Port /p' $SSHDFILE)
 
 function prompt_rootlogin {
 # Prompt use to permit or deny root login
-
 ROOTLOGINP=$(sed -n -e '/^PermitRootLogin /p' $SSHDFILE)
+printf "${lightcyan}"
 figlet Root Login | tee -a "$LOGFILE"
+printf "${yellow}"
 echo -e "-------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : CONFIGURE ROOT LOGIN " | tee -a "$LOGFILE"
 echo -e "-------------------------------------------- \n" | tee -a "$LOGFILE"
+printf "${nocolor}"
 
 if [ -n "${UNAME,,}" ]
 then 
@@ -406,15 +408,19 @@ then
         else :
         fi
         # Prompt user to see if they want to permit root login
-        
+        printf "${yellow}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " Your root login settings are: " $ROOTLOGINP  | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+	printf "${cyan}"
         read -p " Would you like to disable root login? y/n  " ROOTLOGIN
-
+	printf "${nocolor}"
+	
 	while [ "${ROOTLOGIN,,}" != "yes" ] && [ "${ROOTLOGIN,,}" != "no" ] && [ "${ROOTLOGIN,,}" != "y" ] && [ "${ROOTLOGIN,,}" != "n" ]; do
 	echo -e "\n"
+	printf "${lightred}"
 	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " ROOTLOGIN
+	printf "${nocolor}"
 	done		
 	# check if ROOTLOGIN is valid
         if [ "${ROOTLOGIN,,}" = "yes" ] || [ "${ROOTLOGIN,,}" = "y" ]
@@ -426,48 +432,61 @@ then
 	        # Error Handling
                 if [ $? -eq 0 ]
                 then
-                	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE" 
+                	printf "${lightgreen}"
+			echo -e "---------------------------------------------------- " | tee -a "$LOGFILE" 
 			echo -e " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : Root login disabled " | tee -a "$LOGFILE"
 			echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+			printf "${nocolor}"
                 else
+			printf "${lightred}"
                         echo -e "---------------------------------------------------- " | tee -a "$LOGFILE" 
                         echo -e " `date +%d.%m.%Y_%H:%M:%S` : ERROR: Couldn't disable root login" | tee -a "$LOGFILE" 
 			echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+			printf "${nocolor}"
                 fi
-        else  echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+        else  	printf "${yellow}"
+		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 		echo "It looks like you want to enable root login; making it so..." | tee -a "$LOGFILE"
                 sed -i "s/PermitRootLogin no/PermitRootLogin yes/" $SSHDFILE >> $LOGFILE 2>&1
                 sed -i "s/# PermitRootLogin no/PermitRootLogin yes/" $SSHDFILE >> $LOGFILE 2>&1
                 sed -i "s/# PermitRootLogin yes/PermitRootLogin yes/" $SSHDFILE >> $LOGFILE 2>&1
 		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		printf "${nocolor}"
         fi
 	ROOTLOGINP=$(sed -n -e '/^PermitRootLogin /p' $SSHDFILE)
-else echo -e "---------------------------------------------------- "
+else 	printf "${yellow}"
+	echo -e "---------------------------------------------------- "
 	echo " Since you chose not to create a non-root user, "
      	echo " I did not disable root login for obvious reasons."
      	echo -e "---------------------------------------------------- \n"
 	echo -e "----------------------------------------------------- " >> $LOGFILE 2>&1
 	echo -e " Root login not changed; no non-root user was created " >> $LOGFILE 2>&1
 	echo -e "----------------------------------------------------- \n" >> $LOGFILE 2>&1
+	printf "${nocolor}"
 fi
 clear
+printf "${yellow}"
 echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " Your root login settings are:" $ROOTLOGINP | tee -a "$LOGFILE"
 echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
+printf "${nocolor}"
 }
 
 function disable_passauth() {
 # query user to disable password authentication or not
 
+printf "${lightcyan}"
 figlet Pass Auth | tee -a "$LOGFILE"
+printf "${yellow}"
 echo -e "----------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : PASSWORD AUTHENTICATION " | tee -a "$LOGFILE"
 echo -e "----------------------------------------------- \n"
+printf "${lightcyan}"
 	echo -e " You can log into your server using an RSA public-private key pair or"
 	echo -e " a password.  Using RSA keys for login is tremendously more secure"
 	echo -e " than just using a password. If you have installed an RSA key-pair"
 	echo -e " and use that to login, you should disable password authentication.\n"
-
+printf "${nocolor}"
 if [ -n "/root/.ssh/authorized_keys" ]
 then
         PASSWDAUTH=$(sed -n -e '/^PasswordAuthentication /p' $SSHDFILE)
@@ -476,51 +495,68 @@ then
                 else :
                 fi
         # Prompt user to see if they want to disable password login
+	printf "${yellow}"
 	echo -e "     --------------------------------------------------- " | tee -a "$LOGFILE"
         echo -e "      Your current password authentication settings are   " | tee -a "$LOGFILE"
 	echo -e "             ** $PASSWDAUTH ** " | tee -a "$LOGFILE"
 	echo -e "     --------------------------------------------------- \n" | tee -a "$LOGFILE"
+	printf "${cyan}"
         read -p " Would you like to disable password login & require RSA key login? y/n  " PASSLOGIN
+	printf "${nocolor}"
 	while [ "${PASSLOGIN,,}" != "yes" ] && [ "${PASSLOGIN,,}" != "no" ] && [ "${PASSLOGIN,,}" != "y" ] && [ "${PASSLOGIN,,}" != "n" ]; do
 	echo -e "\n"
+	printf "${lightred}"
 	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " PASSLOGIN
+	printf "${nocolor}"
 	done
 	echo -e "\n"	
         # check if PASSLOGIN is valid
         if [ "${PASSLOGIN,,}" = "yes" ] || [ "${PASSLOGIN,,}" = "y" ]
-        then echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-		sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/" $SSHDFILE >> $LOGFIL$
+        then 	sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/" $SSHDFILE >> $LOGFIL$
                 sed -i "s/# PasswordAuthentication yes/PasswordAuthentication no/" $SSHDFILE >> $LOGF$
                 sed -i "s/# PasswordAuthentication no/PasswordAuthentication no/" $SSHDFILE >> $LOGFI$
                 # Error Handling
                 if [ $? -eq 0 ]
                 then
-                        echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : PassAuth set to NO " | tee -a "$LOGFILE"
+			printf "${lightgreen}"
+			echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+			echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : PassAuth set to NO " | tee -a "$LOGFILE"
 			echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+			printf "${nocolor}"
                 else
+			printf "${lightred}"
+			echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
                         echo " `date +%d.%m.%Y_%H:%M:%S` : ERROR: PasswordAuthentication couldn't be changed to no : " | tee -a "$LOGFILE"
 			echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+			printf "${nocolor}"
                 fi
         else 
 		sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/" $SSHDFILE | tee -a "$LOGFILE"
                 sed -i "s/# PasswordAuthentication no/PasswordAuthentication yes/" $SSHDFILE | tee -a "$LOGFILE"
                 sed -i "s/# PasswordAuthentication yes/PasswordAuthentication yes/" $SSHDFILE | tee -a "$LOGFILE"
         fi
-else	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+else	
+	printf "${yellow}"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " With no RSA key; I can't disable PasswordAuthentication." | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+	printf "${nocolor}"
 fi
 	PASSWDAUTH=$(sed -n -e '/^PasswordAuthentication /p' $SSHDFILE)
+	printf "${lightgreen}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : PASSWORD AUTHENTICATION COMPLETE " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e "    Your PasswordAuthentication settings are now "  | tee -a "$LOGFILE"
 	echo -e "        ** $PASSWDAUTH ** " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+	printf "${nocolor}"
 clear
+printf "${lightgreen}"
 echo -e "------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : SSH CONFIG COMPLETE " | tee -a "$LOGFILE"
 echo -e "------------------------------------------- \n" | tee -a "$LOGFILE"
+printf "${nocolor}"
 }
 
 #################### 
