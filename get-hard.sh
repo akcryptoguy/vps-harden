@@ -100,6 +100,27 @@ SSHDFILE='/etc/ssh/sshd_config'
 ##########################
 
 function update_upgrade() {
+
+
+figlet "               hello $(whoami)" -f small
+printf "               ${color1}.-.${nocolor}\n"
+printf "         ${color7}.-'\`\`${color1}(   )    ${color1}${firstline} ${nocolor}\n"
+printf "      ${color14},\`\\ ${color7}\\    ${color1}\`-\`${color7}.    ${color1}--> Hostname: $(hostname) <-- ${nocolor}\n"
+printf "     ${color14}/   \\ ${color7}'\`\`-.   \`   ${color14} ${nocolor}\n"
+printf "   ${color7}.-.  ${color14},       ${color7}\`___:  ${color14}System OS: `lsb_release -s -d`${nocolor}\n"
+printf "  ${color7}(   ) ${color14}:       ${color1} ___   ${color14}`uname -srmo`${nocolor}\n"
+printf "   ${color7}\`-\`  ${color14}\`      ${color1} ,   :${color3}   \n"
+# printf "   ${color7}\`-\`  ${color14}\`      ${color1} ,   :${color3}  Weather (${weathercity}): `curl -s "${weatherurl}" | sed -n '/Currently:/ s/.*: \(.*\): \([0-9]*\)\([CF]\).*/\2°\3, \1/p'`\n"
+printf "     ${color7}\\   / ${color1},..-\`   ,${color10}   Network Information ${color9}\n"
+printf "      ${color7}\`./${color1} /    ${color14}.-.${color1}\`${color10}    External IP: ${color9}`/usr/bin/wget -q -O - http://icanhazip.com/ | /usr/bin/tail`\n"
+printf "         ${color1}\`-..-${color14}(   )${color1}    --> Uptime: `/usr/bin/uptime -p` <--${nocolor}\n"
+printf "               ${color14}\`-\`${nocolor}     ${nocolor}\n"
+# printf "               ${color1}   ${nocolor}\n"
+
+
+
+
+
 # must manually enter OS Update banner because figlet not installed yet
 printf '${lightyellow}'
 printf '${lightyellow}  ___  ____    _   _           _       _${nocolor}\n'
