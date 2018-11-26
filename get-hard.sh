@@ -135,11 +135,9 @@ printf "${white}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : SYSTEM UPDATED SUCCESSFULLY " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-<<<<<<< HEAD
+
 	printf "${cyan}"
 	figlet System Upgrade -f small | tee -a "$LOGFILE"
-=======
->>>>>>> parent of d68b28e... Update get-hard.sh
 	printf "${yellow}"
 	figlet System Upgrade | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
@@ -165,13 +163,11 @@ printf "${nocolor}"
 
 function favored_packages() {
 # install my favorite and commonly used packages
-<<<<<<< HEAD
 printf "${cyan}"
 figlet Install Favored -f small | tee -a "$LOGFILE"
 =======
 printf "${lightcyan}"
 figlet Install Favored | tee -a "$LOGFILE"
->>>>>>> parent of d68b28e... Update get-hard.sh
 printf "${yellow}"
 echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALLING FAVORED PACKAGES " | tee -a "$LOGFILE"
