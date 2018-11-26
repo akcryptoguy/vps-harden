@@ -101,15 +101,15 @@ SSHDFILE='/etc/ssh/sshd_config'
 
 function update_upgrade() {
 # must manually enter OS Update banner because figlet not installed yet
-printf "${lightyellow}"
 cat << "EOF" | tee -a "$LOGFILE"
-  ___  ____    _   _           _       _
- / _ \/ ___|  | | | |_ __   __| | __ _| |_ ___
-| | | \___ \  | | | | '_ \ / _` |/ _` | __/ _ \
-| |_| |___) | | |_| | |_) | (_| | (_| | ||  __/
- \___/|____/   \___/| .__/ \__,_|\__,_|\__\___|
-                    |_|
+  "${lightyellow}"___  ____    _   _           _       _
+ "${lightyellow}"/ _ \/ ___|  | | | |_ __   __| | __ _| |_ ___
+"${lightyellow}"| | | \___ \  | | | | '_ \ / _` |/ _` | __/ _ \
+"${lightyellow}"| |_| |___) | | |_| | |_) | (_| | (_| | ||  __/
+ "${lightyellow}"\___/|____/   \___/| .__/ \__,_|\__,_|\__\___|
+"${lightyellow}"                    |_|
 EOF
+printf "${lightyellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo " `date +%d.%m.%Y_%H:%M:%S` : INITIATING SYSTEM UPDATE " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
