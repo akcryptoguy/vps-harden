@@ -374,7 +374,7 @@ printf "${nocolor}"
 	                printf "${lightgreen}"
 			echo -e "---------------------------------------------------- "
 			echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : SSH port set to $SSHPORT " | tee -a "$LOGFILE"
-			echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+			echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 			printf "${nocolor}"
 			else
 			printf "${lightred}"
@@ -399,22 +399,23 @@ echo -e "-------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : CONFIGURE ROOT LOGIN " | tee -a "$LOGFILE"
 echo -e "-------------------------------------------- \n" | tee -a "$LOGFILE"
 printf "${nocolor}"
-
 if [ -n "${UNAME,,}" ]
 then 
 	if [ -z "$ROOTLOGINP" ]
         then ROOTLOGINP=$(sed -n -e '/^# PermitRootLogin /p' $SSHDFILE)
         else :
         fi
-        # Prompt user to see if they want to permit root login
-        printf "${yellow}"
+	printf "${lightcyan}"
+	echo -e " If you have a non-root user, you can disable root login to prevent"
+	echo -e " anyone from logging into your server remotely as root. This can"
+	echo -e " improve security. Disable root login if you don't need it.\n"
+	printf "${yellow}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " Your root login settings are: " $ROOTLOGINP  | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
 	printf "${cyan}"
         read -p " Would you like to disable root login? y/n  " ROOTLOGIN
 	printf "${nocolor}"
-	
 	while [ "${ROOTLOGIN,,}" != "yes" ] && [ "${ROOTLOGIN,,}" != "no" ] && [ "${ROOTLOGIN,,}" != "y" ] && [ "${ROOTLOGIN,,}" != "n" ]; do
 	echo -e "\n"
 	printf "${lightred}"
