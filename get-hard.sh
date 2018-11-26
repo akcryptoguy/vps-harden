@@ -222,7 +222,6 @@ printf "${white}"
 	libdb4.8-dev libdb4.8++-dev | tee -a "$LOGFILE"
 # need more testing to see if autoremove breaks the script or not
 # apt autoremove -y | tee -a "$LOGFILE"
-pause
 clear
 printf "${lightgreen}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
