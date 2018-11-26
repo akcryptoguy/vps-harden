@@ -102,14 +102,14 @@ SSHDFILE='/etc/ssh/sshd_config'
 function update_upgrade() {
 # must manually enter OS Update banner because figlet not installed yet
 printf "${lightyellow}"
-echo -e "  ___  ____    _   _           _       _\n" | tee -a "$LOGFILE"
-echo -e " / _ \/ ___|  | | | |_ __   __| | __ _| |_ ___\n" | tee -a "$LOGFILE"
-echo -e "| | | \___ \  | | | | '_ \ / _` |/ _` | __/ _ \ \n" | tee -a "$LOGFILE"
-echo -e "| |_| |___) | | |_| | |_) | (_| | (_| | ||  __/\n" | tee -a "$LOGFILE"
-echo -e "\___/|____/   \___/| .__/ \__,_|\__,_|\__\___|\n" | tee -a "$LOGFILE"
-echo -e "                    |_|\n" | tee -a "$LOGFILE"
+printf "${lightyellow}  ___  ____    _   _           _       _\n"
+printf "${lightyellow} / _ \/ ___|  | | | |_ __   __| | __ _| |_ ___\n"
+printf "${lightyellow}| | | \___ \  | | | | '_ \ / _` |/ _` | __/ _ \ \n"
+printf "${lightyellow}| |_| |___) | | |_| | |_) | (_| | (_| | ||  __/\n"
+printf "${lightyellow}\___/|____/   \___/| .__/ \__,_|\__,_|\__\___|\n"
+printf "${lightyellow}                    |_|\n"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-echo " `date +%d.%m.%Y_%H:%M:%S` : INITIATING SYSTEM UPDATE " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : INITIATING SYSTEM UPDATE " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 printf "${white}"
 	# remove grub to prevent interactive user prompt: https://tinyurl.com/y9pu7j5s
