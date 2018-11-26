@@ -163,9 +163,6 @@ printf "${nocolor}"
 
 function favored_packages() {
 # install my favorite and commonly used packages
-printf "${cyan}"
-figlet Install Favored -f small | tee -a "$LOGFILE"
-=======
 printf "${lightcyan}"
 figlet Install Favored | tee -a "$LOGFILE"
 printf "${yellow}"
@@ -225,7 +222,8 @@ printf "${white}"
 	libdb4.8-dev libdb4.8++-dev | tee -a "$LOGFILE"
 # need more testing to see if autoremove breaks the script or not
 # apt autoremove -y | tee -a "$LOGFILE"
-	clear
+pause
+clear
 printf "${lightgreen}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : CRYPTO INSTALLED SUCCESFULLY " | tee -a "$LOGFILE"
