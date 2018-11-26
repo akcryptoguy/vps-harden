@@ -265,9 +265,10 @@ printf "${lightcyan}"
         # check if ADDUSER is valid
         if [ "${ADDUSER,,}" = "yes" ] || [ "${ADDUSER,,}" = "y" ]
         then echo -e "\n"
-		printf "${cyan}"
+		printf "${yellow}"
 		echo -e " Great; let's set one up now... \n"
-		read -p " Enter New Username: " UNAME
+		printf "${cyan}"
+		read -p " Enter New Username: ${nocolor}" UNAME
                 while [[ "$UNAME" =~ [^0-9A-Za-z]+ ]] || [ -z $UNAME ]; do echo -e "\n"
                 printf "${lightred}"
 		read -p " --> Please enter a username that contains only letters or numbers: " UNAME
@@ -278,37 +279,38 @@ printf "${lightcyan}"
 		echo  " User elected to create a new user named ${UNAME,,}. \n" >> $LOGFILE 2>&1
                 printf "${cyan}"
 		id -u ${UNAME,,} >> $LOGFILE > /dev/null 2>&1
-                if [ $? -eq 0 ]
-                then
-		printf "${yellow}"
-                echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-		echo " SKIPPING. User Already Exists." | tee -a "$LOGFILE"
-                echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-                echo " `date +%d.%m.%Y_%H:%M:%S` : SKIPPING : User Already Exists ! " | tee -a "$LOGFILE"
-		printf "${nocolor}"
-                else
-		printf "${cyan}"
-		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-                adduser --gecos "" ${UNAME,,} | tee -a "$LOGFILE"
-                usermod -aG sudo ${UNAME,,} | tee -a "$LOGFILE"
-		printf "${lightgreen}"
-		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-		echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : '${UNAME,,}' added to SUDO group" | tee -a "$LOGFILE"
-		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-			# copy SSH keys if they exist
-			if [ -n /root/.ssh/authorized_keys ]
-			then mkdir /home/${UNAME,,}/.ssh
-			chmod 700 /home/${UNAME,,}/.ssh
-			# copy root SSH key to new non-root user
-			cp /root/.ssh/authorized_keys /home/${UNAME,,}/.ssh
-                        # fix permissions on RSA key
-                        chmod 400 /home/${UNAME,,}/.ssh/authorized_keys
-                        chown ${UNAME,,}:${UNAME,,} /home/${UNAME,,} -R
-                        echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : SSH keys were copied to ${UNAME,,}'s profile" | tee -a "$LOGFILE"
-                        else printf "${yellow}"
-			echo " `date +%d.%m.%Y_%H:%M:%S` : RSA keys not present for root, so none were copied." | tee -a "$LOGFILE"
-                        fi   
-		fi
+                	if [ $? -eq 0 ]
+                	then
+			printf "${yellow}"
+                	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+			echo " SKIPPING. User Already Exists." | tee -a "$LOGFILE"
+                	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+                	echo " `date +%d.%m.%Y_%H:%M:%S` : SKIPPING : User Already Exists ! " | tee -a "$LOGFILE"
+			printf "${nocolor}"
+                	else
+			printf "${cyan}"
+			echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+                	printf "${nocolor}"
+			adduser --gecos "" ${UNAME,,} | tee -a "$LOGFILE"
+                	usermod -aG sudo ${UNAME,,} | tee -a "$LOGFILE"
+			printf "${lightgreen}"
+			echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+			echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : '${UNAME,,}' added to SUDO group" | tee -a "$LOGFILE"
+			echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+				# copy SSH keys if they exist
+				if [ -n /root/.ssh/authorized_keys ]
+				then mkdir /home/${UNAME,,}/.ssh
+				chmod 700 /home/${UNAME,,}/.ssh
+				# copy root SSH key to new non-root user
+				cp /root/.ssh/authorized_keys /home/${UNAME,,}/.ssh
+                        	# fix permissions on RSA key
+                        	chmod 400 /home/${UNAME,,}/.ssh/authorized_keys
+                        	chown ${UNAME,,}:${UNAME,,} /home/${UNAME,,} -R
+                        	echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : SSH keys were copied to ${UNAME,,}'s profile" | tee -a "$LOGFILE"
+                        	else printf "${yellow}"
+				echo " `date +%d.%m.%Y_%H:%M:%S` : RSA keys not present for root, so none were copied." | tee -a "$LOGFILE"
+                        	fi   
+			fi
         else 	printf "${yellow}"
 		echo  "---------------------------------------------------- " >> $LOGFILE 2>&1
 		echo  "    ** User chose not to create a new user **" >> $LOGFILE 2>&1
