@@ -103,10 +103,10 @@ function update_upgrade() {
 
 
 figlet "               hello $(whoami)" -f small
-printf "               ${color1}.-.${nocolor}\n"
-printf "         ${color7}.-'\`\`${color1}(   )    ${color1}${firstline} ${nocolor}\n"
-printf "      ${color14},\`\\ ${color7}\\    ${color1}\`-\`${color7}.    ${color1}--> Hostname: $(hostname) <-- ${nocolor}\n"
-printf "     ${color14}/   \\ ${color7}'\`\`-.   \`   ${color14} ${nocolor}\n"
+echo -e "               ${color1}.-.${nocolor}\n"
+echo "         ${color7}.-'\`\`${color1}(   )    ${color1}${firstline} ${nocolor}\n"
+echo "      ${color14},\`\\ ${color7}\\    ${color1}\`-\`${color7}.    ${color1}--> Hostname: $(hostname) <-- ${nocolor}\n"
+echo -e "     ${color14}/   \\ ${color7}'\`\`-.   \`   ${color14} ${nocolor}\n"
 printf "   ${color7}.-.  ${color14},       ${color7}\`___:  ${color14}System OS: `lsb_release -s -d`${nocolor}\n"
 printf "  ${color7}(   ) ${color14}:       ${color1} ___   ${color14}`uname -srmo`${nocolor}\n"
 printf "   ${color7}\`-\`  ${color14}\`      ${color1} ,   :${color3}   \n"
