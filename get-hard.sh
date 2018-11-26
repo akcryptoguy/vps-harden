@@ -89,9 +89,9 @@ SSHDFILE='/etc/ssh/sshd_config'
 	rm /var/log/server_hardening.log
 	printf "${lightcyan}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-	echo -e " `date +%d.%m.%Y_%H:%M:%S` : ${white}SCRIPT STARTED SUCCESSFULLY ${cyan}" | tee -a "$LOGFILE"
+	echo -e " `date +%d.%m.%Y_%H:%M:%S` : SCRIPT STARTED SUCCESSFULLY " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-	echo -e "------- ${white}AKcryptoGUY's VPS Hardening Script ${cyan}--------- " | tee -a "$LOGFILE"
+	echo -e "------- AKcryptoGUY's VPS Hardening Script --------- " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${nocolor}"
 	
@@ -234,13 +234,11 @@ echo -e "---------------------------------------------------- " | tee -a "$LOGFI
 
 function add_user() {
 # query user to setup a non-root user account or not
-printf "${cyan}"
+
 figlet User Setup | tee -a "$LOGFILE"
-printf "${yellow}"
 echo -e "----------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : QUERY TO CREATE NON-ROOT USER " | tee -a "$LOGFILE"
 echo -e "----------------------------------------------------- \n"
-	printf "${white}"
 	echo " Conventional wisdom would encourage you to disable root login over SSH"
 	echo " because it makes accessing your server more difficult if you use password"
 	echo " authentication. Since using RSA public-private key authentication is"
@@ -248,50 +246,35 @@ echo -e "----------------------------------------------------- \n"
 	echo " use an RSA key and continue to login as root.  I am able to create a "
 	echo " non-root user if you want me to, but it is not required. "
 	echo -e "\n"
-        printf "${yellow}"
-	read -p " Would you like to add a non-root user? y/n  " ADDUSER
-	printf "${nocolor}"
+        read -p " Would you like to add a non-root user? y/n  " ADDUSER
 	
 	while [ "${ADDUSER,,}" != "yes" ] && [ "${ADDUSER,,}" != "no" ] && [ "${ADDUSER,,}" != "y" ] && [ "${ADDUSER,,}" != "n" ]; do
-	printf "${lightred}"
 	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " ADDUSER
-	printf "${nocolor}"
 	done
         # check if ADDUSER is valid
         if [ "${ADDUSER,,}" = "yes" ] || [ "${ADDUSER,,}" = "y" ]
         then echo -e "\n"
-		printf "${yellow}"
 		echo -e " Great; let's set one up now... \n"
                 read -p " Enter New Username: " UNAME
                 while [[ "$UNAME" =~ [^0-9A-Za-z]+ ]] || [ -z $UNAME ]; do echo -e "\n"
-                printf "${lightred}"
-		read -p " --> Please enter a username that contains only letters or numbers: " UNAME
-                printf "${nocolor}"
-		done
+                read -p " --> Please enter a username that contains only letters or numbers: " UNAME
+                done
 		echo -e "\n"
-		printf "${lightcyan"
 		echo  " User elected to create a new user named ${UNAME,,}. \n" >> $LOGFILE 2>&1
-		printf "${nocolor}"
                 id -u ${UNAME,,} >> $LOGFILE > /dev/null 2>&1
                 if [ $? -eq 0 ]
                 then
-                printf "${lightred}"
-		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+                echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 		echo " SKIPPING. User Already Exists." | tee -a "$LOGFILE"
                 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
                 echo " `date +%d.%m.%Y_%H:%M:%S` : SKIPPING : User Already Exists ! " | tee -a "$LOGFILE"
-                printf "${nocolor}"
-		else
-		printf "${white}"
+                else
 		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-		printf "${nocolor}"
                 adduser --gecos "" ${UNAME,,} | tee -a "$LOGFILE"
                 usermod -aG sudo ${UNAME,,} | tee -a "$LOGFILE"
-		printf "${lightgreen}"
 		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 		echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : New user '${UNAME,,}' has been added to SUDO group" | tee -a "$LOGFILE"
 		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-		printf "${nocolor}"
 			# copy SSH keys if they exist
 			if [ -n /root/.ssh/authorized_keys ]
 			then mkdir /home/${UNAME,,}/.ssh
@@ -301,23 +284,18 @@ echo -e "----------------------------------------------------- \n"
                         # fix permissions on RSA key
                         chmod 400 /home/${UNAME,,}/.ssh/authorized_keys
                         chown ${UNAME,,}:${UNAME,,} /home/${UNAME,,} -R
-		printf "${lightgreen}"
                         echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : SSH keys were copied to ${UNAME,,}'s profile" | tee -a "$LOGFILE"
                         else echo " `date +%d.%m.%Y_%H:%M:%S` : RSA keys not present for root, so none were copied." | tee -a "$LOGFILE"
                         fi   
                 fi
-        else 	printf "${yellow}"
-		echo  "---------------------------------------------------- " >> $LOGFILE 2>&1
+        else 	echo  "---------------------------------------------------- " >> $LOGFILE 2>&1
 		echo  "    ** User chose not to create a new user **" >> $LOGFILE 2>&1
 		echo  -e "---------------------------------------------------- \n" >> $LOGFILE 2>&1
-		printf "${nocolor}"
         fi
 	clear
-	printf "${lightgreen}"
 	echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : USER SETUP IS COMPLETE " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
-	printf "${nocolor}"
 }
 
 #################### 
