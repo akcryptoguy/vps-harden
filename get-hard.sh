@@ -285,7 +285,7 @@ printf "${lightcyan}"
 			printf "${yellow}"
                 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
                 	echo " `date +%d.%m.%Y_%H:%M:%S` : SKIPPING : User Already Exists " | tee -a "$LOGFILE"
-			echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+			echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 			printf "${nocolor}"
                 	else
 			printf "${cyan}"
