@@ -136,7 +136,7 @@ printf "${white}"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : SYSTEM UPDATED SUCCESSFULLY " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${cyan}"
-	figlet System Upgrade | tee -a "$LOGFILE"
+	figlet System Upgrade -f small | tee -a "$LOGFILE"
 	printf "${yellow}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : INITIATING SYSTEM UPGRADE " | tee -a "$LOGFILE"
@@ -162,7 +162,7 @@ printf "${nocolor}"
 function favored_packages() {
 # install my favorite and commonly used packages
 printf "${cyan}"
-figlet Install Favored | tee -a "$LOGFILE"
+figlet Install Favored -f small | tee -a "$LOGFILE"
 printf "${yellow}"
 echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALLING FAVORED PACKAGES " | tee -a "$LOGFILE"
@@ -187,18 +187,14 @@ echo -e "----------------------------------------------------- " | tee -a "$LOGF
 
 function crypto_packages() {
 # install development and build packages that are common on all cryptos
-printf "${cyan}"
+
 figlet Install Crypto | tee -a "$LOGFILE"
-printf "${yellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALLING CRYPTO PACKAGES " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-	printf "${white}"
 	echo ' # add-apt-repository -yu ppa:bitcoin/bitcoin' | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-	printf "${nocolor}"
 	add-apt-repository -yu ppa:bitcoin/bitcoin | tee -a "$LOGFILE"
-	printf "${white}"
 	echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
 	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
 	echo '   build-essential libcurl4-gnutls-dev protobuf-compiler libboost-all-dev ' | tee -a "$LOGFILE"
@@ -208,7 +204,6 @@ echo -e "---------------------------------------------------- " | tee -a "$LOGFI
 	echo '   jp2a pv virtualenv  ' | tee -a "$LOGFILE"
 	echo '   libdb4.8-dev libdb4.8++-dev ' | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
-	printf "${nocolor}"
 	apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
 	build-essential libcurl4-gnutls-dev protobuf-compiler libboost-all-dev \
 	autotools-dev automake libboost-all-dev libssl-dev make autoconf \
@@ -219,11 +214,9 @@ echo -e "---------------------------------------------------- " | tee -a "$LOGFI
 # need more testing to see if autoremove breaks the script or not
 # apt autoremove -y | tee -a "$LOGFILE"
 	clear
-printf "${lightgreen}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : CRYPTO INSTALLED SUCCESFULLY " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-printf "${nocolor}"
 }
 
 ####################
