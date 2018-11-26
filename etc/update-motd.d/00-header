@@ -1,0 +1,44 @@
+#!/bin/sh
+### notes on personalization ###
+### in weatherurl, change metric to 1 to use Celcius or 2 if for Fahrenheit
+### do not exceed 12 characters for greeting
+
+### personalize these variables ###
+firstline='This is a Private Server'
+weathercity='Anchorage'
+weatherurl='http://rss.accuweather.com/rss/liveweather_rss.asp?metric=2&locCode=Anchorage'
+
+### colors ###
+color1='\033[1;31m'  # light red
+color2='\033[0;31m'  # red
+color3='\033[1;32m'  # light green
+color4='\033[0;32m'  # green
+color5='\033[1;34m'  # light blue
+color6='\033[0;34m'  # blue
+color7='\033[1;35m'  # light purple
+color8='\033[0;35m'  # purple
+color9='\033[1;36m'  # light cyan
+color10='\033[0;36m'  # cyan
+color11='\033[0;37m'  # light grey
+color12='\033[1;37m'  # white
+color13='\033[0;33m'  # brown
+color14='\033[1;33m'  # yellow
+color15='\033[0;30m'  # black
+color16='\033[1;30m'  # dark gray
+nocolor='\033[0m'    # no color
+
+### banner ###
+figlet "               hello $(whoami)" -f small
+printf "               ${color1}.-.${nocolor}\n"
+printf "         ${color7}.-'\`\`${color1}(   )    ${color1}${firstline} ${nocolor}\n"
+printf "      ${color14},\`\\ ${color7}\\    ${color1}\`-\`${color7}.    ${color1}--> Hostname: $(hostname) <-- ${nocolor}\n"
+printf "     ${color14}/   \\ ${color7}'\`\`-.   \`   ${color14} ${nocolor}\n"
+printf "   ${color7}.-.  ${color14},       ${color7}\`___:  ${color14}System OS: `lsb_release -s -d`${nocolor}\n"
+printf "  ${color7}(   ) ${color14}:       ${color1} ___   ${color14}`uname -srmo`${nocolor}\n"
+printf "   ${color7}\`-\`  ${color14}\`      ${color1} ,   :${color3}   \n"
+# printf "   ${color7}\`-\`  ${color14}\`      ${color1} ,   :${color3}  Weather (${weathercity}): `curl -s "${weatherurl}" | sed -n '/Currently:/ s/.*: \(.*\): \([0-9]*\)\([CF]\).*/\2°\3, \1/p'`\n"
+printf "     ${color7}\\   / ${color1},..-\`   ,${color10}   Network Information ${color9}\n"
+printf "      ${color7}\`./${color1} /    ${color14}.-.${color1}\`${color10}    External IP: ${color9}`/usr/bin/wget -q -O - http://icanhazip.com/ | /usr/bin/tail`\n"
+printf "         ${color1}\`-..-${color14}(   )${color1}    --> Uptime: `/usr/bin/uptime -p` <--${nocolor}\n"
+printf "               ${color14}\`-\`${nocolor}     ${nocolor}\n"
+# printf "               ${color1}   ${nocolor}\n"

@@ -1,0 +1,808 @@
+#!/bin/bash
+# Script to Harden Security on Ubuntu
+# I got a several ideas and commands for this script from AMega's VPS hardening script which I found
+# on Github seemingly abandoned; and I am very happy to pick up and finish.
+# 
+# ###### SECTIONS ######
+# 1. UPDATE AND UPGRADE
+# 2. USER SETUP / Add new user ,add to sudo group ,copy SSH keys
+# 3. SSH CONFIG / change SSH port ,disable root login
+# 4. UFW CONFIG / UFW - add rules, harden, Enable firewall
+# 5. HARDENING / before rules, secure shared memory
+# 6. KSPLICE INSTALL / automatically update without reboot
+# 7. MOTD EDIT / 
+# 8. RESTART SSHD / apply settings by restarting systemctl
+# 9. INSTALL COMPLETE / display new SSH and login info
+
+# Add to log command and display output on screen
+# echo " `date +%d.%m.%Y" "%H:%M:%S` : $MESSAGE" | tee -a "$LOGFILE"
+# Add to log command and do not display output on screen
+# echo " `date +%d.%m.%Y" "%H:%M:%S` : $MESSAGE" >> $LOGFILE 2>&1
+
+# write to log only, no output # echo  "---------------------------------------------------- " >> $LOGFILE 2>&1
+# write to log only, no output # echo  "    ** User chose not to create a new user. **" >> $LOGFILE 2>&1
+# write to log only, no output # echo  -e "---------------------------------------------------- \n" >> $LOGFILE 2>&1
+
+clear
+# Set Vars
+LOGFILE='/var/log/server_hardening.log'
+SSHDFILE='/etc/ssh/sshd_config'
+
+# Create Log File and Begin
+	# echo -e "\n" >> $LOGFILE 2>&1
+	rm /var/log/server_hardening.log
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " `date +%d.%m.%Y_%H:%M:%S` : SCRIPT STARTED SUCCESSFULLY " | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "------- AKcryptoGUY's VPS Hardening Script --------- " | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	
+##########################
+## 1. UPDATE & UPGRADE ###
+##########################
+
+function update_upgrade() {
+# must manually enter OS Update banner because figlet not installed yet
+
+cat << "EOF" | tee -a "$LOGFILE"
+  ___  ____    _   _           _       _
+ / _ \/ ___|  | | | |_ __   __| | __ _| |_ ___
+| | | \___ \  | | | | '_ \ / _` |/ _` | __/ _ \
+| |_| |___) | | |_| | |_) | (_| | (_| | ||  __/
+ \___/|____/   \___/| .__/ \__,_|\__,_|\__\___|
+                    |_|
+EOF
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo " `date +%d.%m.%Y_%H:%M:%S` : INITIATING SYSTEM UPDATE " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	# remove grub to prevent interactive user prompt: https://tinyurl.com/y9pu7j5s
+	echo '# rm /boot/grub/menu.lst     (prevent update issue)' | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+ 	rm /boot/grub/menu.lst
+ 	echo '# update-grub-legacy-ec2 -y  (prevent update issue)' | tee -a "$LOGFILE"
+	echo -e "----------------------------------------------------------- " | tee -a "$LOGFILE"
+ 	update-grub-legacy-ec2 -y | tee -a "$LOGFILE"
+	echo '# apt-get -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update' | tee -a "$LOGFILE"
+	echo -e "----------------------------------------------------------- " | tee -a "$LOGFILE"
+	apt-get -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update | tee -a "$LOGFILE"
+	echo -e "------------------------------------------------------------------------- " | tee -a "$LOGFILE"
+	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install figlet' | tee -a "$LOGFILE"
+	apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install figlet | tee -a "$LOGFILE"
+	# figlet complete | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " `date +%d.%m.%Y_%H:%M:%S` : SYSTEM UPDATED SUCCESSFULLY " | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	figlet System Upgrade | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " `date +%d.%m.%Y_%H:%M:%S` : INITIATING SYSTEM UPGRADE " | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo ' # apt-get upgrade -y' | tee -a "$LOGFILE"
+	# the next line seemed to break it so I install without new-pkgs
+	# echo ' # apt-get --with-new-pkgs upgrade -y' | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	apt-get upgrade -y | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : SYSTEM UPGRADED SUCCESSFULLY " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+}
+
+#
+#  PROMPT WHETHER USER WANTS TO INSTALL FAVORED PACKAGES OR ALSO ADD THEIR OWN CUSTOM PACKAGES
+#
+
+function favored_packages() {
+# install my favorite and commonly used packages
+
+figlet Install Favored | tee -a "$LOGFILE"
+echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALLING FAVORED PACKAGES " | tee -a "$LOGFILE"
+echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
+	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
+	echo '   htop nethogs ufw fail2ban wondershaper glances ntp figlet lsb-release ' | tee -a "$LOGFILE"
+	echo '   update-motd unattended-upgrades secure-delete' | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
+	htop nethogs ufw fail2ban wondershaper glances ntp figlet lsb-release \
+	update-motd unattended-upgrades secure-delete | tee -a "$LOGFILE"
+echo -e "----------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : FAVORED INSTALLED SUCCESFULLY " | tee -a "$LOGFILE"
+echo -e "----------------------------------------------------- " | tee -a "$LOGFILE"
+}
+
+#
+#  PROMPT WHETHER USER WANTS TO INSTALL COMMON CRYPTO PACKAGES TO SAVE TIME LATER
+#
+
+function crypto_packages() {
+# install development and build packages that are common on all cryptos
+
+figlet Install Crypto | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALLING CRYPTO PACKAGES " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo ' # add-apt-repository -yu ppa:bitcoin/bitcoin' | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	add-apt-repository -yu ppa:bitcoin/bitcoin | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
+	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
+	echo '   build-essential libcurl4-gnutls-dev protobuf-compiler libboost-all-dev ' | tee -a "$LOGFILE"
+	echo '   autotools-dev automake libboost-all-dev libssl-dev make autoconf ' | tee -a "$LOGFILE"
+	echo '   libtool git apt-utils g++ libprotobuf-dev pkg-config libudev-dev ' | tee -a "$LOGFILE"
+	echo '   libqrencode-dev bsdmainutils pkg-config libgmp3-dev libevent-dev ' | tee -a "$LOGFILE"
+	echo '   jp2a pv virtualenv  ' | tee -a "$LOGFILE"
+	echo '   libdb4.8-dev libdb4.8++-dev ' | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
+	apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
+	build-essential libcurl4-gnutls-dev protobuf-compiler libboost-all-dev \
+	autotools-dev automake libboost-all-dev libssl-dev make autoconf \
+	libtool git apt-utils g++ libprotobuf-dev pkg-config libudev-dev \
+	libqrencode-dev bsdmainutils pkg-config libgmp3-dev libevent-dev \
+	jp2a pv virtualenv | tee -a \
+	libdb4.8-dev libdb4.8++-dev | tee -a "$LOGFILE"
+# need more testing to see if autoremove breaks the script or not
+# apt autoremove -y | tee -a "$LOGFILE"
+	clear
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : CRYPTO INSTALLED SUCCESFULLY " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+}
+
+####################
+## 2. USER SETUP ###
+####################
+
+function add_user() {
+# query user to setup a non-root user account or not
+
+figlet User Setup | tee -a "$LOGFILE"
+echo -e "----------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : QUERY TO CREATE NON-ROOT USER " | tee -a "$LOGFILE"
+echo -e "----------------------------------------------------- \n"
+	echo " Conventional wisdom would encourage you to disable root login over SSH"
+	echo " because it makes accessing your server more difficult if you use password"
+	echo " authentication. Since using RSA public-private key authentication is"
+	echo " infinitely more secure, I will not think less of you if you choose to"
+	echo " use an RSA key and continue to login as root.  I am able to create a "
+	echo " non-root user if you want me to, but it is not required. "
+	echo -e "\n"
+        read -p " Would you like to add a non-root user? y/n  " ADDUSER
+	
+	while [ "${ADDUSER,,}" != "yes" ] && [ "${ADDUSER,,}" != "no" ] && [ "${ADDUSER,,}" != "y" ] && [ "${ADDUSER,,}" != "n" ]; do
+	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " ADDUSER
+	done
+        # check if ADDUSER is valid
+        if [ "${ADDUSER,,}" = "yes" ] || [ "${ADDUSER,,}" = "y" ]
+        then echo -e "\n"
+		echo -e " Great; let's set one up now... \n"
+                read -p " Enter New Username: " UNAME
+                while [[ "$UNAME" =~ [^0-9A-Za-z]+ ]] || [ -z $UNAME ]; do echo -e "\n"
+                read -p " --> Please enter a username that contains only letters or numbers: " UNAME
+                done
+		echo -e "\n"
+		echo  " User elected to create a new user named ${UNAME,,}. \n" >> $LOGFILE 2>&1
+                id -u ${UNAME,,} >> $LOGFILE > /dev/null 2>&1
+                if [ $? -eq 0 ]
+                then
+                echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		echo " SKIPPING. User Already Exists." | tee -a "$LOGFILE"
+                echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+                echo " `date +%d.%m.%Y_%H:%M:%S` : SKIPPING : User Already Exists ! " | tee -a "$LOGFILE"
+                else
+		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+                adduser --gecos "" ${UNAME,,} | tee -a "$LOGFILE"
+                usermod -aG sudo ${UNAME,,} | tee -a "$LOGFILE"
+		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : New user '${UNAME,,}' has been added to SUDO group" | tee -a "$LOGFILE"
+		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+			# copy SSH keys if they exist
+			if [ -n /root/.ssh/authorized_keys ]
+			then mkdir /home/${UNAME,,}/.ssh
+			chmod 700 /home/${UNAME,,}/.ssh
+			# copy root SSH key to new non-root user
+			cp /root/.ssh/authorized_keys /home/${UNAME,,}/.ssh
+                        # fix permissions on RSA key
+                        chmod 400 /home/${UNAME,,}/.ssh/authorized_keys
+                        chown ${UNAME,,}:${UNAME,,} /home/${UNAME,,} -R
+                        echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : SSH keys were copied to ${UNAME,,}'s profile" | tee -a "$LOGFILE"
+                        else echo " `date +%d.%m.%Y_%H:%M:%S` : RSA keys not present for root, so none were copied." | tee -a "$LOGFILE"
+                        fi   
+                fi
+        else 	echo  "---------------------------------------------------- " >> $LOGFILE 2>&1
+		echo  "    ** User chose not to create a new user **" >> $LOGFILE 2>&1
+		echo  -e "---------------------------------------------------- \n" >> $LOGFILE 2>&1
+        fi
+	clear
+	echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " `date +%d.%m.%Y_%H:%M:%S` : USER SETUP IS COMPLETE " | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
+}
+
+#################### 
+##  3. SSH CONFIG ##
+####################
+
+function collect_sshd() {
+# Prompt for custom SSH port between 11000 and 65535
+
+figlet SSH Config | tee -a "$LOGFILE"
+SSHPORTWAS=$(sed -n -e '/^Port /p' $SSHDFILE)
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : CONFIGURE SSH SETTINGS " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " --> Your current SSH port number is" $SSHPORTWAS  | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+	echo -e " By default, SSH traffic occurs on port 22, so hackers are always"
+	echo -e " scanning port 22 for vulnerabilities. If you change your server to"
+	echo -e " use a different port, you can gain some security through obscurity.\n"
+	while :; do
+		read -p " Enter a custom port for SSH between 11000 and 65535 or use 22: " SSHPORT
+		[[ $SSHPORT =~ ^[0-9]+$ ]] || { echo -e " --> Try harder, that's not even a number. \n";continue; }
+		if (($SSHPORT >= 11000 && $SSHPORT <= 65535)); then break
+		elif [ $SSHPORT = 22 ]; then break
+		else echo -e " --> That number is out of range, try again. \n"
+			echo "---------------------------------------------------- " >> $LOGFILE 2>&1
+			echo " `date +%d.%m.%Y_%H:%M:%S` : ERROR: User entered: $SSHPORT " >> $LOGFILE 2>&1
+			echo "---------------------------------------------------- " >> $LOGFILE 2>&1
+		fi
+	done
+		# Take a backup of the existing config
+		BTIME=$(date +%F_%R)
+		cat $SSHDFILE > $SSHDFILE.$BTIME.bak
+		echo -e "\n"
+		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		echo -e "     SSH config file backed up to :" | tee -a "$LOGFILE"
+		echo -e " $SSHDFILE.$BTIME.bak" | tee -a "$LOGFILE"
+        	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+		sed -i "s/$SSHPORTWAS/Port $SSHPORT/" $SSHDFILE >> $LOGFILE 2>&1
+			# Error Handling
+			clear
+        		echo -e "---------------------------------------------------- "
+			if [ $? -eq 0 ]
+	        	then
+	                echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : SSH port set to $SSHPORT " | tee -a "$LOGFILE"
+			else
+			echo -e "---------------------------------------------------- "
+	                echo -e " ERROR: SSH Port couldn't be changed. Check log file for details."
+                	echo -e " `date +%d.%m.%Y_%H:%M:%S` : ERROR: SSH port couldn't be changed " | tee -a "$LOGFILE"
+			fi
+			echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+# Set SSHPORTIS to the final value of the SSH port
+SSHPORTIS=$(sed -n -e '/^Port /p' $SSHDFILE)
+}
+
+function prompt_rootlogin {
+# Prompt use to permit or deny root login
+
+ROOTLOGINP=$(sed -n -e '/^PermitRootLogin /p' $SSHDFILE)
+figlet Root Login | tee -a "$LOGFILE"
+echo -e "-------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : CONFIGURE ROOT LOGIN " | tee -a "$LOGFILE"
+echo -e "-------------------------------------------- \n" | tee -a "$LOGFILE"
+
+if [ -n "${UNAME,,}" ]
+then 
+	if [ -z "$ROOTLOGINP" ]
+        then ROOTLOGINP=$(sed -n -e '/^# PermitRootLogin /p' $SSHDFILE)
+        else :
+        fi
+        # Prompt user to see if they want to permit root login
+        
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " Your root login settings are: " $ROOTLOGINP  | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+        read -p " Would you like to disable root login? y/n  " ROOTLOGIN
+
+	while [ "${ROOTLOGIN,,}" != "yes" ] && [ "${ROOTLOGIN,,}" != "no" ] && [ "${ROOTLOGIN,,}" != "y" ] && [ "${ROOTLOGIN,,}" != "n" ]; do
+	echo -e "\n"
+	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " ROOTLOGIN
+	done		
+	# check if ROOTLOGIN is valid
+        if [ "${ROOTLOGIN,,}" = "yes" ] || [ "${ROOTLOGIN,,}" = "y" ]
+        then :
+		# search for root login and change to no
+                sed -i "s/PermitRootLogin yes/PermitRootLogin no/" $SSHDFILE >> $LOGFILE
+                sed -i "s/# PermitRootLogin yes/PermitRootLogin no/" $SSHDFILE >> $LOGFILE
+                sed -i "s/# PermitRootLogin no/PermitRootLogin no/" $SSHDFILE >> $LOGFILE
+	        # Error Handling
+                if [ $? -eq 0 ]
+                then
+                	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE" 
+			echo -e " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : Root login disabled " | tee -a "$LOGFILE"
+			echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+                else
+                        echo -e "---------------------------------------------------- " | tee -a "$LOGFILE" 
+                        echo -e " `date +%d.%m.%Y_%H:%M:%S` : ERROR: Couldn't disable root login" | tee -a "$LOGFILE" 
+			echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+                fi
+        else  echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		echo "It looks like you want to enable root login; making it so..." | tee -a "$LOGFILE"
+                sed -i "s/PermitRootLogin no/PermitRootLogin yes/" $SSHDFILE >> $LOGFILE 2>&1
+                sed -i "s/# PermitRootLogin no/PermitRootLogin yes/" $SSHDFILE >> $LOGFILE 2>&1
+                sed -i "s/# PermitRootLogin yes/PermitRootLogin yes/" $SSHDFILE >> $LOGFILE 2>&1
+		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+        fi
+	ROOTLOGINP=$(sed -n -e '/^PermitRootLogin /p' $SSHDFILE)
+else echo -e "---------------------------------------------------- "
+	echo " Since you chose not to create a non-root user, "
+     	echo " I did not disable root login for obvious reasons."
+     	echo -e "---------------------------------------------------- \n"
+	echo -e "----------------------------------------------------- " >> $LOGFILE 2>&1
+	echo -e " Root login not changed; no non-root user was created " >> $LOGFILE 2>&1
+	echo -e "----------------------------------------------------- \n" >> $LOGFILE 2>&1
+fi
+clear
+echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " Your root login settings are:" $ROOTLOGINP | tee -a "$LOGFILE"
+echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
+}
+
+function disable_passauth() {
+# query user to disable password authentication or not
+
+figlet Pass Auth | tee -a "$LOGFILE"
+echo -e "----------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : PASSWORD AUTHENTICATION " | tee -a "$LOGFILE"
+echo -e "----------------------------------------------- \n"
+	echo -e " You can log into your server using an RSA public-private key pair or"
+	echo -e " a password.  Using RSA keys for login is tremendously more secure"
+	echo -e " than just using a password. If you have installed an RSA key-pair"
+	echo -e " and use that to login, you should disable password authentication.\n"
+
+if [ -n "/root/.ssh/authorized_keys" ]
+then
+        PASSWDAUTH=$(sed -n -e '/^PasswordAuthentication /p' $SSHDFILE)
+                if [ -z "${PASSWDAUTH}" ]
+                then PASSWDAUTH=$(sed -n -e '/^# PasswordAuthentication /p' $SSHDFILE)
+                else :
+                fi
+        # Prompt user to see if they want to disable password login
+	echo -e "     --------------------------------------------------- " | tee -a "$LOGFILE"
+        echo -e "      Your current password authentication settings are   " | tee -a "$LOGFILE"
+	echo -e "             ** $PASSWDAUTH ** " | tee -a "$LOGFILE"
+	echo -e "     --------------------------------------------------- \n" | tee -a "$LOGFILE"
+        read -p " Would you like to disable password login & require RSA key login? y/n  " PASSLOGIN
+	while [ "${PASSLOGIN,,}" != "yes" ] && [ "${PASSLOGIN,,}" != "no" ] && [ "${PASSLOGIN,,}" != "y" ] && [ "${PASSLOGIN,,}" != "n" ]; do
+	echo -e "\n"
+	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " PASSLOGIN
+	done
+	echo -e "\n"	
+        # check if PASSLOGIN is valid
+        if [ "${PASSLOGIN,,}" = "yes" ] || [ "${PASSLOGIN,,}" = "y" ]
+        then echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/" $SSHDFILE >> $LOGFIL$
+                sed -i "s/# PasswordAuthentication yes/PasswordAuthentication no/" $SSHDFILE >> $LOGF$
+                sed -i "s/# PasswordAuthentication no/PasswordAuthentication no/" $SSHDFILE >> $LOGFI$
+                # Error Handling
+                if [ $? -eq 0 ]
+                then
+                        echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : PassAuth set to NO " | tee -a "$LOGFILE"
+			echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+                else
+                        echo " `date +%d.%m.%Y_%H:%M:%S` : ERROR: PasswordAuthentication couldn't be changed to no : " | tee -a "$LOGFILE"
+			echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+                fi
+        else 
+		sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/" $SSHDFILE | tee -a "$LOGFILE"
+                sed -i "s/# PasswordAuthentication no/PasswordAuthentication yes/" $SSHDFILE | tee -a "$LOGFILE"
+                sed -i "s/# PasswordAuthentication yes/PasswordAuthentication yes/" $SSHDFILE | tee -a "$LOGFILE"
+        fi
+else	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " With no RSA key; I can't disable PasswordAuthentication." | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+fi
+	PASSWDAUTH=$(sed -n -e '/^PasswordAuthentication /p' $SSHDFILE)
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " `date +%d.%m.%Y_%H:%M:%S` : PASSWORD AUTHENTICATION COMPLETE " | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "    Your PasswordAuthentication settings are now "  | tee -a "$LOGFILE"
+	echo -e "        ** $PASSWDAUTH ** " | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+clear
+echo -e "------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : SSH CONFIG COMPLETE " | tee -a "$LOGFILE"
+echo -e "------------------------------------------- \n" | tee -a "$LOGFILE"
+}
+
+#################### 
+##  4. UFW CONFIG ##
+####################
+
+
+function ufw_config() {
+# query user to disable password authentication or not
+
+figlet Firewall Config | tee -a "$LOGFILE"
+echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : FIREWALL CONFIGURATION " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------- \n"
+        echo -e " Uncomplicated Firewall (UFW) is a program for managing a"
+        echo -e " netfilter firewall designed to be easy to use. We recommend"
+        echo -e " that you activate this firewall and assign default rules"
+	echo -e " to protect your server. \n"
+
+	read -p " Would you like to enable UFW firewall and assign basic rules? y/n  " FIREWALLP
+        while [ "${FIREWALLP,,}" != "yes" ] && [ "${FIREWALLP,,}" != "no" ] && [ "${FIREWALLP,,}" != "y" ] && [ "${FIREWALLP,,}" != "n" ]; do
+        echo -e "\n"
+        read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " FIREWALLP
+        done
+        echo -e "\n"
+        if [ ${FIREWALLP,,} = "yes" ] || [ ${FIREWALLP,,} = "y" ]
+        then
+                # make sure ufw is installed #
+                apt-get install ufw -qqy >> $LOGFILE 2>&1
+                # add firewall rules
+                echo -e "------------------------------ " | tee -a "$LOGFILE"
+                echo " # ufw default allow outgoing"
+                ufw default allow outgoing >> $LOGFILE 2>&1
+                echo -e "------------------------------ " | tee -a "$LOGFILE"
+                echo " # ufw default deny incoming"
+                ufw default deny incoming >> $LOGFILE 2>&1
+                echo -e "------------------------------ " | tee -a "$LOGFILE"
+                echo -e " # ufw allow $SSHPORT" | tee -a "$LOGFILE"
+                ufw allow $SSHPORT | tee -a "$LOGFILE"
+                echo -e "----------------------------------- \n" | tee -a "$LOGFILE"
+		sleep 1
+                # wait until after SSHD is restarted to enable firewall to not break SSH
+        else    :
+                echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+                echo -e " ** User chose not to setup firewall at this time **"  | tee -a "$LOGFILE"
+                echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+		sleep 1
+        fi
+
+clear
+echo -e "------------------------------------------------ " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : FIREWALL CONFIG COMPLETE " | tee -a "$LOGFILE"
+echo -e "------------------------------------------------ \n" | tee -a "$LOGFILE"
+}
+
+#################### 
+## 5. Hardening  ###
+####################
+
+function server_hardening() {
+# prompt users on whether to harden server or not
+
+figlet Get Hard | tee -a "$LOGFILE"
+echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : QUERY TO HARDEN THE SERVER " | tee -a "$LOGFILE"
+echo -e "-------------------------------------------------- \n" | tee -a "$LOGFILE"
+
+echo -e " The next steps are to secure your server's shared memory, prevent"
+echo -e " IP spoofing, enable DDOS protection, harden the networking layer, "
+echo -e " and enable automatic installation of security updates."
+echo -e "\n"
+	read -p " Would you like to perform these steps now? y/n  " GETHARD
+	while [ "${GETHARD,,}" != "yes" ] && [ "${GETHARD,,}" != "no" ] && [ "${GETHARD,,}" != "y" ] && [ "${GETHARD,,}" != "n" ]; do
+	echo -e "\n"
+	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " GETHARD
+	done
+	echo -e "\n"
+        # check if GETHARD is valid
+        if [ "${GETHARD,,}" = "yes" ] || [ "${GETHARD,,}" = "y" ]
+        then
+		
+# secure shared memory
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : SECURING SHARED MEMORY " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e ' --> Adding line to bottom of file /etc/fstab'  | tee -a "$LOGFILE"
+echo -e ' tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+sleep 2	; #  dramatic pause
+# only add line if line does not already exist in /etc/fstab
+if grep -q "tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0" /etc/fstab; then :
+else echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
+fi
+
+# prevent IP spoofing
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : PREVENTING IP SPOOFING " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " --> Updating /etc/host.conf to include 'nospoof' " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- \n " | tee -a "$LOGFILE"
+sleep 2	; #  dramatic pause
+cat etc/host.conf > /etc/host.conf
+
+# enable DDOS protection
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : ENABLING DDOS PROTECTION " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " Replace /etc/ufw/before.rules with hardened rules " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- \n " | tee -a "$LOGFILE"
+sleep 2	; #  dramatic pause
+cat etc/ufw/before.rules > /etc/ufw/before.rules
+
+# harden the networking layer
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : HARDENING NETWORK LAYER " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " --> Secure /etc/sysctl.conf with hardening rules " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- \n " | tee -a "$LOGFILE"
+sleep 2	; #  dramatic pause
+cat etc/sysctl.conf > /etc/sysctl.conf
+
+# enable automatic security updates
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : ENABLING SECURITY UPDATES " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " Configure system to auto install security updates " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- \n " | tee -a "$LOGFILE"
+sleep 2	; #  dramatic pause
+cat etc/apt/apt.conf.d/10periodic > /etc/apt/apt.conf.d/10periodic
+cat etc/apt/apt.conf.d/50unattended-upgrades > /etc/apt/apt.conf.d/50unattended-upgrades
+# consider editing the above 50-unattended-upgrades to automatically reboot when necessary
+
+                # Error Handling
+                if [ $? -eq 0 ]
+                then 	echo -e " \n" ; clear
+			echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
+			echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : Server Hardened" | tee -a "$LOGFILE"
+                else	clear
+                        echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
+			echo " `date +%d.%m.%Y_%H:%M:%S` : ERROR: Hardening Failed" | tee -a "$LOGFILE"
+		fi
+		echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
+        else :
+	clear
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " *** User elected not to GET HARD at this time *** " | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+        fi
+}
+
+#########################
+##  6. Ksplice Install ##
+#########################
+
+function ksplice_install() {
+# prompt users on whether to install Oracle ksplice or not
+# install created using https://tinyurl.com/y9klkx2j and https://tinyurl.com/y8fr4duq
+# Official page: https://ksplice.oracle.com/uptrack/guide
+
+figlet Ksplice | tee -a "$LOGFILE"
+echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALL ORACLE KSPLICE " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------- \n" | tee -a "$LOGFILE"
+
+echo -e " Normally, any kernel update in Linux would require a system reboot."
+echo -e " Oracle Ksplice Uptrack provides kernel updates on Ubuntu and Fedora"
+echo -e " Linux without reboots and free of charge for non-commercial use. If"
+echo -e " you want to minimize server downtime, this is a good thing to install."
+echo -e "\n"
+	read -p " Would you like to install Oracle Ksplice Uptrack now? y/n  " KSPLICE
+	while [ "${KSPLICE,,}" != "yes" ] && [ "${KSPLICE,,}" != "no" ] && [ "${KSPLICE,,}" != "y" ] && [ "${KSPLICE,,}" != "n" ]; do
+	echo -e "\n"
+	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " GETHARD
+	done
+	echo -e "\n"
+        # check if KSPLICE is valid
+        if [ "${KSPLICE,,}" = "yes" ] || [ "${KSPLICE,,}" = "y" ]
+        then
+		
+# install ksplice uptrack
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALLING KSPLICE PACKAGES " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
+	echo '   libgtk2-perl consolekit iproute libck-connector0 libcroco3 libglade2-0' | tee -a "$LOGFILE"
+	echo '   libpam-ck-connector librsvg2-2 librsvg2-common python-cairo python-dbus' | tee -a "$LOGFILE"
+	echo '   python-gi python-glade2 python-gobject-2 python-gtk2 python-pycurl' | tee -a "$LOGFILE"
+	echo '   python-yaml dbus-x11' | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
+	libgtk2-perl consolekit iproute libck-connector0 libcroco3 libglade2-0 \
+	libpam-ck-connector librsvg2-2 librsvg2-common python-cairo python-dbus \
+	python-gi python-glade2 python-gobject-2 python-gtk2 python-pycurl \
+	python-yaml dbus-x11 | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : KSPLICE PACKAGES INSTALLED" | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " --> Download & install Ksplice package from Oracle " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+wget -o /var/log/ksplicew1.log https://ksplice.oracle.com/uptrack/dist/xenial/ksplice-uptrack.deb
+dpkg --log "$LOGFILE" -i ksplice-uptrack.deb
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : KSPLICE UPTRACK INSTALLED" | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " ** Enabling autoinstall & correcting permissions ** " | tee -a "$LOGFILE"
+sed -i "s/autoinstall = no/autoinstall = yes/" /etc/uptrack/uptrack.conf
+chmod 755 /etc/cron.d/uptrack
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " ** Activate & install Ksplice patches & updates ** " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+cat $LOGFILE /var/log/ksplicew1.log > /var/log/join.log
+cat /var/log/join.log > $LOGFILE
+rm /var/log/ksplicew1.log
+rm /var/log/join.log
+uptrack-upgrade -y | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : KSPLICE UPDATES INSTALLED" | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+sleep 1	; #  dramatic pause
+clear
+echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
+echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : Ksplice Enabled" | tee -a "$LOGFILE"
+echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
+        else :
+	clear
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "     ** User elected not to install Ksplice ** " | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+        fi
+
+# original steps I gathered
+# sudo apt-get install libgtk2-perl consolekit iproute libck-connector0 libcroco3 libglade2-0 libpam-ck-connector librsvg2-2 librsvg2-common python-cairo python-dbus python-gi python-glade2 python-gobject-2 python-gtk2 python-pycurl python-yaml dbus-x11 -y
+# sudo wget https://ksplice.oracle.com/uptrack/dist/xenial/ksplice-uptrack.deb
+# sudo dpkg -i ksplice-uptrack.deb
+# sudo sed -i "s/autoinstall = no/autoinstall = yes/" /etc/uptrack/uptrack.conf
+# sudo chmod 755 /etc/cron.d/uptrack
+# sudo uptrack-upgrade -y
+}
+
+#######################
+##  7. MOTD Install  ##
+#######################
+
+function motd_install() {
+# prompt users to install custom MOTD or not
+
+figlet Enhance MOTD | tee -a "$LOGFILE"
+echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : PROMPT USER TO INSTALL MOTD " | tee -a "$LOGFILE"
+echo -e "--------------------------------------------------- \n" | tee -a "$LOGFILE"
+
+echo -e " The normal MOTD banner displayed after a successful SSH login"
+echo -e " is pretty boring so this mod edits it to include more useful"
+echo -e " information along with a login banner prohibiting unauthorized"
+echo -e " access.  All modifications are strictly cosmetic."
+echo -e "\n"
+	read -p " Would you like to enhance your MOTD & login banner? y/n  " MOTDP
+	while [ "${MOTDP,,}" != "yes" ] && [ "${MOTDP,,}" != "no" ] && [ "${MOTDP,,}" != "y" ] && [ "${MOTDP,,}" != "n" ]; do
+	echo -e "\n"
+	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " MOTDP
+	done
+	echo -e "\n"
+        # check if MOTDP is affirmative
+        if [ "${MOTDP,,}" = "yes" ] || [ "${MOTDP,,}" = "y" ]
+        then
+		sudo apt-get -o Acquire::ForceIPv4=true update -y
+		sudo apt-get -o Acquire::ForceIPv4=true install lsb-release update-motd curl -y
+		rm -r /etc/update-motd.d/
+		mkdir /etc/update-motd.d/
+		touch /etc/update-motd.d/00-header ; touch /etc/update-motd.d/10-sysinfo ; touch /etc/update-motd.d/90-footer ; touch /etc/update-motd.d/99-esm
+		chmod +x /etc/update-motd.d/*
+		cat etc/update-motd.d/00-header > /etc/update-motd.d/00-header
+		cat etc/update-motd.d/10-sysinfo > /etc/update-motd.d/10-sysinfo
+		cat etc/update-motd.d/90-footer > /etc/update-motd.d/90-footer
+		cat etc/update-motd.d/99-esm > /etc/update-motd.d/99-esm
+		sed -i 's,#Banner /etc/issue.net,Banner /etc/issue.net,' /etc/ssh/sshd_config
+		cat etc/issue.net > /etc/issue.net
+		clear	
+		# Error Handling
+                if [ $? -eq 0 ]
+                then 	echo -e "------------------------------------------------------- " | tee -a "$LOGFILE"
+				echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : MOTD & Banner updated" | tee -a "$LOGFILE"
+                else echo " `date +%d.%m.%Y_%H:%M:%S` : ERROR: MOTD not updated" | tee -a "$LOGFILE"
+                fi
+		echo -e "------------------------------------------------------- \n" | tee -a "$LOGFILE"
+        else echo -e "\n"
+	clear
+	echo -e "----------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " *** User elected not to customize MOTD & banner *** " | tee -a "$LOGFILE"
+	echo -e "----------------------------------------------------- \n" | tee -a "$LOGFILE"
+        fi
+}
+
+#######################
+##  8. Restart SSHD  ##
+#######################
+
+function restart_sshd() {
+# prompt users to leave this session open, then create a second connection after restarting SSHD to make sure they can connect
+
+figlet Restart SSH | tee -a "$LOGFILE"
+echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : PROMPT USER TO RESTART SSH " | tee -a "$LOGFILE"
+echo -e "-------------------------------------------------- \n" | tee -a "$LOGFILE"
+
+echo " Changes to login security will not take effect until SSHD restarts"
+echo " and firewall is enabled. You should keep this existing connection"
+echo " open while restarting SSHD just in case you have a problem or"
+echo " copied down the information incorrectly. This will prevent you"
+echo " from getting locked out of your server."
+echo -e "\n"
+	read -p " Would you like to restart SSHD and enable UFW now? y/n  " SSHDRESTART
+	while [ "${SSHDRESTART,,}" != "yes" ] && [ "${SSHDRESTART,,}" != "no" ] && [ "${SSHDRESTART,,}" != "y" ] && [ "${SSHDRESTART,,}" != "n" ]; do
+	echo -e "\n"
+	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " SSHDRESTART
+	done
+	echo -e "\n"
+        # check if SSHDRESTART is valid
+        if [ "${SSHDRESTART,,}" = "yes" ] || [ "${SSHDRESTART,,}" = "y" ]
+        then
+                # insert a pause or delay to add suspense
+		systemctl restart sshd
+			if [ $FIREWALLP = "yes" ] || [ $FIREWALLP = "y" ]
+			then ufw --force enable | tee -a "$LOGFILE"
+			echo -e " \n" | tee -a "$LOGFILE"
+			else :
+			fi			
+		# Error Handling
+                if [ $? -eq 0 ]
+                then 	echo -e "------------------------------------------------------ " | tee -a "$LOGFILE"
+			echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : SSHD restart complete" | tee -a "$LOGFILE"
+			if [ $FIREWALLP = "yes" ] || [ $FIREWALLP = "y" ]
+			then echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : UFW firewall enabled" | tee -a "$LOGFILE"
+			else :
+			fi
+                else
+                        echo " `date +%d.%m.%Y_%H:%M:%S` : ERROR: SSHD could not restart" | tee -a "$LOGFILE"
+                fi
+		echo -e "------------------------------------------------------ \n" | tee -a "$LOGFILE"
+        else echo -e "\n"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " *** User elected not to restart SSH at this time *** " | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+        fi
+}
+
+#########################
+## 9. Install Complete ##
+#########################
+
+
+function install_complete() {
+# Display important login variables before exiting script
+clear
+figlet Install Complete -f small | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " >> $LOGFILE 2>&1
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : YOUR SERVER IS NOW SECURE " >> $LOGFILE 2>&1
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e "  * * * Save these important login variables! * * *  " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " --> Your SSH port for remote access is" $SSHPORTIS	| tee -a "$LOGFILE"
+echo -e " --> Root login settings are:" $ROOTLOGINP | tee -a "$LOGFILE"
+	if [ -n "${UNAME,,}" ] 
+	then echo -e " We created a non-root user named (lower case):" ${UNAME,,} | tee -a "$LOGFILE" 
+	else echo -e " A new user was not created during the setup process" | tee -a "$LOGFILE" 
+	fi
+echo " PasswordAuthentication settings:" $PASSWDAUTH | tee -a "$LOGFILE"
+	if [ ${FIREWALLP,,} = "yes" ] || [ ${FIREWALLP,,} = "y" ]
+	then echo -e " --> UFW was installed and basic firewall rules were added" | tee -a "$LOGFILE" 
+	else echo -e " --> UFW was not installed or configured" | tee -a "$LOGFILE" 
+	fi
+		# if [ "${GETHARD,,}" = "yes" ] || [ "${GETHARD,,}" = "y" ]
+		# then echo -e " --> The server and networking layer were hardened <--" | tee -a "$LOGFILE" 
+		# else echo -e " --> The server and networking layer were NOT hardened" | tee -a "$LOGFILE" 
+		# fi
+			if [ "${KSPLICE,,}" = "yes" ] || [ "${KSPLICE,,}" = "y" ]
+			then echo -e " You installed Oracle's Ksplice to update without reboot" | tee -a "$LOGFILE"
+			else echo -e " You chose NOT to auto-update OS with Oracle's Ksplice" | tee -a "$LOGFILE"
+			fi
+echo -e "-------------------------------------------------------- " | tee -a "$LOGFILE"	
+echo -e " Installation log saved to" $LOGFILE | tee -a "$LOGFILE"
+echo -e " Before modification, your SSH config was backed up to" | tee -a "$LOGFILE"
+echo -e " --> $SSHDFILE.$BTIME.bak"				| tee -a "$LOGFILE"
+echo -e " ---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " | NOTE: Please create a new connection to test SSH | " | tee -a "$LOGFILE"
+echo -e " |       settings before you close this session     | " | tee -a "$LOGFILE"
+echo -e " ---------------------------------------------------- " | tee -a "$LOGFILE"
+}
+
+
+update_upgrade
+favored_packages
+crypto_packages
+add_user
+collect_sshd
+prompt_rootlogin
+disable_passauth
+ufw_config
+server_hardening
+ksplice_install
+motd_install
+restart_sshd
+install_complete
+
+exit
