@@ -102,15 +102,13 @@ SSHDFILE='/etc/ssh/sshd_config'
 function update_upgrade() {
 
 # NOTE I learned the hard way that you must put a "\" BEFORE characters "\" and "`"
-printf "${yellow} This is a yellow line \n"
-echo -e "${yellow} This is a yellow line \n"
-printf "${yellow}  ___  ____    _   _           _       _ \n" | tee -a "$LOGFILE"
+printf "${lightcyan}  ___  ____    _   _           _       _ \n" | tee -a "$LOGFILE"
 printf " / _ \/ ___|  | | | |_ __   __| | __ _| |_ ___ \n" | tee -a "$LOGFILE"
 printf "| | | \\___ \\  | | | | '_ \\ / _\` |/ _\` | __/ _ \\ \n" | tee -a "$LOGFILE"
 printf "| |_| |___) | | |_| | |_) | (_| | (_| | ||  __/ \n" | tee -a "$LOGFILE"
 printf " \___/|____/   \___/| .__/ \__,_|\__,_|\__\___| \n" | tee -a "$LOGFILE"
 printf "                    |_| \n"
-
+printf "${yellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : INITIATING SYSTEM UPDATE " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
@@ -162,8 +160,9 @@ printf "${nocolor}"
 
 function favored_packages() {
 # install my favorite and commonly used packages
-printf "${yellow}"
+printf "${lightcyan}"
 figlet Install Favored | tee -a "$LOGFILE"
+printf "${yellow}"
 echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALLING FAVORED PACKAGES " | tee -a "$LOGFILE"
 echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
