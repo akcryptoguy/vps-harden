@@ -335,7 +335,7 @@ printf "${yellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : CONFIGURE SSH SETTINGS " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e " --> Your current SSH port number is" $SSHPORTWAS  | tee -a "$LOGFILE"
+echo -e " --> Your current SSH port number is ${SSHPORTWAS} <--  | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
 printf "${nocolor}"
 	printf "${lightcyan}"
@@ -791,7 +791,7 @@ echo -e "---------------------------------------------------- " | tee -a "$LOGFI
 	libpam-ck-connector librsvg2-2 librsvg2-common python-cairo python-dbus \
 	python-gi python-glade2 python-gobject-2 python-gtk2 python-pycurl \
 	python-yaml dbus-x11 | tee -a "$LOGFILE"
-printf "${lightyellow}"
+printf "${yellow}"
 
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : KSPLICE PACKAGES INSTALLED" | tee -a "$LOGFILE"
@@ -867,6 +867,7 @@ echo -e " access.  All modifications are strictly cosmetic."
 echo -e "\n"
 	printf "${cyan}"
 	read -p " Would you like to enhance your MOTD & login banner? y/n  " MOTDP
+	printf "${nocolor}"
 	while [ "${MOTDP,,}" != "yes" ] && [ "${MOTDP,,}" != "no" ] && [ "${MOTDP,,}" != "y" ] && [ "${MOTDP,,}" != "n" ]; do
 	echo -e "\n"
 	printf "${lightred}"
@@ -990,19 +991,27 @@ echo -e "\n"
 function install_complete() {
 # Display important login variables before exiting script
 clear
+printf "${lightcyan}"
 figlet Install Complete -f small | tee -a "$LOGFILE"
+printf "${lightgreen}"
 echo -e "---------------------------------------------------- " >> $LOGFILE 2>&1
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : YOUR SERVER IS NOW SECURE " >> $LOGFILE 2>&1
+printf "${lightpurple}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e "  * * * Save these important login variables! * * *  " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+printf "${yellow}"
 echo -e " --> Your SSH port for remote access is" $SSHPORTIS	| tee -a "$LOGFILE"
 echo -e " --> Root login settings are:" $ROOTLOGINP | tee -a "$LOGFILE"
+	printf "${white}"
 	if [ -n "${UNAME,,}" ] 
 	then echo -e " We created a non-root user named (lower case):" ${UNAME,,} | tee -a "$LOGFILE" 
 	else echo -e " A new user was not created during the setup process" | tee -a "$LOGFILE" 
 	fi
+	printf "${nocolor}"
+printf "${white}"
 echo " PasswordAuthentication settings:" $PASSWDAUTH | tee -a "$LOGFILE"
+	printf "${lightcyan}"
 	if [ ${FIREWALLP,,} = "yes" ] || [ ${FIREWALLP,,} = "y" ]
 	then echo -e " --> UFW was installed and basic firewall rules were added" | tee -a "$LOGFILE" 
 	else echo -e " --> UFW was not installed or configured" | tee -a "$LOGFILE" 
@@ -1011,18 +1020,22 @@ echo " PasswordAuthentication settings:" $PASSWDAUTH | tee -a "$LOGFILE"
 		# then echo -e " --> The server and networking layer were hardened <--" | tee -a "$LOGFILE" 
 		# else echo -e " --> The server and networking layer were NOT hardened" | tee -a "$LOGFILE" 
 		# fi
+			printf "${lightcyan}"
 			if [ "${KSPLICE,,}" = "yes" ] || [ "${KSPLICE,,}" = "y" ]
 			then echo -e " You installed Oracle's Ksplice to update without reboot" | tee -a "$LOGFILE"
 			else echo -e " You chose NOT to auto-update OS with Oracle's Ksplice" | tee -a "$LOGFILE"
 			fi
+printf "${yellow}"
 echo -e "-------------------------------------------------------- " | tee -a "$LOGFILE"	
 echo -e " Installation log saved to" $LOGFILE | tee -a "$LOGFILE"
 echo -e " Before modification, your SSH config was backed up to" | tee -a "$LOGFILE"
 echo -e " --> $SSHDFILE.$BTIME.bak"				| tee -a "$LOGFILE"
+printf "${lightred}"
 echo -e " ---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " | NOTE: Please create a new connection to test SSH | " | tee -a "$LOGFILE"
 echo -e " |       settings before you close this session     | " | tee -a "$LOGFILE"
 echo -e " ---------------------------------------------------- " | tee -a "$LOGFILE"
+printf "${nocolor}"
 }
 
 
