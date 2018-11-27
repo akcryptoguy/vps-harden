@@ -30,7 +30,7 @@ I aggregated these steps from several different server hardening guides and pick
 SSH to your VPS and clone the Github repository:
 
 ```bash
-sudo git clone https://github.com/akcryptoguy/vps-hardening.git && cd vps
+sudo git clone https://github.com/akcryptoguy/vps-harden.git && cd vps-harden
 ```
 
 Install & configure :
