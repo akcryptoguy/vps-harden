@@ -563,7 +563,6 @@ printf "${nocolor}"
 ##  4. UFW CONFIG ##
 ####################
 
-
 function ufw_config() {
 # query user to disable password authentication or not
 printf "${lightcyan}"
@@ -619,7 +618,7 @@ clear
 printf "${lightgreen}"
 echo -e "------------------------------------------------ " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : FIREWALL CONFIG COMPLETE " | tee -a "$LOGFILE"
-echo -e "------------------------------------------------ \n" | tee -a "$LOGFILE"
+echo -e "------------------------------------------------ " | tee -a "$LOGFILE"
 printf "${nocolor}"
 }
 
@@ -721,13 +720,13 @@ cat etc/apt/apt.conf.d/50unattended-upgrades > /etc/apt/apt.conf.d/50unattended-
 			printf "${green}"
 			echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 			echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : Server Hardened" | tee -a "$LOGFILE"
-			echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
+			echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 			printf "${nocolor}"
                 else	clear
 			printf "${lightred}"
                         echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 			echo " `date +%d.%m.%Y_%H:%M:%S` : ERROR: Hardening Failed" | tee -a "$LOGFILE"
-			echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
+			echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 			printf "${nocolor}"
 		fi
 		
@@ -736,7 +735,7 @@ cat etc/apt/apt.conf.d/50unattended-upgrades > /etc/apt/apt.conf.d/50unattended-
 	printf "${yellow}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " *** User elected not to GET HARD at this time *** " | tee -a "$LOGFILE"
-	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${nocolor}"
         fi
 }
@@ -793,6 +792,7 @@ echo -e "---------------------------------------------------- " | tee -a "$LOGFI
 	python-gi python-glade2 python-gobject-2 python-gtk2 python-pycurl \
 	python-yaml dbus-x11 | tee -a "$LOGFILE"
 printf "${lightyellow}"
+
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : KSPLICE PACKAGES INSTALLED" | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
@@ -817,7 +817,7 @@ cat /var/log/join.log > $LOGFILE
 rm /var/log/ksplicew1.log
 rm /var/log/join.log
 uptrack-upgrade -y | tee -a "$LOGFILE"
-printf "${lightyellow}"
+printf "${yellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : KSPLICE UPDATES INSTALLED" | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
@@ -853,21 +853,25 @@ printf "${nocolor}"
 
 function motd_install() {
 # prompt users to install custom MOTD or not
-
+printf "${lightcyan}"
 figlet Enhance MOTD | tee -a "$LOGFILE"
+printf "${yellow}"
 echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : PROMPT USER TO INSTALL MOTD " | tee -a "$LOGFILE"
 echo -e "--------------------------------------------------- \n" | tee -a "$LOGFILE"
-
+printf "${lightcyan}"
 echo -e " The normal MOTD banner displayed after a successful SSH login"
 echo -e " is pretty boring so this mod edits it to include more useful"
 echo -e " information along with a login banner prohibiting unauthorized"
 echo -e " access.  All modifications are strictly cosmetic."
 echo -e "\n"
+	printf "${cyan}"
 	read -p " Would you like to enhance your MOTD & login banner? y/n  " MOTDP
 	while [ "${MOTDP,,}" != "yes" ] && [ "${MOTDP,,}" != "no" ] && [ "${MOTDP,,}" != "y" ] && [ "${MOTDP,,}" != "n" ]; do
 	echo -e "\n"
+	printf "${lightred}"
 	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " MOTDP
+	printf "${nocolor}"
 	done
 	echo -e "\n"
         # check if MOTDP is affirmative
@@ -888,16 +892,24 @@ echo -e "\n"
 		clear	
 		# Error Handling
                 if [ $? -eq 0 ]
-                then 	echo -e "------------------------------------------------------- " | tee -a "$LOGFILE"
+                then printf "${lightgreen}"
+			echo -e "------------------------------------------------------- " | tee -a "$LOGFILE"
 				echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : MOTD & Banner updated" | tee -a "$LOGFILE"
-                else echo " `date +%d.%m.%Y_%H:%M:%S` : ERROR: MOTD not updated" | tee -a "$LOGFILE"
-                fi
-		echo -e "------------------------------------------------------- \n" | tee -a "$LOGFILE"
+				echo -e "------------------------------------------------------- " | tee -a "$LOGFILE"
+				printf "${nocolor}"
+                else printf "${lightred}"
+			echo -e "------------------------------------------------------- " | tee -a "$LOGFILE"
+			echo " `date +%d.%m.%Y_%H:%M:%S` : ERROR: MOTD not updated" | tee -a "$LOGFILE"
+                	echo -e "------------------------------------------------------- \n" | tee -a "$LOGFILE"
+		fi
+		
         else echo -e "\n"
 	clear
+	printf "${yellow}"
 	echo -e "----------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " *** User elected not to customize MOTD & banner *** " | tee -a "$LOGFILE"
 	echo -e "----------------------------------------------------- \n" | tee -a "$LOGFILE"
+	printf "${nocolor}"
         fi
 }
 
@@ -907,22 +919,27 @@ echo -e "\n"
 
 function restart_sshd() {
 # prompt users to leave this session open, then create a second connection after restarting SSHD to make sure they can connect
-
+printf "${lightcyan}"
 figlet Restart SSH | tee -a "$LOGFILE"
+printf "${yellow}"
 echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : PROMPT USER TO RESTART SSH " | tee -a "$LOGFILE"
 echo -e "-------------------------------------------------- \n" | tee -a "$LOGFILE"
-
+printf "${lightcyan}"
 echo " Changes to login security will not take effect until SSHD restarts"
 echo " and firewall is enabled. You should keep this existing connection"
 echo " open while restarting SSHD just in case you have a problem or"
 echo " copied down the information incorrectly. This will prevent you"
 echo " from getting locked out of your server."
 echo -e "\n"
+	printf "${cyan}"
 	read -p " Would you like to restart SSHD and enable UFW now? y/n  " SSHDRESTART
+	printf "${nocolor}"
 	while [ "${SSHDRESTART,,}" != "yes" ] && [ "${SSHDRESTART,,}" != "no" ] && [ "${SSHDRESTART,,}" != "y" ] && [ "${SSHDRESTART,,}" != "n" ]; do
 	echo -e "\n"
+	printf "${lightred}"
 	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " SSHDRESTART
+	printf "${nocolor}"
 	done
 	echo -e "\n"
         # check if SSHDRESTART is valid
@@ -937,20 +954,31 @@ echo -e "\n"
 			fi			
 		# Error Handling
                 if [ $? -eq 0 ]
-                then 	echo -e "------------------------------------------------------ " | tee -a "$LOGFILE"
+                then 	printf "${lightgreen}"
+			echo -e "------------------------------------------------------ " | tee -a "$LOGFILE"
 			echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : SSHD restart complete" | tee -a "$LOGFILE"
+			echo -e "------------------------------------------------------ " | tee -a "$LOGFILE"	
+			printf "${nocolor}"
 			if [ $FIREWALLP = "yes" ] || [ $FIREWALLP = "y" ]
+			printf "${lightgreen}"
 			then echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : UFW firewall enabled" | tee -a "$LOGFILE"
+			echo -e "------------------------------------------------------ " | tee -a "$LOGFILE"	
+			printf "${nocolor}"
 			else :
 			fi
                 else
-                        echo " `date +%d.%m.%Y_%H:%M:%S` : ERROR: SSHD could not restart" | tee -a "$LOGFILE"
+                        printf "${lightred}"
+			echo -e "------------------------------------------------------ " | tee -a "$LOGFILE"
+			echo " `date +%d.%m.%Y_%H:%M:%S` : ERROR: SSHD could not restart" | tee -a "$LOGFILE"
+			echo -e "------------------------------------------------------ " | tee -a "$LOGFILE"
                 fi
-		echo -e "------------------------------------------------------ \n" | tee -a "$LOGFILE"
+		
         else echo -e "\n"
+	printf "$yellow"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " *** User elected not to restart SSH at this time *** " | tee -a "$LOGFILE"
-	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	printf "${nocolor}"
         fi
 }
 
