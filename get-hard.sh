@@ -102,6 +102,7 @@ SSHDFILE='/etc/ssh/sshd_config'
 function update_upgrade() {
 
 # NOTE I learned the hard way that you must put a "\" BEFORE characters "\" and "`"
+echo "${lightcyan}  ___  ____    _   _           _       _ \n" >> $LOGFILE 2>&1
 printf "${lightcyan}  ___  ____    _   _           _       _ \n" | tee -a "$LOGFILE"
 printf " / _ \/ ___|  | | | |_ __   __| | __ _| |_ ___ \n" | tee -a "$LOGFILE"
 printf "| | | \\___ \\  | | | | '_ \\ / _\` |/ _\` | __/ _ \\ \n" | tee -a "$LOGFILE"
@@ -272,7 +273,7 @@ printf "${lightcyan}"
 		done
 		echo -e "\n"
 		printf "${yellow}"
-		echo  " User elected to create a new user named ${UNAME,,}. \n" >> $LOGFILE 2>&1
+		echo  -e " User elected to create a new user named ${UNAME,,}. \n" >> $LOGFILE 2>&1
                 printf "${cyan}"
 		id -u ${UNAME,,} >> $LOGFILE > /dev/null 2>&1
                 	if [ $? -eq 0 ]
@@ -555,7 +556,7 @@ clear
 printf "${lightgreen}"
 echo -e "------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : SSH CONFIG COMPLETE " | tee -a "$LOGFILE"
-echo -e "------------------------------------------- \n" | tee -a "$LOGFILE"
+echo -e "------------------------------------------- " | tee -a "$LOGFILE"
 printf "${nocolor}"
 }
 
