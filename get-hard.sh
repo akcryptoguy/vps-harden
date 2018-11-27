@@ -102,8 +102,8 @@ SSHDFILE='/etc/ssh/sshd_config'
 function update_upgrade() {
 
 # NOTE I learned the hard way that you must put a "\" BEFORE characters "\" and "`"
-echo "${lightcyan}  ___  ____    _   _           _       _ \n" >> $LOGFILE 2>&1
-printf "${lightcyan}  ___  ____    _   _           _       _ \n" | tee -a "$LOGFILE"
+echo -e "${lightcyan}"
+printf "  ___  ____    _   _           _       _ \n" | tee -a "$LOGFILE"
 printf " / _ \/ ___|  | | | |_ __   __| | __ _| |_ ___ \n" | tee -a "$LOGFILE"
 printf "| | | \\___ \\  | | | | '_ \\ / _\` |/ _\` | __/ _ \\ \n" | tee -a "$LOGFILE"
 printf "| |_| |___) | | |_| | |_) | (_| | (_| | ||  __/ \n" | tee -a "$LOGFILE"
