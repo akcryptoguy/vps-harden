@@ -311,9 +311,9 @@ printf "${lightcyan}"
         else 	printf "${yellow}"
 		echo  "---------------------------------------------------- " >> $LOGFILE 2>&1
 		echo  "    ** User chose not to create a new user **" >> $LOGFILE 2>&1
-		echo  -e "---------------------------------------------------- \n" >> $LOGFILE 2>&1
+		echo  -e "----------------------------------------------------\n" >> $LOGFILE 2>&1
         fi
-# remove clear
+	clear
 	printf "${lightgreen}"
 	echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : USER SETUP IS COMPLETE " | tee -a "$LOGFILE"
