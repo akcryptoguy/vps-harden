@@ -586,8 +586,7 @@ echo -e "---------------------------------------------- \n"
         done
         echo -e "\n"
         if [ ${FIREWALLP,,} = "yes" ] || [ ${FIREWALLP,,} = "y" ]
-        then
-		printf "${nocolor}"
+        then	printf "${nocolor}"
                 # make sure ufw is installed #
                 apt-get install ufw -qqy >> $LOGFILE 2>&1
                 # add firewall rules
@@ -605,8 +604,7 @@ echo -e "---------------------------------------------- \n"
 		printf "${nocolor}"
 		sleep 1
                 # wait until after SSHD is restarted to enable firewall to not break SSH
-        else    
-                printf "${yellow}"
+        else	printf "${yellow}"
 		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
                 echo -e " ** User chose not to setup firewall at this time **"  | tee -a "$LOGFILE"
                 echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
