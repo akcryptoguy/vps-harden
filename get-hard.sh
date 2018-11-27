@@ -566,27 +566,33 @@ printf "${nocolor}"
 
 function ufw_config() {
 # query user to disable password authentication or not
-
+printf "${lightcyan}"
 figlet Firewall Config | tee -a "$LOGFILE"
+printf "${yellow}"
 echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : FIREWALL CONFIGURATION " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------- \n"
+	printf "${lightcyan}"
         echo -e " Uncomplicated Firewall (UFW) is a program for managing a"
         echo -e " netfilter firewall designed to be easy to use. We recommend"
         echo -e " that you activate this firewall and assign default rules"
 	echo -e " to protect your server. \n"
-
+	printf "${cyan}"
 	read -p " Would you like to enable UFW firewall and assign basic rules? y/n  " FIREWALLP
         while [ "${FIREWALLP,,}" != "yes" ] && [ "${FIREWALLP,,}" != "no" ] && [ "${FIREWALLP,,}" != "y" ] && [ "${FIREWALLP,,}" != "n" ]; do
         echo -e "\n"
+	printf "${lightred}"
         read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " FIREWALLP
+	printf "${nocolor}"
         done
         echo -e "\n"
         if [ ${FIREWALLP,,} = "yes" ] || [ ${FIREWALLP,,} = "y" ]
         then
+		printf "${nocolor}"
                 # make sure ufw is installed #
                 apt-get install ufw -qqy >> $LOGFILE 2>&1
                 # add firewall rules
+		printf "${white}"
                 echo -e "------------------------------ " | tee -a "$LOGFILE"
                 echo " # ufw default allow outgoing"
                 ufw default allow outgoing >> $LOGFILE 2>&1
@@ -597,19 +603,24 @@ echo -e "---------------------------------------------- \n"
                 echo -e " # ufw allow $SSHPORT" | tee -a "$LOGFILE"
                 ufw allow $SSHPORT | tee -a "$LOGFILE"
                 echo -e "----------------------------------- \n" | tee -a "$LOGFILE"
+		printf "${nocolor}"
 		sleep 1
                 # wait until after SSHD is restarted to enable firewall to not break SSH
-        else    :
-                echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+        else    
+                printf "${yellow}"
+		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
                 echo -e " ** User chose not to setup firewall at this time **"  | tee -a "$LOGFILE"
                 echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+		printf "${nocolor}"
 		sleep 1
         fi
 
 clear
+printf "${lightgreen}"
 echo -e "------------------------------------------------ " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : FIREWALL CONFIG COMPLETE " | tee -a "$LOGFILE"
 echo -e "------------------------------------------------ \n" | tee -a "$LOGFILE"
+printf "${nocolor}"
 }
 
 #################### 
@@ -618,20 +629,25 @@ echo -e "------------------------------------------------ \n" | tee -a "$LOGFILE
 
 function server_hardening() {
 # prompt users on whether to harden server or not
-
+printf "${lightcyan}"
 figlet Get Hard | tee -a "$LOGFILE"
+printf "${yellow}"
 echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : QUERY TO HARDEN THE SERVER " | tee -a "$LOGFILE"
 echo -e "-------------------------------------------------- \n" | tee -a "$LOGFILE"
-
+printf "${lightcyan}"
 echo -e " The next steps are to secure your server's shared memory, prevent"
 echo -e " IP spoofing, enable DDOS protection, harden the networking layer, "
 echo -e " and enable automatic installation of security updates."
 echo -e "\n"
+	printf "${cyan}"
 	read -p " Would you like to perform these steps now? y/n  " GETHARD
+	printf "${nocolor}"
 	while [ "${GETHARD,,}" != "yes" ] && [ "${GETHARD,,}" != "no" ] && [ "${GETHARD,,}" != "y" ] && [ "${GETHARD,,}" != "n" ]; do
 	echo -e "\n"
+	printf "${lightred}"
 	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " GETHARD
+	printf "${nocolor}"
 	done
 	echo -e "\n"
         # check if GETHARD is valid
@@ -639,9 +655,11 @@ echo -e "\n"
         then
 		
 # secure shared memory
+printf "${yellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : SECURING SHARED MEMORY " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+printf "${white}"
 echo -e ' --> Adding line to bottom of file /etc/fstab'  | tee -a "$LOGFILE"
 echo -e ' tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
@@ -652,36 +670,44 @@ else echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
 fi
 
 # prevent IP spoofing
+printf "${yellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : PREVENTING IP SPOOFING " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+printf "${white}"
 echo -e " --> Updating /etc/host.conf to include 'nospoof' " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- \n " | tee -a "$LOGFILE"
 sleep 2	; #  dramatic pause
 cat etc/host.conf > /etc/host.conf
 
 # enable DDOS protection
+printf "${yellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : ENABLING DDOS PROTECTION " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+printf "${white}"
 echo -e " Replace /etc/ufw/before.rules with hardened rules " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- \n " | tee -a "$LOGFILE"
 sleep 2	; #  dramatic pause
 cat etc/ufw/before.rules > /etc/ufw/before.rules
 
 # harden the networking layer
+printf "${yellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : HARDENING NETWORK LAYER " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+printf "${white}"
 echo -e " --> Secure /etc/sysctl.conf with hardening rules " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- \n " | tee -a "$LOGFILE"
 sleep 2	; #  dramatic pause
 cat etc/sysctl.conf > /etc/sysctl.conf
 
 # enable automatic security updates
+printf "${yellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : ENABLING SECURITY UPDATES " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+printf "${white}"
 echo -e " Configure system to auto install security updates " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- \n " | tee -a "$LOGFILE"
 sleep 2	; #  dramatic pause
@@ -692,18 +718,26 @@ cat etc/apt/apt.conf.d/50unattended-upgrades > /etc/apt/apt.conf.d/50unattended-
                 # Error Handling
                 if [ $? -eq 0 ]
                 then 	echo -e " \n" ; clear
+			printf "${green}"
 			echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 			echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : Server Hardened" | tee -a "$LOGFILE"
+			echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
+			printf "${nocolor}"
                 else	clear
+			printf "${lightred}"
                         echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 			echo " `date +%d.%m.%Y_%H:%M:%S` : ERROR: Hardening Failed" | tee -a "$LOGFILE"
+			echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
+			printf "${nocolor}"
 		fi
-		echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
+		
         else :
 	clear
+	printf "${yellow}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " *** User elected not to GET HARD at this time *** " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+	printf "${nocolor}"
         fi
 }
 
@@ -715,21 +749,25 @@ function ksplice_install() {
 # prompt users on whether to install Oracle ksplice or not
 # install created using https://tinyurl.com/y9klkx2j and https://tinyurl.com/y8fr4duq
 # Official page: https://ksplice.oracle.com/uptrack/guide
-
+printf "${lightcyan}"
 figlet Ksplice | tee -a "$LOGFILE"
+printf "${yellow}"
 echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALL ORACLE KSPLICE " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------- \n" | tee -a "$LOGFILE"
-
+printf "${lightcyan}"
 echo -e " Normally, any kernel update in Linux would require a system reboot."
 echo -e " Oracle Ksplice Uptrack provides kernel updates on Ubuntu and Fedora"
 echo -e " Linux without reboots and free of charge for non-commercial use. If"
 echo -e " you want to minimize server downtime, this is a good thing to install."
 echo -e "\n"
+printf "${cyan}"
 	read -p " Would you like to install Oracle Ksplice Uptrack now? y/n  " KSPLICE
 	while [ "${KSPLICE,,}" != "yes" ] && [ "${KSPLICE,,}" != "no" ] && [ "${KSPLICE,,}" != "y" ] && [ "${KSPLICE,,}" != "n" ]; do
 	echo -e "\n"
+	printf "${lightred}"
 	read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " GETHARD
+	printf "${nocolor}"
 	done
 	echo -e "\n"
         # check if KSPLICE is valid
@@ -737,27 +775,33 @@ echo -e "\n"
         then
 		
 # install ksplice uptrack
+printf "${yellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALLING KSPLICE PACKAGES " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	printf "${white}"
 	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
 	echo '   libgtk2-perl consolekit iproute libck-connector0 libcroco3 libglade2-0' | tee -a "$LOGFILE"
 	echo '   libpam-ck-connector librsvg2-2 librsvg2-common python-cairo python-dbus' | tee -a "$LOGFILE"
 	echo '   python-gi python-glade2 python-gobject-2 python-gtk2 python-pycurl' | tee -a "$LOGFILE"
 	echo '   python-yaml dbus-x11' | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	printf "${nocolor}"
 	apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
 	libgtk2-perl consolekit iproute libck-connector0 libcroco3 libglade2-0 \
 	libpam-ck-connector librsvg2-2 librsvg2-common python-cairo python-dbus \
 	python-gi python-glade2 python-gobject-2 python-gtk2 python-pycurl \
 	python-yaml dbus-x11 | tee -a "$LOGFILE"
+printf "${lightyellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : KSPLICE PACKAGES INSTALLED" | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " --> Download & install Ksplice package from Oracle " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+printf "${nocolor}"
 wget -o /var/log/ksplicew1.log https://ksplice.oracle.com/uptrack/dist/xenial/ksplice-uptrack.deb
 dpkg --log "$LOGFILE" -i ksplice-uptrack.deb
+printf "${yellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : KSPLICE UPTRACK INSTALLED" | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
@@ -767,24 +811,31 @@ chmod 755 /etc/cron.d/uptrack
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " ** Activate & install Ksplice patches & updates ** " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+printf "${nocolor}"
 cat $LOGFILE /var/log/ksplicew1.log > /var/log/join.log
 cat /var/log/join.log > $LOGFILE
 rm /var/log/ksplicew1.log
 rm /var/log/join.log
 uptrack-upgrade -y | tee -a "$LOGFILE"
+printf "${lightyellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : KSPLICE UPDATES INSTALLED" | tee -a "$LOGFILE"
 echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+printf "${nocolor}"
 sleep 1	; #  dramatic pause
 clear
+printf "${lightgreen}"
 echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 echo " `date +%d.%m.%Y_%H:%M:%S` : SUCCESS : Ksplice Enabled" | tee -a "$LOGFILE"
 echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
+printf "${nocolor}"
         else :
 	clear
+	printf "${yellow}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e "     ** User elected not to install Ksplice ** " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+	printf "${nocolor}"
         fi
 
 # original steps I gathered
