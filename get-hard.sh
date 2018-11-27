@@ -747,7 +747,7 @@ function ksplice_install() {
 # install created using https://tinyurl.com/y9klkx2j and https://tinyurl.com/y8fr4duq
 # Official page: https://ksplice.oracle.com/uptrack/guide
 printf "${lightcyan}"
-figlet Ksplice | tee -a "$LOGFILE"
+figlet Ksplice Uptrack | tee -a "$LOGFILE"
 printf "${yellow}"
 echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALL ORACLE KSPLICE " | tee -a "$LOGFILE"
