@@ -119,12 +119,12 @@ printf "${white}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
  	rm /boot/grub/menu.lst
  	echo '# update-grub-legacy-ec2 -y  (prevent update issue)' | tee -a "$LOGFILE"
-	echo -e "----------------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "--------------------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${nocolor}"
  	update-grub-legacy-ec2 -y | tee -a "$LOGFILE"
 	printf "${white}"
 	echo '# apt-get -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update' | tee -a "$LOGFILE"
-	echo -e "----------------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "--------------------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${nocolor}"
 	apt-get -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update | tee -a "$LOGFILE"
 	printf "${white}"
@@ -133,16 +133,16 @@ printf "${white}"
 	printf "${nocolor}"
 	apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install figlet | tee -a "$LOGFILE"
 	printf "${lightgreen}"
-	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : SYSTEM UPDATED SUCCESSFULLY " | tee -a "$LOGFILE"
-	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
 
 	printf "${cyan}"
 	figlet System Upgrade | tee -a "$LOGFILE"
 	printf "${yellow}"
-	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : INITIATING SYSTEM UPGRADE " | tee -a "$LOGFILE"
-	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${white}"
 	echo ' # apt-get upgrade -y' | tee -a "$LOGFILE"
 	# the next line seemed to break it so I install without new-pkgs
@@ -173,7 +173,7 @@ echo -e "--------------------------------------------------- " | tee -a "$LOGFIL
 	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
 	echo '   htop nethogs ufw fail2ban wondershaper glances ntp figlet lsb-release ' | tee -a "$LOGFILE"
 	echo '   update-motd unattended-upgrades secure-delete' | tee -a "$LOGFILE"
-	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${nocolor}"
 	apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
 	htop nethogs ufw fail2ban wondershaper glances ntp figlet lsb-release \
@@ -194,16 +194,16 @@ function crypto_packages() {
 printf "${lightcyan}"
 figlet Install Crypto | tee -a "$LOGFILE"
 printf "${yellow}"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALLING CRYPTO PACKAGES " | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
 printf "${white}"
 	echo ' # add-apt-repository -yu ppa:bitcoin/bitcoin' | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${nocolor}"
 	add-apt-repository -yu ppa:bitcoin/bitcoin | tee -a "$LOGFILE"
 	printf "${white}"
-	echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------------------- " | tee -a "$LOGFILE"
 	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
 	echo '   build-essential libcurl4-gnutls-dev protobuf-compiler libboost-all-dev ' | tee -a "$LOGFILE"
 	echo '   autotools-dev automake libboost-all-dev libssl-dev make autoconf ' | tee -a "$LOGFILE"
@@ -446,12 +446,12 @@ then
 			printf "${nocolor}"
                 fi
         else  	printf "${yellow}"
-		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		echo -e "------------------------------------------------------------- " | tee -a "$LOGFILE"
 		echo "It looks like you want to enable root login; making it so..." | tee -a "$LOGFILE"
                 sed -i "s/PermitRootLogin no/PermitRootLogin yes/" $SSHDFILE >> $LOGFILE 2>&1
                 sed -i "s/# PermitRootLogin no/PermitRootLogin yes/" $SSHDFILE >> $LOGFILE 2>&1
                 sed -i "s/# PermitRootLogin yes/PermitRootLogin yes/" $SSHDFILE >> $LOGFILE 2>&1
-		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		echo -e "------------------------------------------------------------- " | tee -a "$LOGFILE"
 		printf "${nocolor}"
         fi
 	ROOTLOGINP=$(sed -n -e '/^PermitRootLogin /p' $SSHDFILE)
@@ -545,12 +545,12 @@ else
 fi
 	PASSWDAUTH=$(sed -n -e '/^PasswordAuthentication /p' $SSHDFILE)
 	printf "${lightgreen}"
-	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "-------------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : PASSWORD AUTHENTICATION COMPLETE " | tee -a "$LOGFILE"
-	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "-------------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e "    Your PasswordAuthentication settings are now "  | tee -a "$LOGFILE"
 	echo -e "        ** $PASSWDAUTH ** " | tee -a "$LOGFILE"
-	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+	echo -e ""------------------------------------------- \n" | tee -a "$LOGFILE"
 	printf "${nocolor}"
 clear
 printf "${lightgreen}"
@@ -592,16 +592,16 @@ echo -e "---------------------------------------------- \n"
                 apt-get install ufw -qqy >> $LOGFILE 2>&1
                 # add firewall rules
 		printf "${white}"
-                echo -e "------------------------------ " | tee -a "$LOGFILE"
+                echo -e "------------------------------------------- " | tee -a "$LOGFILE"
                 echo " # ufw default allow outgoing"
                 ufw default allow outgoing >> $LOGFILE 2>&1
-                echo -e "------------------------------ " | tee -a "$LOGFILE"
+                echo -e "------------------------------------------- " | tee -a "$LOGFILE"
                 echo " # ufw default deny incoming"
                 ufw default deny incoming >> $LOGFILE 2>&1
-                echo -e "------------------------------ " | tee -a "$LOGFILE"
+                echo -e "------------------------------------------- " | tee -a "$LOGFILE"
                 echo -e " # ufw allow $SSHPORT" | tee -a "$LOGFILE"
                 ufw allow $SSHPORT | tee -a "$LOGFILE"
-                echo -e "----------------------------------- \n" | tee -a "$LOGFILE"
+                echo -e "------------------------- \n" | tee -a "$LOGFILE"
 		printf "${nocolor}"
 		sleep 1
                 # wait until after SSHD is restarted to enable firewall to not break SSH
@@ -778,16 +778,16 @@ printf "${cyan}"
 		
 # install ksplice uptrack
 printf "${yellow}"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALLING KSPLICE PACKAGES " | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${white}"
 	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
 	echo '   libgtk2-perl consolekit iproute libck-connector0 libcroco3 libglade2-0' | tee -a "$LOGFILE"
 	echo '   libpam-ck-connector librsvg2-2 librsvg2-common python-cairo python-dbus' | tee -a "$LOGFILE"
 	echo '   python-gi python-glade2 python-gobject-2 python-gtk2 python-pycurl' | tee -a "$LOGFILE"
 	echo '   python-yaml dbus-x11' | tee -a "$LOGFILE"
-	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${nocolor}"
 	apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
 	libgtk2-perl consolekit iproute libck-connector0 libcroco3 libglade2-0 \
@@ -821,9 +821,9 @@ rm /var/log/ksplicew1.log
 rm /var/log/join.log
 uptrack-upgrade -y | tee -a "$LOGFILE"
 printf "${yellow}"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : KSPLICE UPDATES INSTALLED" | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
 printf "${nocolor}"
 sleep 1	; #  dramatic pause
 clear
