@@ -744,6 +744,10 @@ cat etc/apt/apt.conf.d/50unattended-upgrades > /etc/apt/apt.conf.d/50unattended-
 #########################
 
 function ksplice_install() {
+
+# -------> I still need to install an error check after installing Ksplice to make sure \
+#          the install completed before moving on the configuration
+
 # prompt users on whether to install Oracle ksplice or not
 # install created using https://tinyurl.com/y9klkx2j and https://tinyurl.com/y8fr4duq
 # Official page: https://ksplice.oracle.com/uptrack/guide
