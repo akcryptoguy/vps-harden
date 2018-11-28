@@ -147,7 +147,7 @@ printf "${white}"
 	echo ' # apt-get upgrade -y' | tee -a "$LOGFILE"
 	# the next line seemed to break it so I install without new-pkgs
 	# echo ' # apt-get --with-new-pkgs upgrade -y' | tee -a "$LOGFILE"
-	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${nocolor}"
 	apt-get upgrade -y | tee -a "$LOGFILE"
 printf "${lightgreen}"	
@@ -203,7 +203,7 @@ printf "${white}"
 	printf "${nocolor}"
 	add-apt-repository -yu ppa:bitcoin/bitcoin | tee -a "$LOGFILE"
 	printf "${white}"
-	echo -e "---------------------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
 	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
 	echo '   build-essential libcurl4-gnutls-dev protobuf-compiler libboost-all-dev ' | tee -a "$LOGFILE"
 	echo '   autotools-dev automake libboost-all-dev libssl-dev make autoconf ' | tee -a "$LOGFILE"
@@ -497,10 +497,16 @@ then
                 fi
         # Prompt user to see if they want to disable password login
 	printf "${yellow}"
-	echo -e "     --------------------------------------------------- " | tee -a "$LOGFILE"
-        echo -e "      Your current password authentication settings are   " | tee -a "$LOGFILE"
+	# output to screen
+	echo -e "     --------------------------------------------------- "
+        echo -e "      Your current password authentication settings are   "
 	echo -e "             ** $PASSWDAUTH ** " | tee -a "$LOGFILE"
-	echo -e "     --------------------------------------------------- \n" | tee -a "$LOGFILE"
+	echo -e "     --------------------------------------------------- \n"
+	# output to log
+	echo -e "--------------------------------------------------- " >> $LOGFILE 2>&1
+        echo -e " Your current password authentication settings are   " >> $LOGFILE 2>&1
+	echo -e "      ** $PASSWDAUTH ** " >> $LOGFILE 2>&1
+	echo -e "--------------------------------------------------- \n" >> $LOGFILE 2>&1
 	printf "${cyan}"
         read -p " Would you like to disable password login & require RSA key login? y/n  " PASSLOGIN
 	printf "${nocolor}"
@@ -513,9 +519,9 @@ then
 	echo -e "\n"	
         # check if PASSLOGIN is valid
         if [ "${PASSLOGIN,,}" = "yes" ] || [ "${PASSLOGIN,,}" = "y" ]
-        then 	sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/" $SSHDFILE >> $LOGFIL$
-                sed -i "s/# PasswordAuthentication yes/PasswordAuthentication no/" $SSHDFILE >> $LOGF$
-                sed -i "s/# PasswordAuthentication no/PasswordAuthentication no/" $SSHDFILE >> $LOGFI$
+        then 	sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/" $SSHDFILE >> $LOGFILE
+                sed -i "s/# PasswordAuthentication yes/PasswordAuthentication no/" $SSHDFILE >> $LOGFILE
+                sed -i "s/# PasswordAuthentication no/PasswordAuthentication no/" $SSHDFILE >> $LOGFILE
                 # Error Handling
                 if [ $? -eq 0 ]
                 then
