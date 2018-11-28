@@ -3,17 +3,6 @@
 This VPS Server Hardening script is designed to be run on new VPS deployments which will simplify a lot of the basic hardening that can be done to protect your server. I assimilated several design ideas and commands for this script from 
 [AMega's VPS hardening script](https://github.com/AMega/VPS-Server-Hardening) which I found on Github seemingly abandoned in its infancy; and I am very happy to pick it up and finish it.
 
-If this script helped you in any way, please contribute some feedback. Donations are also welcome and help permit this script's continued development.
-
-```
-HLM: SYQJrFYL7VrEPN7HyhGFBB35nvZ2k1Fbjo
-BTC: 3LbUJVW9WmXPgFStTXSLTBwjpnbVTtt8Ja
-TRON: TLsday62mhM67Sv5G5Z5Ju66TezJuVFbiw
-DGB: DUJ8W8QpmVex87posFPoDYGg5FrYCoMLGq
-DOGE: DH9Sj3DQNVBaxb6kZBXc6X2MPQjbv7H6oy
-```
-
-
 ## About
 
 A lot of good virtual servers get destroyed every year because they are hacked by evildoers that take advantage of unpatched exploits and simple passwords.  It's frustrating that many of these hacks could have been prevented by some basic hardening. With large numbers of linux newcomers flocking to enter the space and set up masternodes I saw a need for a simple way to secure virtual servers that would, *for the most part*, keep the bad guys out.
@@ -31,6 +20,16 @@ The following is a list of different sections of the script, which are broken up
 9. INSTALL COMPLETE / display new SSH and login info
 
 I aggregated these steps from several different server hardening guides and selected the most effective of them to include in this script.  The goal is to make something simple enough for the newcomers to use while still being practical and saving time for Linux veterans.  I am certainly open to suggestions and would like to keep this easy and practical to use.
+
+If this script helps you out, please contribute some feedback. Donations are also welcome and help permit me to continue to develop this and other projects.
+
+```
+HLM: SYQJrFYL7VrEPN7HyhGFBB35nvZ2k1Fbjo
+BTC: 3LbUJVW9WmXPgFStTXSLTBwjpnbVTtt8Ja
+TRON: TLsday62mhM67Sv5G5Z5Ju66TezJuVFbiw
+DGB: DUJ8W8QpmVex87posFPoDYGg5FrYCoMLGq
+DOGE: DH9Sj3DQNVBaxb6kZBXc6X2MPQjbv7H6oy
+```
 
 ## Referral Links
 
