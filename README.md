@@ -1,15 +1,15 @@
 ## AKcryptoGUY
 
-The VPS Server Hardening script is a script designed to be run on new VPS deployments which will simplify a lot of the basic hardening that can be done to protect your server. I got a several ideas and commands for this script from [AMega's VPS hardening script] (https://github.com/AMega/VPS-Server-Hardening) which I found on Github seemingly abandoned; and I am very happy to pick it up and finish it.
+The VPS Server Hardening script is a script designed to be run on new VPS deployments which will simplify a lot of the basic hardening that can be done to protect your server. I got a several ideas and commands for this script from [AMega's VPS hardening script]  (https://github.com/AMega/VPS-Server-Hardening) which I found on Github seemingly abandoned; and I am very happy to pick it up and finish it.
 
 If this script helped you in any way, please contribute some feedback. Donations are also welcome and help permit this script's continued development.
 
 ```
-**HLM:** SYQJrFYL7VrEPN7HyhGFBB35nvZ2k1Fbjo
-**BTC:** 3LbUJVW9WmXPgFStTXSLTBwjpnbVTtt8Ja
-**TRON:** TLsday62mhM67Sv5G5Z5Ju66TezJuVFbiw
-**DGB:** DUJ8W8QpmVex87posFPoDYGg5FrYCoMLGq
-**DOGE:** DH9Sj3DQNVBaxb6kZBXc6X2MPQjbv7H6oy
+HLM: SYQJrFYL7VrEPN7HyhGFBB35nvZ2k1Fbjo
+BTC: 3LbUJVW9WmXPgFStTXSLTBwjpnbVTtt8Ja
+TRON: TLsday62mhM67Sv5G5Z5Ju66TezJuVFbiw
+DGB: DUJ8W8QpmVex87posFPoDYGg5FrYCoMLGq
+DOGE: DH9Sj3DQNVBaxb6kZBXc6X2MPQjbv7H6oy
 ```
 
 Please feel free to use my referral link (https://www.vultr.com/?ref=7568060) when creating your VPS account at Vultr to build some good karma. <br/>
