@@ -20,7 +20,7 @@
 # echo " `date +%d.%m.%Y" "%H:%M:%S` : $MESSAGE" >> $LOGFILE 2>&1
 
 # write to log only, no output on screen # echo  -e "---------------------------------------------------- " >> $LOGFILE 2>&1
-# write to log only, no output on screen # echo  -e "    ** User chose not to create a new user. **" >> $LOGFILE 2>&1
+# write to log only, no output on screen # echo  -e "    ** This entry gets written to the log file directly. **" >> $LOGFILE 2>&1
 # write to log only, no output on screen # echo  -e "---------------------------------------------------- \n" >> $LOGFILE 2>&1
 
 ### add colors ###
