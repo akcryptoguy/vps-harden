@@ -18,6 +18,18 @@ DOGE: DH9Sj3DQNVBaxb6kZBXc6X2MPQjbv7H6oy
 
 A lot of good virtual servers get destroyed every year because they are hacked by evildoers that take advantage of unpatched exploits and simple passwords.  It's frustrating that many of these hacks could have been prevented by some basic hardening. With large numbers of linux newcomers flocking to enter the space and set up masternodes I saw a need for a simple way to secure virtual servers that would, *for the most part*, keep the bad guys out.
 
+The following is a list of different sections of the script, which are broken up by separate functions that are called from the very end of the script.  
+
+1. UPDATE AND UPGRADE / update operating system & pkgs
+2. USER SETUP / add new sudo user, copy SSH keys
+3. SSH CONFIG / change SSH port, disable root login
+4. UFW CONFIG / UFW - add rules, harden, enable firewall
+5. HARDENING / before rules, secure shared memory, etc
+6. KSPLICE INSTALL / automatically update without reboot
+7. MOTD EDIT / replace boring banner with customized one
+8. RESTART SSHD / apply settings by restarting systemctl
+9. INSTALL COMPLETE / display new SSH and login info
+
 I aggregated these steps from several different server hardening guides and selected the most effective of them to include in this script.  The goal is to make something simple enough for the newcomers to use while still being practical and saving time for Linux veterans.  I am certainly open to suggestions and would like to keep this easy and practical to use.
 
 ## Referral Links
