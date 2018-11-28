@@ -1,7 +1,7 @@
 #!/bin/bash
 # Script to Harden Security on Ubuntu
 # I got a several ideas and commands for this script from AMega's VPS hardening script which I found
-# on Github seemingly abandoned; and I am very happy to pick up and finish.
+# on Github seemingly abandoned; and I am very happy to pick up and finish the work.
 # 
 # ###### SECTIONS ######
 # 1. UPDATE AND UPGRADE
