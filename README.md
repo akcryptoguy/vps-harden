@@ -72,6 +72,8 @@ Follow AKcryptoGUY online: <br/>
 
 Reach out to me at *akcryptoguy* *-at-* *protonmail.com* for suggestions or questions and if I helped save you some time, please send some crypto my way.
 
+Test <p align="center"><img src="http://chatfield.k12.mn.us/SiteCollectionImages/3d-glossy-blue-orb-icon-alphanumeric-full-set/067988-3d-glossy-blue-orb-icon-alphanumeric-full-set/067843-3d-glossy-blue-orb-icon-alphanumeric-at-sign.png"></p> afterworld.com
+
 
 ```
 HLM: SYQJrFYL7VrEPN7HyhGFBB35nvZ2k1Fbjo
