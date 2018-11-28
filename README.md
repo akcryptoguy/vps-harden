@@ -51,7 +51,7 @@ The script will keep a log of changes that are made to the system which you can 
 
 <p align="center"><img src="/media/11. hardening rules.png" alt="Hardening Rules"></p>
 
-When you are finished, you'll see confirmation that the script completed setup and you will be given a list of notes about your installation.
+When you are finished, you'll see confirmation that the script completed setup and you will be given a list of notes about your installation.  The log is located at `/var/log/server_hardening.log`
 
 <p align="center"><img src="/media/15 install complete.png" alt="Install Complete"></p>
 
