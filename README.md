@@ -13,11 +13,6 @@ DGB: DUJ8W8QpmVex87posFPoDYGg5FrYCoMLGq
 DOGE: DH9Sj3DQNVBaxb6kZBXc6X2MPQjbv7H6oy
 ```
 
-Please [use my Vultr referral link](https://www.vultr.com/?ref=7568060) when creating your VPS account at Vultr to support my projects and build some good karma.<br/>
-
-<p align="center"><a href="https://www.vultr.com/?ref=7568060"><img src="https://www.vultr.com/media/banner_1.png"></a></p>
-
-[Digital Ocean](https://www.digitalocean.com/?refcode=bd6020302487) is also very generous, and give a free credit of $100 to use while testing the site to decide if it is right for you. (https://www.digitalocean.com/?refcode=bd6020302487)
 
 ## About
 
@@ -25,6 +20,13 @@ A lot of good virtual servers get destroyed every year because they are hacked b
 
 I aggregated these steps from several different server hardening guides and picked and chose the most effective of them to include in this script.  The goal is to make something simple enough for the newcomers to use while still being practical and saving time for Linux veterans.  I am certainly open to suggestions and would like to keep this easy and practical to use.
 
+## Referral Links
+
+Please [use my Vultr referral link](https://www.vultr.com/?ref=7568060) when creating your VPS account at Vultr to support my projects and build some good karma.<br/>
+
+<p align="center"><a href="https://www.vultr.com/?ref=7568060"><img src="https://www.vultr.com/media/banner_1.png"></a></p>
+
+[Digital Ocean](https://www.digitalocean.com/?refcode=bd6020302487) is also very generous, and give a free credit of $100 to use while testing the site to decide if it is right for you. (https://www.digitalocean.com/?refcode=bd6020302487)
 
 
 ## Installation
