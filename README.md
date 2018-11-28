@@ -49,11 +49,11 @@ Additionally, there are some additional files you can modify to suit your needs.
 /etc/ssh/sshd_config
 
 ### Login Banner
-/etc/issue.net
+>/etc/issue.net
 
 ### Automatic Update Settings
-/etc/apt/apt.conf.d/10periodic<br/>
-/etc/apt/apt.conf.d/50unattended-upgrades<br/>
+>/etc/apt/apt.conf.d/10periodic<br/>
+>/etc/apt/apt.conf.d/50unattended-upgrades<br/>
 
 ### Ksplice Settings
 /etc/uptrack/uptrack.conf
@@ -70,7 +70,7 @@ I have tried to troubleshoot the script for errors and confirmed that it works w
 **Facebook →** https://www.facebook.com/AKcryptoGUY <br/>
 **YouTube →** https://www.youtube.com/channel/UCIFu9OZWOtfxokGdFY6aTog <br/>
 
-Reach out to me at akcryptoguy <img src="https://www.freeiconspng.com/uploads/at-sign-icon-1.png" alt="@ symbol" height="11">protonmail.com for suggestions or questions and if I helped save you some time, please send some crypto my way.
+Reach out to me at akcryptoguy<img src="https://www.freeiconspng.com/uploads/at-sign-icon-1.png" alt="@ symbol" height="11">protonmail.com for suggestions or questions and if I helped save you some time, please send some crypto my way.
 
 
 ```
