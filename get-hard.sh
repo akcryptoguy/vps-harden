@@ -582,7 +582,9 @@ echo -e "---------------------------------------------- \n"
         echo -e " Uncomplicated Firewall (UFW) is a program for managing a"
         echo -e " netfilter firewall designed to be easy to use. We recommend"
         echo -e " that you activate this firewall and assign default rules"
-	echo -e " to protect your server. \n"
+        echo -e " to protect your server." 
+        echo -e
+        echo -e " If you already set up UFW please select NO at the next prompt \n"
 	printf "${cyan}"
 	read -p " Would you like to enable UFW firewall and assign basic rules? y/n  " FIREWALLP
         while [ "${FIREWALLP,,}" != "yes" ] && [ "${FIREWALLP,,}" != "no" ] && [ "${FIREWALLP,,}" != "y" ] && [ "${FIREWALLP,,}" != "n" ]; do
