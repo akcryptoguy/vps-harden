@@ -31,16 +31,10 @@ Please [use my Vultr referral link](https://www.vultr.com/?ref=7568060) when cre
 
 ## Installation
 
-SSH into your VPS and clone the Github repository:
+SSH into your VPS and run this command to clone the Github repository and begin installation:
 
 ```bash
-sudo git clone https://github.com/akcryptoguy/vps-harden.git && cd vps-harden
-```
-
-Install & configure :
-
-```bash 
-sudo bash get-hard.sh
+sudo git clone https://github.com/akcryptoguy/vps-harden.git && cd vps-harden && sudo bash get-hard.sh
 ```
 
 The script will then walk you through each of the server hardening steps, offering prompts for feedback and other notes along the way.  You really can't mess it up.  I have tried.  
