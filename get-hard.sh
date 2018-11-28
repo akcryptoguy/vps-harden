@@ -758,10 +758,10 @@ echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALL ORACLE KSPLICE " | tee -a "$LOGFILE"
 echo -e "---------------------------------------------- \n" | tee -a "$LOGFILE"
 printf "${lightcyan}"
-echo -e " Normally, any kernel update in Linux would require a system reboot."
-echo -e " Oracle Ksplice Uptrack provides kernel updates on Ubuntu and Fedora"
-echo -e " Linux without reboots and free of charge for non-commercial use. If"
-echo -e " you want to minimize server downtime, this is a good thing to install."
+echo -e " Normally, kernel updates in Linux require a system reboot. Ksplice"
+echo -e " Uptrack installs these patches in memoery for Ubuntu and Fedora"
+echo -e " Linux so reboots are not needed. It is free for non-commercial use"
+echo -e " To minimize server downtime, this is a good thing to install."
 echo -e "\n"
 printf "${cyan}"
 	read -p " Would you like to install Oracle Ksplice Uptrack now? y/n  " KSPLICE
@@ -783,17 +783,17 @@ echo -e " `date +%d.%m.%Y_%H:%M:%S` : INSTALLING KSPLICE PACKAGES " | tee -a "$L
 echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${white}"
 	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
-	echo '   libgtk2-perl consolekit iproute libck-connector0 libcroco3 libglade2-0' | tee -a "$LOGFILE"
-	echo '   libpam-ck-connector librsvg2-2 librsvg2-common python-cairo python-dbus' | tee -a "$LOGFILE"
-	echo '   python-gi python-glade2 python-gobject-2 python-gtk2 python-pycurl' | tee -a "$LOGFILE"
-	echo '   python-yaml dbus-x11' | tee -a "$LOGFILE"
+	echo '   libgtk2-perl consolekit iproute libck-connector0 libcroco3 libglade2-0 ' | tee -a "$LOGFILE"
+	echo '   libpam-ck-connector librsvg2-2 librsvg2-common python-cairo ' | tee -a "$LOGFILE"
+	echo '   python-dbus python-gi python-glade2 python-gobject-2 ' | tee -a "$LOGFILE"
+	echo '   python-gtk2 python-pycurl python-yaml dbus-x11' | tee -a "$LOGFILE"
 	echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${nocolor}"
 	apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
 	libgtk2-perl consolekit iproute libck-connector0 libcroco3 libglade2-0 \
-	libpam-ck-connector librsvg2-2 librsvg2-common python-cairo python-dbus \
-	python-gi python-glade2 python-gobject-2 python-gtk2 python-pycurl \
-	python-yaml dbus-x11 | tee -a "$LOGFILE"
+	libpam-ck-connector librsvg2-2 librsvg2-common python-cairo \
+	python-dbus python-gi python-glade2 python-gobject-2 \
+	python-gtk2 python-pycurl python-yaml dbus-x11 | tee -a "$LOGFILE"
 printf "${yellow}"
 
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
