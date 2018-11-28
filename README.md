@@ -15,7 +15,9 @@ DOGE: DH9Sj3DQNVBaxb6kZBXc6X2MPQjbv7H6oy
 
 Please [use my Vultr referral link](https://www.vultr.com/?ref=7568060) when creating your VPS account at Vultr to support my projects and build some good karma. (https://www.vultr.com/?ref=7568060) <br/>
 
-<a href="https://www.vultr.com/?ref=7568060?style=centerme"><img src="https://www.vultr.com/media/banner_3.png"></a>
+<p align="center"><a href="https://www.vultr.com/?ref=7568060"><img src="https://www.vultr.com/media/banner_1.png"></a></p>
+
+<p align="center"><a href="https://www.vultr.com/?ref=7568060"><img src="https://www.vultr.com/media/banner_2.png"></a></p>
 
 [Digital Ocean](https://www.digitalocean.com/?refcode=bd6020302487) is very generous as well, and give you a free credit of $100 to use while testing the site to decide if it is right for you. (https://www.digitalocean.com/?refcode=bd6020302487)
 
