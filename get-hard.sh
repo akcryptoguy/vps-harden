@@ -4,10 +4,10 @@
 # on Github seemingly abandoned; and I am very happy to pick up and finish the work.
 # 
 # ###### SECTIONS ######
-# 1. UPDATE AND UPGRADE
-# 2. USER SETUP / Add new user, add to sudo group, copy SSH keys
+# 1. UPDATE AND UPGRADE / update operating system & pkgs
+# 2. USER SETUP / add new sudo user, copy SSH keys
 # 3. SSH CONFIG / change SSH port, disable root login
-# 4. UFW CONFIG / UFW - add rules, harden, Enable firewall
+# 4. UFW CONFIG / UFW - add rules, harden, enable firewall
 # 5. HARDENING / before rules, secure shared memory, etc
 # 6. KSPLICE INSTALL / automatically update without reboot
 # 7. MOTD EDIT / replace boring banner with customized one
