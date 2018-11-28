@@ -13,7 +13,7 @@ DGB: DUJ8W8QpmVex87posFPoDYGg5FrYCoMLGq
 DOGE: DH9Sj3DQNVBaxb6kZBXc6X2MPQjbv7H6oy
 ```
 
-Please [use my Vultr referral link](https://www.vultr.com/?ref=7568060) when creating your VPS account at Vultr to support my projects and build some good karma. (https://www.vultr.com/?ref=7568060) <br/>
+Please [use my Vultr referral link](https://www.vultr.com/?ref=7568060) when creating your VPS account at Vultr to support my projects and build some good karma.<br/>
 
 <p align="center"><a href="https://www.vultr.com/?ref=7568060"><img src="https://www.vultr.com/media/banner_1.png"></a></p>
 
@@ -21,15 +21,15 @@ Please [use my Vultr referral link](https://www.vultr.com/?ref=7568060) when cre
 
 ## About
 
-A lot of good virtual services get destroyed every year because they are hacked by evildoers that take advantage of common exploits and simple passwords.  With large numbers of linux newcomers flocking to enter the space and set up masternodes I saw a need for a simple way to secure virtual servers that would, for the most part, keep the bad guys out.
+A lot of good virtual servers get destroyed every year because they are hacked by evildoers that take advantage of unpatched exploits and simple passwords.  With large numbers of linux newcomers flocking to enter the space and set up masternodes I saw a need for a simple way to secure virtual servers that would, *for the most part*, keep the bad guys out.
 
-I aggregated these steps from several different server hardening guides and picked and chose the most effective of them to include in this script.  The goal is to make something simple enough for the newcomers to use while still being practical and useful for the linux veterans.  I am certainly open to suggestions and would like to keep this easy and practical to use.
+I aggregated these steps from several different server hardening guides and picked and chose the most effective of them to include in this script.  The goal is to make something simple enough for the newcomers to use while still being practical and saving time for Linux veterans.  I am certainly open to suggestions and would like to keep this easy and practical to use.
 
 
 
 ## Installation
 
-SSH to your VPS and clone the Github repository:
+SSH into your VPS and clone the Github repository:
 
 ```bash
 sudo git clone https://github.com/akcryptoguy/vps-harden.git && cd vps-harden
@@ -41,7 +41,7 @@ Install & configure :
 sudo bash get-hard.sh
 ```
 
-The script will then walk you through each of the server hardening steps, offering prompts for feedback and other notes along the way.  You really can't mess it up.  I have tried.  When you are finished, you'll see confirmation that the script completed setup and be given a list of notes about your installation.  I'd recommend you take a screen shot of that page and save it for later.  It has important information about your setup and if you don't keep note of the settings you entered, you could find yourself locked out of your server.
+The script will then walk you through each of the server hardening steps, offering prompts for feedback and other notes along the way.  You really can't mess it up.  I have tried.  When you are finished, you'll see confirmation that the script completed setup and you will be given a list of notes about your installation.  I'd recommend you take a screen shot of that page and save it for later.  It has important information about your setup and if you don't keep note of the settings you entered, you could find yourself locked out of your server.
 
 Additionally, there are some additional files you can modify to suit your needs.  I have listed a few of these files below along with why you might consider editing them.
 
@@ -60,17 +60,17 @@ Additionally, there are some additional files you can modify to suit your needs.
 
 ## Help, Issues and Questions
 
-I have tried to troubleshoot the script for errors and confirmed that it works with a VPS you configure on Vultr, Digital Ocean, and your own VPS (https://www.youtube.com/playlist?list=PLTblguczzdyajCPQGlpJjHUvSNV8WNsGQ) and it works in all of these as long as you're using Ubuntu 16.04 LTS.  I have not tested it with anything else.
+I have tried to troubleshoot the script for errors and confirmed that it works with a VPS you configure on Vultr, Digital Ocean, and [Be Your Own VPS](https://www.youtube.com/playlist?list=PLTblguczzdyajCPQGlpJjHUvSNV8WNsGQ). It works in all of these as long as you're using Ubuntu 16.04 LTS.  I have not tested it with anything else.
 
 ## Social and Contact
 
 Follow AKcryptoGUY online: <br/>
-Medium → https://medium.com/@AKcryptoGUY <br/>
-Twitter → https://twitter.com/AKcryptoGUY <br/>
-Facebook → https://www.facebook.com/AKcryptoGUY <br/>
-YouTube → https://www.youtube.com/channel/UCIFu9OZWOtfxokGdFY6aTog <br/>
+**Medium →** https://medium.com/@AKcryptoGUY <br/>
+**Twitter →** https://twitter.com/AKcryptoGUY <br/>
+**Facebook →** https://www.facebook.com/AKcryptoGUY <br/>
+**YouTube →** https://www.youtube.com/channel/UCIFu9OZWOtfxokGdFY6aTog <br/>
 
-Reach out to me at akcryptoguy@protonmail.com for suggestions or questions and if I helped save you some time, please send some crypto my way.
+Reach out to me at *akcryptoguy* *-at-* *protonmail.com* for suggestions or questions and if I helped save you some time, please send some crypto my way.
 
 
 ```
