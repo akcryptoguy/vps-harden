@@ -18,7 +18,7 @@ DOGE: DH9Sj3DQNVBaxb6kZBXc6X2MPQjbv7H6oy
 
 A lot of good virtual servers get destroyed every year because they are hacked by evildoers that take advantage of unpatched exploits and simple passwords.  It's frustrating that many of these hacks could have been prevented by some basic hardening. With large numbers of linux newcomers flocking to enter the space and set up masternodes I saw a need for a simple way to secure virtual servers that would, *for the most part*, keep the bad guys out.
 
-The following is a list of different sections of the script, which are broken up by separate functions that are called from the very end of the script.  
+The following is a list of different sections of the script, which are broken up into separate functions which are called from the very end of the script.  
 
 1. UPDATE AND UPGRADE / update operating system & pkgs
 2. USER SETUP / add new sudo user, copy SSH keys
