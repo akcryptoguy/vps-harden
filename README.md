@@ -3,7 +3,7 @@
 This VPS Server Hardening script is designed to be run on new VPS deployments which will simplify a lot of the basic hardening that can be done to protect your server. I assimilated several design ideas and commands from 
 [AMega's VPS hardening script](https://github.com/AMega/VPS-Server-Hardening) which I found on Github seemingly abandoned in its infancy; and I am very happy to pick it up and finish it.
 
-## About
+# About
 
 A lot of good virtual servers get destroyed every year because they are hacked by evildoers that take advantage of unpatched exploits and simple passwords.  It's frustrating that many of these hacks could have been prevented by some basic hardening. With large numbers of linux newcomers flocking to enter the space and set up masternodes I saw a need for a simple way to secure virtual servers that would, *for the most part*, keep the bad guys out.
 
@@ -40,7 +40,7 @@ Please [use my Vultr referral link](https://www.vultr.com/?ref=7568060) when cre
 [Digital Ocean](https://www.digitalocean.com/?refcode=bd6020302487) is also very generous, and give a free credit of $100 to use while testing the site to decide if it is right for you.
 <p align="center"><a href="https://www.digitalocean.com/?refcode=bd6020302487"><img src="http://www.rrpowered.com/wp-content/uploads/2014/06/digital-ocean-694x219.png" height="100"></a></p>
 
-## Installation
+# Installation
 
 SSH into your VPS and run this command to clone the Github repository and begin installation:
 
