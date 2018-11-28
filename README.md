@@ -1,6 +1,6 @@
 ## AKcryptoGUY
 
-The VPS Server Hardening script is a script designed to be run on new VPS deployments which will simplify a lot of the basic hardening that can be done to protect your server. I got a several ideas and commands for this script from 
+This VPS Server Hardening script is designed to be run on new VPS deployments which will simplify a lot of the basic hardening that can be done to protect your server. I assimilated several design ideas and commands for this script from 
 [AMega's VPS hardening script](https://github.com/AMega/VPS-Server-Hardening) which I found on Github seemingly abandoned; and I am very happy to pick it up and finish it.
 
 If this script helped you in any way, please contribute some feedback. Donations are also welcome and help permit this script's continued development.
@@ -17,7 +17,7 @@ Please [use my Vultr referral link](https://www.vultr.com/?ref=7568060) when cre
 
 <p align="center"><a href="https://www.vultr.com/?ref=7568060"><img src="https://www.vultr.com/media/banner_1.png"></a></p>
 
-[Digital Ocean](https://www.digitalocean.com/?refcode=bd6020302487) is very generous as well, and give you a free credit of $100 to use while testing the site to decide if it is right for you. (https://www.digitalocean.com/?refcode=bd6020302487)
+[Digital Ocean](https://www.digitalocean.com/?refcode=bd6020302487) is also very generous, and give a free credit of $100 to use while testing the site to decide if it is right for you. (https://www.digitalocean.com/?refcode=bd6020302487)
 
 ## About
 
