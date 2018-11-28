@@ -550,7 +550,7 @@ fi
 	echo -e "-------------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e "    Your PasswordAuthentication settings are now "  | tee -a "$LOGFILE"
 	echo -e "        ** $PASSWDAUTH ** " | tee -a "$LOGFILE"
-	echo -e ""------------------------------------------- \n" | tee -a "$LOGFILE"
+	echo -e "------------------------------------------- \n" | tee -a "$LOGFILE"
 	printf "${nocolor}"
 clear
 printf "${lightgreen}"
