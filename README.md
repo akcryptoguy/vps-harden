@@ -49,11 +49,11 @@ Additionally, there are some additional files you can modify to suit your needs.
 /etc/ssh/sshd_config
 
 ### Login Banner
->/etc/issue.net
+/etc/issue.net
 
 ### Automatic Update Settings
->/etc/apt/apt.conf.d/10periodic<br/>
->/etc/apt/apt.conf.d/50unattended-upgrades<br/>
+/etc/apt/apt.conf.d/10periodic<br/>
+/etc/apt/apt.conf.d/50unattended-upgrades<br/>
 
 ### Ksplice Settings
 /etc/uptrack/uptrack.conf
