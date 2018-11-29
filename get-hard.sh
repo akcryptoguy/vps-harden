@@ -1,8 +1,38 @@
 #!/bin/bash
 # Script to Harden Security on Ubuntu
-# I got a several ideas and commands for this script from AMega's VPS hardening script which I found
-# on Github seemingly abandoned; and I am very happy to pick up and finish the work.
-# 
+# This VPS Server Hardening script is designed to be run on new VPS deployments which will simplify a lot
+# of the basic hardening that can be done to protect your server. I assimilated several design ideas and 
+# commands from AMega's VPS hardening script which I found on Github seemingly abandoned in its infancy;
+# and I am very happy to pick it up and finish it.
+#
+function akguy() {
+cat << "EOF"
+ 
+ ▄████████    ▄█   ▄█▄  ▄████████    ▄████████ ▄██   ▄      ▄███████▄     ███      ▄██████▄     ▄██████▄  ███    █▄  ▄██   ▄   
+  ███    ███   ███ ▄███▀ ███    ███   ███    ███ ███   ██▄   ███    ███ ▀█████████▄ ███    ███   ███    ███ ███    ███ ███   ██▄ 
+  ███    ███   ███▐██▀   ███    █▀    ███    ███ ███▄▄▄███   ███    ███    ▀███▀▀██ ███    ███   ███    █▀  ███    ███ ███▄▄▄███ 
+  ███    ███  ▄█████▀    ███         ▄███▄▄▄▄██▀ ▀▀▀▀▀▀███   ███    ███     ███   ▀ ███    ███  ▄███        ███    ███ ▀▀▀▀▀▀███ 
+▀███████████ ▀▀█████▄    ███        ▀▀███▀▀▀▀▀   ▄██   ███ ▀█████████▀      ███     ███    ███ ▀▀███ ████▄  ███    ███ ▄██   ███ 
+  ███    ███   ███▐██▄   ███    █▄  ▀███████████ ███   ███   ███            ███     ███    ███   ███    ███ ███    ███ ███   ███ 
+  ███    ███   ███ ▀███▄ ███    ███   ███    ███ ███   ███   ███            ███     ███    ███   ███    ███ ███    ███ ███   ███ 
+  ███    █▀    ███   ▀█▀ ████████▀    ███    ███  ▀█████▀   ▄████▀         ▄████▀    ▀██████▀    ████████▀  ████████▀   ▀█████▀  
+               ▀                      ███    ███                                                                                 
+	       
+╔═╗╦╔═┌─┐┬─┐┬ ┬┌─┐┌┬┐┌─┐╔═╗╦ ╦╦ ╦
+╠═╣╠╩╗│  ├┬┘└┬┘├─┘ │ │ │║ ╦║ ║╚╦╝
+╩ ╩╩ ╩└─┘┴└─ ┴ ┴   ┴ └─┘╚═╝╚═╝ ╩ 
+     
+	       
+ .d8b.  db   dD  .o88b. d8888b. db    db d8888b. d888888b  .d88b.   d888b  db    db db    db 
+d8' `8b 88 ,8P' d8P  Y8 88  `8D `8b  d8' 88  `8D `~~88~~' .8P  Y8. 88' Y8b 88    88 `8b  d8' 
+88ooo88 88,8P   8P      88oobY'  `8bd8'  88oodD'    88    88    88 88      88    88  `8bd8'  
+88~~~88 88`8b   8b      88`8b      88    88~~~      88    88    88 88  ooo 88    88    88    
+88   88 88 `88. Y8b  d8 88 `88.    88    88         88    `8b  d8' 88. ~8~ 88b  d88    88    
+YP   YP YP   YD  `Y88P' 88   YD    YP    88         YP     `Y88P'   Y888P  ~Y8888P'    YP 
+
+EOF
+}
+	 
 # ###### SECTIONS ######
 # 1. UPDATE AND UPGRADE / update operating system & pkgs
 # 2. USER SETUP / add new sudo user, copy SSH keys
