@@ -5,7 +5,7 @@
 # commands from AMega's VPS hardening script which I found on Github seemingly abandoned in its infancy;
 # and I am very happy to pick it up and finish it.
 #
-function akguy() {
+function akguy_banner() {
 cat << "EOF"
  
  ▄████████    ▄█   ▄█▄  ▄████████    ▄████████ ▄██   ▄      ▄███████▄     ███      ▄██████▄     ▄██████▄  ███    █▄  ▄██   ▄   
@@ -18,18 +18,6 @@ cat << "EOF"
   ███    █▀    ███   ▀█▀ ████████▀    ███    ███  ▀█████▀   ▄████▀         ▄████▀    ▀██████▀    ████████▀  ████████▀   ▀█████▀  
                ▀                      ███    ███                                                                                 
 	       
-╔═╗╦╔═┌─┐┬─┐┬ ┬┌─┐┌┬┐┌─┐╔═╗╦ ╦╦ ╦
-╠═╣╠╩╗│  ├┬┘└┬┘├─┘ │ │ │║ ╦║ ║╚╦╝
-╩ ╩╩ ╩└─┘┴└─ ┴ ┴   ┴ └─┘╚═╝╚═╝ ╩ 
-     
-	       
- .d8b.  db   dD  .o88b. d8888b. db    db d8888b. d888888b  .d88b.   d888b  db    db db    db 
-d8' `8b 88 ,8P' d8P  Y8 88  `8D `8b  d8' 88  `8D `~~88~~' .8P  Y8. 88' Y8b 88    88 `8b  d8' 
-88ooo88 88,8P   8P      88oobY'  `8bd8'  88oodD'    88    88    88 88      88    88  `8bd8'  
-88~~~88 88`8b   8b      88`8b      88    88~~~      88    88    88 88  ooo 88    88    88    
-88   88 88 `88. Y8b  d8 88 `88.    88    88         88    `8b  d8' 88. ~8~ 88b  d88    88    
-YP   YP YP   YD  `Y88P' 88   YD    YP    88         YP     `Y88P'   Y888P  ~Y8888P'    YP 
-
 EOF
 }
 	 
@@ -235,21 +223,20 @@ printf "${white}"
 	printf "${white}"
 	echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
 	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
-	echo '   build-essential libcurl4-gnutls-dev protobuf-compiler libboost-all-dev ' | tee -a "$LOGFILE"
-	echo '   autotools-dev automake libboost-all-dev libssl-dev make autoconf ' | tee -a "$LOGFILE"
-	echo '   libtool git apt-utils g++ libprotobuf-dev pkg-config libudev-dev ' | tee -a "$LOGFILE"
-	echo '   libqrencode-dev bsdmainutils pkg-config libgmp3-dev libevent-dev ' | tee -a "$LOGFILE"
-	echo '   jp2a pv virtualenv  ' | tee -a "$LOGFILE"
-	echo '   libdb4.8-dev libdb4.8++-dev ' | tee -a "$LOGFILE"
+	echo '   build-essential g++ protobuf-compiler libboost-all-dev autotools-dev ' | tee -a "$LOGFILE"
+	echo '   automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev ' | tee -a "$LOGFILE"
+	echo '   make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config ' | tee -a "$LOGFILE"
+	echo '   libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev ' | tee -a "$LOGFILE"
+	echo '   libgmp3-dev libevent-dev jp2a pv virtualenv lsb-release figlet update-motd ' | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${nocolor}"
 	apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
-	build-essential libcurl4-gnutls-dev protobuf-compiler libboost-all-dev \
-	autotools-dev automake libboost-all-dev libssl-dev make autoconf \
-	libtool git apt-utils g++ libprotobuf-dev pkg-config libudev-dev \
-	libqrencode-dev bsdmainutils pkg-config libgmp3-dev libevent-dev \
-	jp2a pv virtualenv | tee -a \
-	libdb4.8-dev libdb4.8++-dev | tee -a "$LOGFILE"
+	build-essential g++ protobuf-compiler libboost-all-dev autotools-dev \
+	automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev \
+	make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config \
+	libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev \
+	libgmp3-dev libevent-dev jp2a pv virtualenv lsb-release figlet update-motd  | tee -a "$LOGFILE"
+	
 # need more testing to see if autoremove breaks the script or not
 # apt autoremove -y | tee -a "$LOGFILE"
 clear
