@@ -137,7 +137,7 @@ function create_swap() {
 		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 		echo -e " `date +%d.%m.%Y_%H:%M:%S` : Swap exists- No changes made " | tee -a "$LOGFILE"
 		echo -e "---------------------------------------------------- \n"  | tee -a "$LOGFILE"
-		sleep 1
+		sleep 2
 		printf "${nocolor}"
 	else
 	    	fallocate -l 1G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile && cp /etc/fstab /etc/fstab.bak && echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
@@ -388,11 +388,11 @@ figlet SSH Config | tee -a "$LOGFILE"
 printf "${nocolor}"
 SSHPORTWAS=$(sed -n -e '/^Port /p' $SSHDFILE)
 printf "${yellow}"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : CONFIGURE SSH SETTINGS " | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " --> Your current SSH port number is ${SSHPORTWAS} <-- " | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
 printf "${nocolor}"
 	printf "${lightcyan}"
 	echo -e " By default, SSH traffic occurs on port 22, so hackers are always"
@@ -528,9 +528,6 @@ echo -e "--------------------------------------------------- " | tee -a "$LOGFIL
 printf "${nocolor}"
 }
 
-
-
-
 function disable_passauth() {
 # query user to disable password authentication or not
 
@@ -642,7 +639,7 @@ echo -e "---------------------------------------------- \n"
         echo -e " that you activate this firewall and assign default rules"
         echo -e " to protect your server." 
         echo -e
-        echo -e " If you already set up UFW please select NO at the next prompt \n"
+        echo -e " * If you already configured UFW, choose NO to keep your existing rules\n"
 	printf "${cyan}"
 	read -p " Would you like to enable UFW firewall and assign basic rules? y/n  " FIREWALLP
         while [ "${FIREWALLP,,}" != "yes" ] && [ "${FIREWALLP,,}" != "no" ] && [ "${FIREWALLP,,}" != "y" ] && [ "${FIREWALLP,,}" != "n" ]; do
@@ -826,7 +823,7 @@ echo -e "---------------------------------------------- \n" | tee -a "$LOGFILE"
 printf "${lightcyan}"
 echo -e " Normally, kernel updates in Linux require a system reboot. Ksplice"
 echo -e " Uptrack installs these patches in memoery for Ubuntu and Fedora"
-echo -e " Linux so reboots are not needed. It is free for non-commercial use"
+echo -e " linux so reboots are not needed. It is free for non-commercial use."
 echo -e " To minimize server downtime, this is a good thing to install."
 echo -e "\n"
 printf "${cyan}"
