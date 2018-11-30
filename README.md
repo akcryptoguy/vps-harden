@@ -5,9 +5,9 @@ This VPS Server Hardening script is designed to be run on new VPS deployments wh
 
 # About
 
-A lot of good virtual servers get destroyed every year because they are hacked by evildoers that take advantage of unpatched exploits and simple passwords.  It's frustrating that many of these hacks could have been prevented by some basic hardening. With large numbers of Linux newcomers flocking to enter the space and set up masternodes I saw a need for a simple way to secure virtual servers that would, *for the most part*, keep the bad guys out.
+A lot of good virtual servers get destroyed every year because they are hacked by evildoers that take advantage of unpatched exploits and simple passwords. It's frustrating that many of these hacks could have been prevented by some basic hardening. With large numbers of Linux newcomers flocking to enter the space and set up masternodes I saw a need for a simple way to secure virtual servers that would, *for the most part*, keep the bad guys out. It is my intent to keep this script general enough that it could be the first script run on many different types of VPS installations to prepare them for whatever use you have planned.
 
-The following is a list of different sections of the script, which are broken up into separate functions which are called from the very end of the script.  
+The following is a list of different sections of the script, which are broken up into separate functions which are called from the very end of the script. 
 
 1. CREATE SWAP / if no swap exists, create 1 GB swap
 2. UPDATE AND UPGRADE / update operating system & pkgs
@@ -22,7 +22,7 @@ The following is a list of different sections of the script, which are broken up
 11. RESTART SSHD / apply settings by restarting systemctl
 12. INSTALL COMPLETE / display new SSH and login info
 
-I aggregated these steps from several different server hardening guides and selected the most effective of them to include in this script.  The goal is to make something simple enough for the newcomers to use while still being practical and saving time for linux veterans.  I am certainly open to suggestions and would like to keep this easy and practical to use.
+I aggregated these steps from several different server hardening guides and selected the most effective of them to include in this script. The goal is to make something simple enough for newcomers to use while still being practical and saving time for seasoned Linux veterans. I am certainly open to suggestions and would like to keep this easy and practical to use.
 
 If this script helps you out, please contribute some feedback. Donations are also welcome and help permit me to continue to develop this and other projects.
 
@@ -51,22 +51,22 @@ SSH into your VPS and run this command to clone the Github repository and begin 
 sudo git clone https://github.com/akcryptoguy/vps-harden.git && cd vps-harden && sudo bash get-hard.sh
 ```
 
-The script will then walk you through each of the server hardening steps, offering prompts for feedback and other notes along the way.  You really can't mess it up.  I have tried.  
+The script will then walk you through each of the server hardening steps, offering prompts for feedback and other notes along the way. You really can't mess it up. I have tried.
 
 <p align="center"><img src="/media/07. root login.png" alt="Root Login"></p>
 
-The script will keep a log of changes that are made to the system which you can review when it is complete.  The output will also be dispalyed on the screen.
+The script will keep a log of changes that are made to the system which you can review when it is complete. The output will also be dispalyed on the screen.
 
 <p align="center"><img src="/media/11. hardening rules.png" alt="Hardening Rules"></p>
 
-When you are finished, you'll see confirmation that the script completed setup and you will be given a list of notes about your installation.  The installation log file is stored in the server's log folder at `/var/log/server_hardening.log`
+When you are finished, you'll see confirmation that the script completed setup and you will be given a list of notes about your installation. The installation log file is stored in the server's log folder at `/var/log/server_hardening.log`
 
 <p align="center"><img src="/media/15 install complete.png" alt="Install Complete"></p>
 
-I would recommend that you take a screenshot of that page and save it for later.  It has important information about your setup and if you don't keep note of the settings you entered, you could find yourself locked out of your server.
+I would recommend that you take a screenshot of that page and save it for later. It has important information about your setup and if you don't keep note of the settings you entered, you could find yourself locked out of your server.
 
 
-Additionally, there are some additional files you can modify to suit your needs.  I have listed a few of these files below along with why you might consider editing them.
+Additionally, there are some additional files you can modify to suit your needs. I have listed a few of these files below along with why you might consider editing them.
 
 
 ### SSH Configuration
@@ -85,7 +85,7 @@ Additionally, there are some additional files you can modify to suit your needs.
 ## Help, Issues and Questions
 
 I have tried to troubleshoot the script for errors and confirmed that it works with a VPS you configure on [Vultr](https://www.vultr.com/?ref=7568060), 
-[Digital Ocean](https://www.digitalocean.com/?refcode=bd6020302487), and [Be Your Own VPS](https://www.youtube.com/playlist?list=PLTblguczzdyajCPQGlpJjHUvSNV8WNsGQ). It works in all of these as long as you're using Ubuntu 16.04 LTS.  I have not tested it with anything else.
+[Digital Ocean](https://www.digitalocean.com/?refcode=bd6020302487), and [Be Your Own VPS](https://www.youtube.com/playlist?list=PLTblguczzdyajCPQGlpJjHUvSNV8WNsGQ). It works in all of these as long as you're using Ubuntu 16.04 LTS. I have not tested it with anything else.
 
 ## Social and Contact
 
@@ -105,6 +105,3 @@ TRON: TLsday62mhM67Sv5G5Z5Ju66TezJuVFbiw
 DGB: DUJ8W8QpmVex87posFPoDYGg5FrYCoMLGq
 DOGE: DH9Sj3DQNVBaxb6kZBXc6X2MPQjbv7H6oy
 ```
-
-
-
