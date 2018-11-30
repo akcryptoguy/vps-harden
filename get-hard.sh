@@ -41,6 +41,7 @@ EOF
 # write to log only, no output on screen # echo  -e "    ** This entry gets written to the log file directly. **" >> $LOGFILE 2>&1
 # write to log only, no output on screen # echo  -e "---------------------------------------------------- \n" >> $LOGFILE 2>&1
 
+function setup_environment() {
 ### add colors ###
 lightred='\033[1;31m'  # light red
 red='\033[0;31m'  # red
@@ -96,15 +97,15 @@ printf "${yellow}"
 printf "${darkgray}"
 printf "${black}"
 printf "${nocolor}"
-
 clear
+
 # Set Vars
 LOGFILE='/var/log/server_hardening.log'
 SSHDFILE='/etc/ssh/sshd_config'
+}
 
+function begin_log() {
 # Create Log File and Begin
-	# echo -e "\n" >> $LOGFILE 2>&1
-	rm /var/log/server_hardening.log
 	printf "${lightcyan}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : SCRIPT STARTED SUCCESSFULLY " | tee -a "$LOGFILE"
@@ -112,7 +113,9 @@ SSHDFILE='/etc/ssh/sshd_config'
 	echo -e "------- AKcryptoGUY's VPS Hardening Script --------- " | tee -a "$LOGFILE"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${nocolor}"
-	
+	sleep 2
+}
+
 ##########################
 ## 1. UPDATE & UPGRADE ###
 ##########################
@@ -1066,7 +1069,28 @@ echo -e " ---------------------------------------------------- " | tee -a "$LOGF
 printf "${nocolor}"
 }
 
+function display_banner() {
 
+echo -e "${lightcyan}"
+cat << "EOF"
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     _    _  __                     _         ____ _   ___   __
+    / \  | |/ /___ _ __ _   _ _ __ | |_ ___  / ___| | | \ \ / /
+   / _ \ | ' // __| '__| | | | '_ \| __/ _ \| |  _| | | |\ V /
+  / ___ \| . \ (__| |  | |_| | |_) | || (_) | |_| | |_| | | |
+ /_/   \_\_|\_\___|_|   \__, | .__/ \__\___/ \____|\___/  |_|
+                        |___/|_|
+            __  __             __  __  ___          __
+  -->  \  /|__)/__`   |__| /\ |__)|  \|__ |\ |||\ |/ _`  <--
+        \/ |   .__/   |  |/~~\|  \|__/|___| \||| \|\__>
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+EOF
+echo -e "${nocolor}"
+}
+
+setup_environment
+display_banner
+begin_log
 update_upgrade
 favored_packages
 crypto_packages
