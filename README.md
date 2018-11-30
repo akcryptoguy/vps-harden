@@ -9,17 +9,20 @@ A lot of good virtual servers get destroyed every year because they are hacked b
 
 The following is a list of different sections of the script, which are broken up into separate functions which are called from the very end of the script.  
 
-1. UPDATE AND UPGRADE / update operating system & pkgs
-2. USER SETUP / add new sudo user, copy SSH keys
-3. SSH CONFIG / change SSH port, disable root login
-4. UFW CONFIG / UFW - add rules, harden, enable firewall
-5. HARDENING / before rules, secure shared memory, etc
-6. KSPLICE INSTALL / automatically update without reboot
-7. MOTD EDIT / replace boring banner with customized one
-8. RESTART SSHD / apply settings by restarting systemctl
-9. INSTALL COMPLETE / display new SSH and login info
+1. CREATE SWAP / if no swap exists, create 1 GB swap
+2. UPDATE AND UPGRADE / update operating system & pkgs
+3. INSTALL FAVORED PACKAGES / useful tools & utilities
+4. INSTALL CRYPTO PACKAGES / common crypto packages
+5. USER SETUP / add new sudo user, copy SSH keys
+6. SSH CONFIG / change SSH port, disable root login
+7. UFW CONFIG / UFW - add rules, harden, enable firewall
+8. HARDENING / before rules, secure shared memory, etc
+9. KSPLICE INSTALL / automatically update without reboot
+10. MOTD EDIT / replace boring banner with customized one
+11. RESTART SSHD / apply settings by restarting systemctl
+12. INSTALL COMPLETE / display new SSH and login info
 
-I aggregated these steps from several different server hardening guides and selected the most effective of them to include in this script.  The goal is to make something simple enough for the newcomers to use while still being practical and saving time for Linux veterans.  I am certainly open to suggestions and would like to keep this easy and practical to use.
+I aggregated these steps from several different server hardening guides and selected the most effective of them to include in this script.  The goal is to make something simple enough for the newcomers to use while still being practical and saving time for linux veterans.  I am certainly open to suggestions and would like to keep this easy and practical to use.
 
 If this script helps you out, please contribute some feedback. Donations are also welcome and help permit me to continue to develop this and other projects.
 

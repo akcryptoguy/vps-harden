@@ -22,15 +22,18 @@ EOF
 }
 	 
 # ###### SECTIONS ######
-# 1. UPDATE AND UPGRADE / update operating system & pkgs
-# 2. USER SETUP / add new sudo user, copy SSH keys
-# 3. SSH CONFIG / change SSH port, disable root login
-# 4. UFW CONFIG / UFW - add rules, harden, enable firewall
-# 5. HARDENING / before rules, secure shared memory, etc
-# 6. KSPLICE INSTALL / automatically update without reboot
-# 7. MOTD EDIT / replace boring banner with customized one
-# 8. RESTART SSHD / apply settings by restarting systemctl
-# 9. INSTALL COMPLETE / display new SSH and login info
+# 1. CREATE SWAP / if no swap exists, create 1 GB swap
+# 2. UPDATE AND UPGRADE / update operating system & pkgs
+# 3. INSTALL FAVORED PACKAGES / useful tools & utilities
+# 4. INSTALL CRYPTO PACKAGES / common crypto packages
+# 5. USER SETUP / add new sudo user, copy SSH keys
+# 6. SSH CONFIG / change SSH port, disable root login
+# 7. UFW CONFIG / UFW - add rules, harden, enable firewall
+# 8. HARDENING / before rules, secure shared memory, etc
+# 9. KSPLICE INSTALL / automatically update without reboot
+# 10. MOTD EDIT / replace boring banner with customized one
+# 11. RESTART SSHD / apply settings by restarting systemctl
+# 12. INSTALL COMPLETE / display new SSH and login info
 
 # Add to log command and display output on screen
 # echo " `date +%d.%m.%Y" "%H:%M:%S` : $MESSAGE" | tee -a "$LOGFILE"
@@ -106,19 +109,51 @@ SSHDFILE='/etc/ssh/sshd_config'
 
 function begin_log() {
 # Create Log File and Begin
-	printf "${lightcyan}"
-	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-	echo -e " `date +%d.%m.%Y_%H:%M:%S` : SCRIPT STARTED SUCCESSFULLY " | tee -a "$LOGFILE"
-	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-	echo -e "------- AKcryptoGUY's VPS Hardening Script --------- " | tee -a "$LOGFILE"
-	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-	printf "${nocolor}"
-	sleep 2
+printf "${lightcyan}"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " `date +%d.%m.%Y_%H:%M:%S` : SCRIPT STARTED SUCCESSFULLY " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e "------- AKcryptoGUY's VPS Hardening Script --------- " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+printf "${nocolor}"
+sleep 2
 }
 
-##########################
-## 1. UPDATE & UPGRADE ###
-##########################
+#########################
+## CHECK & CREATE SWAP ##
+#########################
+
+function create_swap() {
+# Check for and create swap file if necessary
+	printf "${yellow}"
+	echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " `date +%d.%m.%Y_%H:%M:%S` : CHECK FOR AND CREATE SWAP " | tee -a "$LOGFILE"
+	echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
+	printf "${white}"
+	
+	# Check for swap file - if none, create one
+	if free | awk '/^Swap:/ {exit !$2}'; then
+		printf "${lightred}"
+		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		echo -e " `date +%d.%m.%Y_%H:%M:%S` : Swap exists- No changes made " | tee -a "$LOGFILE"
+		echo -e "---------------------------------------------------- \n"  | tee -a "$LOGFILE"
+		sleep 2
+		printf "${nocolor}"
+	else
+	    	fallocate -l 1G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile && cp /etc/fstab /etc/fstab.bak && echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+		printf "${lightgreen}"	
+		echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
+		echo -e " `date +%d.%m.%Y_%H:%M:%S` : SWAP CREATED SUCCESSFULLY " | tee -a "$LOGFILE"
+		echo -e "--> Thanks @Cryptotron for supplying swap code <-- "
+		echo -e "-------------------------------------------------- \n" | tee -a "$LOGFILE"
+		sleep 2
+		printf "${nocolor}"
+	fi
+}
+
+######################
+## UPDATE & UPGRADE ##
+######################
 
 function update_upgrade() {
 
@@ -250,9 +285,9 @@ echo -e "---------------------------------------------------- " | tee -a "$LOGFI
 printf "${nocolor}"
 }
 
-####################
-## 2. USER SETUP ###
-####################
+################
+## USER SETUP ##
+################
 
 function add_user() {
 # query user to setup a non-root user account or not
@@ -342,9 +377,9 @@ printf "${lightcyan}"
 	printf "${nocolor}"
 }
 
-#################### 
-##  3. SSH CONFIG ##
-####################
+################ 
+## SSH CONFIG ##
+################
 
 function collect_sshd() {
 # Prompt for custom SSH port between 11000 and 65535
@@ -353,11 +388,11 @@ figlet SSH Config | tee -a "$LOGFILE"
 printf "${nocolor}"
 SSHPORTWAS=$(sed -n -e '/^Port /p' $SSHDFILE)
 printf "${yellow}"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " `date +%d.%m.%Y_%H:%M:%S` : CONFIGURE SSH SETTINGS " | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " --> Your current SSH port number is ${SSHPORTWAS} <-- " | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
 printf "${nocolor}"
 	printf "${lightcyan}"
 	echo -e " By default, SSH traffic occurs on port 22, so hackers are always"
@@ -586,9 +621,9 @@ echo -e "------------------------------------------- " | tee -a "$LOGFILE"
 printf "${nocolor}"
 }
 
-#################### 
-##  4. UFW CONFIG ##
-####################
+################ 
+## UFW CONFIG ##
+################
 
 function ufw_config() {
 # query user to disable password authentication or not
@@ -604,7 +639,7 @@ echo -e "---------------------------------------------- \n"
         echo -e " that you activate this firewall and assign default rules"
         echo -e " to protect your server." 
         echo -e
-        echo -e " If you already set up UFW please select NO at the next prompt \n"
+        echo -e " * If you already configured UFW, choose NO to keep your existing rules\n"
 	printf "${cyan}"
 	read -p " Would you like to enable UFW firewall and assign basic rules? y/n  " FIREWALLP
         while [ "${FIREWALLP,,}" != "yes" ] && [ "${FIREWALLP,,}" != "no" ] && [ "${FIREWALLP,,}" != "y" ] && [ "${FIREWALLP,,}" != "n" ]; do
@@ -649,9 +684,9 @@ echo -e "------------------------------------------------ " | tee -a "$LOGFILE"
 printf "${nocolor}"
 }
 
-#################### 
-## 5. Hardening  ###
-####################
+################ 
+## Hardening  ##
+################
 
 function server_hardening() {
 # prompt users on whether to harden server or not
@@ -767,9 +802,9 @@ cat etc/apt/apt.conf.d/50unattended-upgrades > /etc/apt/apt.conf.d/50unattended-
         fi
 }
 
-#########################
-##  6. Ksplice Install ##
-#########################
+#####################
+## Ksplice Install ##
+#####################
 
 function ksplice_install() {
 
@@ -788,7 +823,7 @@ echo -e "---------------------------------------------- \n" | tee -a "$LOGFILE"
 printf "${lightcyan}"
 echo -e " Normally, kernel updates in Linux require a system reboot. Ksplice"
 echo -e " Uptrack installs these patches in memoery for Ubuntu and Fedora"
-echo -e " Linux so reboots are not needed. It is free for non-commercial use"
+echo -e " linux so reboots are not needed. It is free for non-commercial use."
 echo -e " To minimize server downtime, this is a good thing to install."
 echo -e "\n"
 printf "${cyan}"
@@ -878,9 +913,9 @@ printf "${nocolor}"
 # sudo uptrack-upgrade -y
 }
 
-#######################
-##  7. MOTD Install  ##
-#######################
+###################
+## MOTD Install  ##
+###################
 
 function motd_install() {
 # prompt users to install custom MOTD or not
@@ -945,9 +980,9 @@ echo -e "\n"
         fi
 }
 
-#######################
-##  8. Restart SSHD  ##
-#######################
+##################
+## Restart SSHD ##
+##################
 
 function restart_sshd() {
 # prompt users to leave this session open, then create a second connection after restarting SSHD to make sure they can connect
@@ -1014,10 +1049,9 @@ echo -e "\n"
         fi
 }
 
-#########################
-## 9. Install Complete ##
-#########################
-
+######################
+## Install Complete ##
+######################
 
 function install_complete() {
 # Display important login variables before exiting script
@@ -1091,6 +1125,7 @@ echo -e "${nocolor}"
 setup_environment
 display_banner
 begin_log
+create_swap
 update_upgrade
 favored_packages
 crypto_packages
