@@ -22,7 +22,7 @@ The following is a list of different sections of the script, which are broken up
 11. RESTART SSHD / apply settings by restarting systemctl
 12. INSTALL COMPLETE / display new SSH and login info
 
-I aggregated these steps from several different server hardening guides and selected the most effective of them to include in this script.  The goal is to make something simple enough for the newcomers to use while still being practical and saving time for Linux veterans.  I am certainly open to suggestions and would like to keep this easy and practical to use.
+I aggregated these steps from several different server hardening guides and selected the most effective of them to include in this script.  The goal is to make something simple enough for the newcomers to use while still being practical and saving time for linux veterans.  I am certainly open to suggestions and would like to keep this easy and practical to use.
 
 If this script helps you out, please contribute some feedback. Donations are also welcome and help permit me to continue to develop this and other projects.
 
