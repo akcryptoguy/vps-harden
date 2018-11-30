@@ -126,27 +126,27 @@ sleep 2
 function create_swap() {
 # Check for and create swap file if necessary
 	printf "${yellow}"
-	echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%d.%m.%Y_%H:%M:%S` : CHECK FOR AND CREATE SWAP " | tee -a "$LOGFILE"
-	echo -e "--------------------------------------------------- \n" | tee -a "$LOGFILE"
+	echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
 	printf "${white}"
 	
 	# Check for swap file - if none, create one
 	if free | awk '/^Swap:/ {exit !$2}'; then
 		printf "${lightred}"
-		echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
-		echo -e " `date +%d.%m.%Y_%H:%M:%S` : Swap exists, no changes made " | tee -a "$LOGFILE"
-		echo -e "--------------------------------------------------- " \n | tee -a "$LOGFILE"
+		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		echo -e " `date +%d.%m.%Y_%H:%M:%S` : Swap exists- No changes made " | tee -a "$LOGFILE"
+		echo -e "---------------------------------------------------- \n"  | tee -a "$LOGFILE"
 		sleep 1
 		printf "${nocolor}"
 	else
 	    	fallocate -l 1G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile && cp /etc/fstab /etc/fstab.bak && echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
 		printf "${lightgreen}"	
-		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
 		echo -e " `date +%d.%m.%Y_%H:%M:%S` : SWAP CREATED SUCCESSFULLY " | tee -a "$LOGFILE"
-		echo -e "   --> Thanks @Cryptotron for supplying swap code <-- "
-		echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
-		sleep 1
+		echo -e "--> Thanks @Cryptotron for supplying swap code <-- "
+		echo -e "-------------------------------------------------- \n" | tee -a "$LOGFILE"
+		sleep 2
 		printf "${nocolor}"
 	fi
 }
