@@ -366,9 +366,9 @@ printf "${lightcyan}"
 			fi
         else 	printf "${yellow}"
 		clear
-		echo  "---------------------------------------------------- " >> $LOGFILE 2>&1
+		echo  -e "----------------------------------------------------- " >> $LOGFILE 2>&1
 		echo  "    ** User chose not to create a new user **" >> $LOGFILE 2>&1
-		echo  -e "----------------------------------------------------" >> $LOGFILE 2>&1
+		echo  -e "-----------------------------------------------------" >> $LOGFILE 2>&1
         fi
 	printf "${lightgreen}"
 	echo -e "---------------------------------------------- " | tee -a "$LOGFILE"
