@@ -897,9 +897,10 @@ printf "${cyan}"
 		echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
 		printf "${nocolor}"
 		else  	printf "${lightred}"
-			echo -e "--------------------------------------------------------------- " | tee -a "$LOGFILE"
-			echo -e "It looks like the install of Ksplice didn't complete, skipping" | tee -a "$LOGFILE"
-                	echo -e "--------------------------------------------------------------- " | tee -a "$LOGFILE"
+			clear
+			echo -e "-------------------------------------------------------- " | tee -a "$LOGFILE"
+			echo " `date +%m.%d.%Y_%H:%M:%S` : FAIL : Ksplice was not Installed" | tee -a "$LOGFILE"
+                	echo -e "-------------------------------------------------------- \n" | tee -a "$LOGFILE"
 			printf "${nocolor}"
 		fi
 	else :
@@ -967,14 +968,14 @@ echo -e "\n"
 		# Error Handling
                 if [ $? -eq 0 ]
                 then printf "${lightgreen}"
-			echo -e "------------------------------------------------------- " | tee -a "$LOGFILE"
+				echo -e "------------------------------------------------------- " | tee -a "$LOGFILE"
 				echo " `date +%m.%d.%Y_%H:%M:%S` : SUCCESS : MOTD & Banner updated" | tee -a "$LOGFILE"
 				echo -e "------------------------------------------------------- " | tee -a "$LOGFILE"
 				printf "${nocolor}"
                 else printf "${lightred}"
-			echo -e "------------------------------------------------------- " | tee -a "$LOGFILE"
+			echo -e "----------------------------------------------- " | tee -a "$LOGFILE"
 			echo " `date +%m.%d.%Y_%H:%M:%S` : ERROR: MOTD not updated" | tee -a "$LOGFILE"
-                	echo -e "------------------------------------------------------- \n" | tee -a "$LOGFILE"
+                	echo -e "----------------------------------------------- \n" | tee -a "$LOGFILE"
 		fi
 		
         else echo -e "\n"
