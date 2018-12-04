@@ -837,13 +837,12 @@ printf "${cyan}"
 	echo -e "\n"
         # check if KSPLICE is valid
         if [ "${KSPLICE,,}" = "yes" ] || [ "${KSPLICE,,}" = "y" ]
-        then
-		
-# install ksplice uptrack
-printf "${yellow}"
-echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e " `date +%m.%d.%Y_%H:%M:%S` : INSTALLING KSPLICE PACKAGES " | tee -a "$LOGFILE"
-echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
+        then		
+	# install ksplice uptrack
+	printf "${yellow}"
+	echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " `date +%m.%d.%Y_%H:%M:%S` : INSTALLING KSPLICE PACKAGES " | tee -a "$LOGFILE"
+	echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
 	printf "${white}"
 	echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
 	echo '   libgtk2-perl consolekit iproute libck-connector0 libcroco3 libglade2-0 ' | tee -a "$LOGFILE"
@@ -857,45 +856,53 @@ echo -e "--------------------------------------------------- " | tee -a "$LOGFIL
 	libpam-ck-connector librsvg2-2 librsvg2-common python-cairo \
 	python-dbus python-gi python-glade2 python-gobject-2 \
 	python-gtk2 python-pycurl python-yaml dbus-x11 | tee -a "$LOGFILE"
-printf "${yellow}"
-
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e " `date +%m.%d.%Y_%H:%M:%S` : KSPLICE PACKAGES INSTALLED" | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e " --> Download & install Ksplice package from Oracle " | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-printf "${nocolor}"
-wget -o /var/log/ksplicew1.log https://ksplice.oracle.com/uptrack/dist/xenial/ksplice-uptrack.deb
-dpkg --log "$LOGFILE" -i ksplice-uptrack.deb
-printf "${yellow}"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e " `date +%m.%d.%Y_%H:%M:%S` : KSPLICE UPTRACK INSTALLED" | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e " ** Enabling autoinstall & correcting permissions ** " | tee -a "$LOGFILE"
-sed -i "s/autoinstall = no/autoinstall = yes/" /etc/uptrack/uptrack.conf
-chmod 755 /etc/cron.d/uptrack
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e " ** Activate & install Ksplice patches & updates ** " | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-printf "${nocolor}"
-cat $LOGFILE /var/log/ksplicew1.log > /var/log/join.log
-cat /var/log/join.log > $LOGFILE
-rm /var/log/ksplicew1.log
-rm /var/log/join.log
-uptrack-upgrade -y | tee -a "$LOGFILE"
-printf "${yellow}"
-echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e " `date +%m.%d.%Y_%H:%M:%S` : KSPLICE UPDATES INSTALLED" | tee -a "$LOGFILE"
-echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
-printf "${nocolor}"
-sleep 1	; #  dramatic pause
-clear
-printf "${lightgreen}"
-echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
-echo " `date +%m.%d.%Y_%H:%M:%S` : SUCCESS : Ksplice Enabled" | tee -a "$LOGFILE"
-echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
-printf "${nocolor}"
-        else :
+	printf "${yellow}"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " `date +%m.%d.%Y_%H:%M:%S` : KSPLICE PACKAGES INSTALLED" | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e " --> Download & install Ksplice package from Oracle " | tee -a "$LOGFILE"
+	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+	printf "${nocolor}"
+	wget -o /var/log/ksplicew1.log https://ksplice.oracle.com/uptrack/dist/xenial/ksplice-uptrack.deb
+	dpkg --log "$LOGFILE" -i ksplice-uptrack.deb
+		if [ -e /etc/uptrack/uptrack.conf ]
+		then         
+		printf "${lightgreen}"
+		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		echo -e " `date +%m.%d.%Y_%H:%M:%S` : KSPLICE UPTRACK INSTALLED" | tee -a "$LOGFILE"
+		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		printf "${yellow}"
+		echo -e " ** Enabling autoinstall & correcting permissions ** " | tee -a "$LOGFILE"
+		sed -i "s/autoinstall = no/autoinstall = yes/" /etc/uptrack/uptrack.conf
+		chmod 755 /etc/cron.d/uptrack
+		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		echo -e " ** Activate & install Ksplice patches & updates ** " | tee -a "$LOGFILE"
+		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+		printf "${nocolor}"
+		cat $LOGFILE /var/log/ksplicew1.log > /var/log/join.log
+		cat /var/log/join.log > $LOGFILE
+		rm /var/log/ksplicew1.log
+		rm /var/log/join.log
+		uptrack-upgrade -y | tee -a "$LOGFILE"
+		printf "${yellow}"
+		echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
+		echo -e " `date +%m.%d.%Y_%H:%M:%S` : KSPLICE UPDATES INSTALLED" | tee -a "$LOGFILE"
+		echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
+		printf "${nocolor}"
+		sleep 1	; #  dramatic pause
+		clear
+		printf "${lightgreen}"
+		echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
+		echo " `date +%m.%d.%Y_%H:%M:%S` : SUCCESS : Ksplice Enabled" | tee -a "$LOGFILE"
+		echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
+		printf "${nocolor}"
+		else  	printf "${lightred}"
+			echo -e "--------------------------------------------------------------- " | tee -a "$LOGFILE"
+			echo -e "It looks like the install of Ksplice didn't complete, skipping" | tee -a "$LOGFILE"
+                	echo -e "--------------------------------------------------------------- " | tee -a "$LOGFILE"
+			printf "${nocolor}"
+		fi
+	else :
 	clear
 	printf "${yellow}"
 	echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
