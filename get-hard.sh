@@ -884,7 +884,7 @@ printf "${cyan}"
 		rm /var/log/ksplicew1.log
 		rm /var/log/join.log
 		uptrack-upgrade -y | tee -a "$LOGFILE"
-		printf "${yellow}"
+		printf "${lightgreen}"
 		echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 		echo -e " `date +%m.%d.%Y_%H:%M:%S` : KSPLICE UPDATES INSTALLED" | tee -a "$LOGFILE"
 		echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
