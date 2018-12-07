@@ -545,7 +545,7 @@ printf "${lightcyan}"
 printf "${nocolor}"
 if [ -n "/root/.ssh/authorized_keys" ]
 then
-        PASSWDAUTH=$(sed -n -e '/^PasswordAuthentication /p' $SSHDFILE)
+        PASSWDAUTH=$(sed -n -e '/PasswordAuthentication /p' $SSHDFILE)
                 if [ -z "${PASSWDAUTH}" ]
                 then PASSWDAUTH=$(sed -n -e '/^# PasswordAuthentication /p' $SSHDFILE)
                 else :
