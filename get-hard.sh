@@ -575,8 +575,8 @@ then
         # check if PASSLOGIN is valid
         if [ "${PASSLOGIN,,}" = "yes" ] || [ "${PASSLOGIN,,}" = "y" ]
         then 	sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/" $SSHDFILE >> $LOGFILE
-                sed -i "s/# PasswordAuthentication yes/PasswordAuthentication no/" $SSHDFILE >> $LOGFILE
-                sed -i "s/# PasswordAuthentication no/PasswordAuthentication no/" $SSHDFILE >> $LOGFILE
+                sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" $SSHDFILE >> $LOGFILE
+                sed -i "s/#PasswordAuthentication no/PasswordAuthentication no/" $SSHDFILE >> $LOGFILE
                 # Error Handling
                 if [ $? -eq 0 ]
                 then
@@ -594,8 +594,8 @@ then
                 fi
         else 
 		sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/" $SSHDFILE | tee -a "$LOGFILE"
-                sed -i "s/# PasswordAuthentication no/PasswordAuthentication yes/" $SSHDFILE | tee -a "$LOGFILE"
-                sed -i "s/# PasswordAuthentication yes/PasswordAuthentication yes/" $SSHDFILE | tee -a "$LOGFILE"
+                sed -i "s/#PasswordAuthentication no/PasswordAuthentication yes/" $SSHDFILE | tee -a "$LOGFILE"
+                sed -i "s/#PasswordAuthentication yes/PasswordAuthentication yes/" $SSHDFILE | tee -a "$LOGFILE"
         fi
 else	
 	printf "${yellow}"
@@ -604,7 +604,7 @@ else
 	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
 	printf "${nocolor}"
 fi
-	PASSWDAUTH=$(sed -n -e '/^PasswordAuthentication /p' $SSHDFILE)
+	PASSWDAUTH=$(sed -n -e '/PasswordAuthentication /p' $SSHDFILE)
 	printf "${lightgreen}"
 	echo -e "-------------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%m.%d.%Y_%H:%M:%S` : PASSWORD AUTHENTICATION COMPLETE " | tee -a "$LOGFILE"
