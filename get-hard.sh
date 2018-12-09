@@ -540,13 +540,14 @@ printf "${lightcyan}"
 	echo -e " than just using a password. If you have installed an RSA key-pair"
 	echo -e " and use that to login, you should disable password authentication.\n"
 printf "${nocolor}"
+PASSWDAUTH=$(sed -n -e '/^PasswordAuthentication /p' $SSHDFILE)
 if [ -n "/root/.ssh/authorized_keys" ]
 then
-        PASSWDAUTH=$(sed -n -e '/PasswordAuthentication /p' $SSHDFILE)
-                if [ -z "${PASSWDAUTH}" ]
-                then PASSWDAUTH=$(sed -n -e '/^# PasswordAuthentication /p' $SSHDFILE)
-                else :
-                fi
+        # PASSWDAUTH=$(sed -n -e '/PasswordAuthentication /p' $SSHDFILE)
+        #       if [ -z "${PASSWDAUTH}" ]
+        #       then PASSWDAUTH=$(sed -n -e '/^# PasswordAuthentication /p' $SSHDFILE)
+        #       else :
+        #       fi
         # Prompt user to see if they want to disable password login
 	printf "${yellow}"
 	# output to screen
