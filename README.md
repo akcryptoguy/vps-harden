@@ -1,7 +1,8 @@
 ## <p align="center"> AKcryptoGUY's Awesome Server Hardening Script</p>
 
-This VPS Server Hardening script is designed to be run on new VPS deployments which will simplify a lot of the basic hardening that can be done to protect your server. I assimilated several design ideas and commands from 
-[AMega's VPS hardening script](https://github.com/AMega/VPS-Server-Hardening) which I found on Github seemingly abandoned in its infancy; and I am very happy to pick it up and finish it.
+This VPS Server Hardening script is designed to be run on new VPS deployments to simplify a lot of the 
+basic hardening that can be done to protect your server. I assimilated several design ideas from [AMega's
+VPS hardening script](https://github.com/AMega/VPS-Server-Hardening) which I found on Github seemingly abandoned. I am very happy to finish it.
 
 # About
 
