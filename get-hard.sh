@@ -122,6 +122,8 @@ sleep 2
 
 function create_swap() {
 # Check for and create swap file if necessary
+# this is an alternative that will disable swap, and create a new one at the size you like
+# sudo swapoff -a && sudo dd if=/dev/zero of=/swapfile bs=1M count=6144 MB && sudo mkswap /swapfile && sudo swapon /swapfile
 	printf "${yellow}"
 	echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
 	echo -e " `date +%m.%d.%Y_%H:%M:%S` : CHECK FOR AND CREATE SWAP " | tee -a "$LOGFILE"
