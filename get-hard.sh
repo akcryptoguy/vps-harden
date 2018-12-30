@@ -481,9 +481,7 @@ then
         if [ "${ROOTLOGIN,,}" = "yes" ] || [ "${ROOTLOGIN,,}" = "y" ]
         then :
 		# search for root login and change to no
-                sed -i "s/PermitRootLogin yes/PermitRootLogin no/" $SSHDFILE >> $LOGFILE
-                sed -i "s/# PermitRootLogin yes/PermitRootLogin no/" $SSHDFILE >> $LOGFILE
-                sed -i "s/# PermitRootLogin no/PermitRootLogin no/" $SSHDFILE >> $LOGFILE
+                sed -i "s/.*PermitRootLogin.*/PermitRootLogin no/" $SSHDFILE >> $LOGFILE
 	        # Error Handling
                 if [ $? -eq 0 ]
                 then
@@ -502,9 +500,7 @@ then
         else  	printf "${yellow}"
 		echo -e "------------------------------------------------------------- " | tee -a "$LOGFILE"
 		echo "It looks like you want to enable root login; making it so..." | tee -a "$LOGFILE"
-                sed -i "s/PermitRootLogin no/PermitRootLogin yes/" $SSHDFILE >> $LOGFILE 2>&1
-                sed -i "s/# PermitRootLogin no/PermitRootLogin yes/" $SSHDFILE >> $LOGFILE 2>&1
-                sed -i "s/# PermitRootLogin yes/PermitRootLogin yes/" $SSHDFILE >> $LOGFILE 2>&1
+                sed -i "s/.*PermitRootLogin.*/PermitRootLogin yes/" $SSHDFILE >> $LOGFILE 2>&1
 		echo -e "------------------------------------------------------------- " | tee -a "$LOGFILE"
 		printf "${nocolor}"
         fi
