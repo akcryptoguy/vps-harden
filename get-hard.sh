@@ -421,6 +421,11 @@ printf "${nocolor}"
 		echo -e " $SSHDFILE.$BTIME.bak" | tee -a "$LOGFILE"
         	echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
 		printf "${nocolor}"
+		
+# create jail.local and replace 'ssh' with custom port or 22
+cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+sed -i "s/port.*= ssh/port     = $SSHPORT/" /etc/fail2ban/jail.local
+
 		sed -i "s/$SSHPORTWAS/Port $SSHPORT/" $SSHDFILE >> $LOGFILE 2>&1
 		clear
 			# Error Handling
