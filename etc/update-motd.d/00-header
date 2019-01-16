@@ -38,7 +38,7 @@ printf "  ${color7}(   ) ${color14}:       ${color1} ___   ${color14}`uname -srm
 printf "   ${color7}\`-\`  ${color14}\`      ${color1} ,   :${color3}   \n"
 # printf "   ${color7}\`-\`  ${color14}\`      ${color1} ,   :${color3}  Weather (${weathercity}): `curl -s "${weatherurl}" | sed -n '/Currently:/ s/.*: \(.*\): \([0-9]*\)\([CF]\).*/\2°\3, \1/p'`\n"
 printf "     ${color7}\\   / ${color1},..-\`   ,${color10}   Network Information ${color9}\n"
-printf "      ${color7}\`./${color1} /    ${color14}.-.${color1}\`${color10}    External IP: ${color9}`/usr/bin/wget -q -O - http://icanhazip.com/ | /usr/bin/tail`\n"
+printf "      ${color7}\`./${color1} /    ${color14}.-.${color1}\`${color10}    External IP: ${color9}`/usr/bin/wget -q -O - http://ipv4.icanhazip.com/ | /usr/bin/tail`\n"
 printf "         ${color1}\`-..-${color14}(   )${color1}    --> Uptime: `/usr/bin/uptime -p` <--${nocolor}\n"
 printf "               ${color14}\`-\`${nocolor}     ${nocolor}\n"
 # printf "               ${color1}   ${nocolor}\n"
