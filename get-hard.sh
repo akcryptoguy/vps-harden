@@ -1122,13 +1122,13 @@ echo -e " --> Root login settings are:" "$ROOTLOGINP" | tee -a "$LOGFILE"
     then echo -e " --> Common crypto packages were installed" | tee -a "$LOGFILE" 
     fi
     if [ -n "${UNAME,,}" ] 
-    then echo -e -n "${white} We created a non-root user named (lower case):${nocolor}" "${UNAME,,}" | tee -a "$LOGFILE" 
-    else echo -e -n "${white} A new user was not created during the setup process ${nocolor}" | tee -a "$LOGFILE" 
+    then echo -e "${white} We created a non-root user named (lower case):${nocolor}" "${UNAME,,}" | tee -a "$LOGFILE" 
+    else echo -e "${white} A new user was not created during the setup process ${nocolor}" | tee -a "$LOGFILE" 
     fi
 echo " ${white}PasswordAuthentication settings:${lightred}" "$PASSWDAUTH" | tee -a "$LOGFILE"
     if [ "${FIREWALLP,,}" = "yes" ] || [ "${FIREWALLP,,}" = "y" ]
-    then echo -e -n "${lightcyan} --> UFW was installed and basic firewall rules were added" | tee -a "$LOGFILE" 
-    else echo -e -n "${lightcyan} --> UFW was not installed or configured" | tee -a "$LOGFILE" 
+    then echo -e "${lightcyan} --> UFW was installed and basic firewall rules were added" | tee -a "$LOGFILE" 
+    else echo -e "${lightcyan} --> UFW was not installed or configured" | tee -a "$LOGFILE" 
     fi
         # if [ "${GETHARD,,}" = "yes" ] || [ "${GETHARD,,}" = "y" ]
         # then echo -e " --> The server and networking layer were hardened <--" | tee -a "$LOGFILE" 
@@ -1142,7 +1142,7 @@ echo -e -n "${yellow}-------------------------------------------------------- " 
 echo -e " Installation log saved to" $LOGFILE | tee -a "$LOGFILE"
 echo -e " Before modification, your SSH config was backed up to" | tee -a "$LOGFILE"
 echo -e " --> $SSHDFILE.$BTIME.bak"				| tee -a "$LOGFILE"
-echo -e -n "${lightred} ---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e "${lightred} ---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " | NOTE: Please create a new connection to test SSH | " | tee -a "$LOGFILE"
 echo -e " |       settings before you close this session     | " | tee -a "$LOGFILE"
 echo -e " ---------------------------------------------------- " | tee -a "$LOGFILE"
@@ -1151,7 +1151,7 @@ echo -e -n "${nocolor}"
 
 function display_banner() {
 
-echo -e -n "${lightcyan}"
+echo -e "${lightcyan}"
 cat << "EOF"
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      _    _  __                     _         ____ _   ___   __
