@@ -240,52 +240,88 @@ echo -e "----------------------------------------------------- " | tee -a "$LOGF
 echo -e "${nocolor}"
 }
 
-#
-#  PROMPT WHETHER USER WANTS TO INSTALL COMMON CRYPTO PACKAGES TO SAVE TIME LATER
-#
+#  PROMPT WHETHER USER WANTS TO INSTALL COMMON CRYPTO PACKAGES OR NOT
 
+#####################
+## CRYPTO PACKAGES ##
+#####################
 function crypto_packages() {
-# install development and build packages that are common on all cryptos
 echo -e "${lightcyan}"
-figlet Install Crypto | tee -a "$LOGFILE"
+figlet User Setup | tee -a "$LOGFILE"
 echo -e "${yellow}"
-echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e " $(date +%m.%d.%Y_%H:%M:%S) : INSTALLING CRYPTO PACKAGES " | tee -a "$LOGFILE"
-echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e "${white}"
-    echo ' # add-apt-repository -yu ppa:bitcoin/bitcoin' | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e " $(date +%m.%d.%Y_%H:%M:%S) : QUERY TO INSTALL CRYPTO PKGS " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- \n"
+echo -e "${lightcyan}"
+    echo " I frequently use Ubuntu Virtual Machines for cryptocurrency projects"
+    echo " to compile or build wallets from source code but I realize that there"
+    echo " are plenty of other reasons to use them. If using the VPS for crypto,"
+    echo " installing these packages now can save you some time later. "
+    echo -e "\n"
+    echo -e "${cyan}"
+        read -p " Would you like to install these packages now? y/n  " INSTALLCRYPTO
+    echo -e "${nocolor}"
+    
+    while [ "${INSTALLCRYPTO,,}" != "yes" ] && [ "${INSTALLCRYPTO,,}" != "no" ] && [ "${INSTALLCRYPTO,,}" != "y" ] && [ "${ADDUSER,,}" != "n" ]; do
+    echo -e "${lightred}"
+    read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " INSTALLCRYPTO
+    echo -e "${nocolor}"
+    done
+        # check if INSTALLCRYPTO is valid
+        if [ "${INSTALLCRYPTO,,}" = "yes" ] || [ "${INSTALLCRYPTO,,}" = "y" ]
+        then echo -e "\n"
+        echo -e "${yellow}"
+        echo -e " Great; let's install them now... \n"
+        echo -e "${lightcyan}"
+        figlet Install Crypto | tee -a "$LOGFILE"
+        echo -e "${yellow}"
+        echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
+        echo -e " $(date +%m.%d.%Y_%H:%M:%S) : INSTALLING CRYPTO PACKAGES " | tee -a "$LOGFILE"
+        echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
+        echo -e "${white}"
+        echo ' # add-apt-repository -yu ppa:bitcoin/bitcoin' | tee -a "$LOGFILE"
+        echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+        echo -e "${nocolor}"
+        add-apt-repository -yu ppa:bitcoin/bitcoin | tee -a "$LOGFILE"
+        echo -e "${white}"
+        echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
+        echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
+        echo '   build-essential g++ protobuf-compiler libboost-all-dev autotools-dev ' | tee -a "$LOGFILE"
+        echo '   automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev ' | tee -a "$LOGFILE"
+        echo '   make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config ' | tee -a "$LOGFILE"
+        echo '   libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev ' | tee -a "$LOGFILE"
+        echo '   libgmp3-dev libevent-dev jp2a pv virtualenv lsb-release update-motd ' | tee -a "$LOGFILE"
+        echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
+        echo -e "${lightred}"
+        echo -e " This step can appear to hang for a minute or two so don't be alarmed. " 
+        echo -e "-------------------------------------------------- " 
+        echo -e "${nocolor}"
+        apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
+        build-essential g++ protobuf-compiler libboost-all-dev autotools-dev \
+        automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev \
+        make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config \
+        libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev \
+        libgmp3-dev libevent-dev jp2a pv virtualenv lsb-release update-motd  | tee -a "$LOGFILE"
+    
+    # need more testing to see if autoremove breaks the script or not
+    # apt autoremove -y | tee -a "$LOGFILE"
+    clear
+    echo -e "${lightgreen}"
+    echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+    echo -e " $(date +%m.%d.%Y_%H:%M:%S) : CRYPTO INSTALLED SUCCESFULLY " | tee -a "$LOGFILE"
     echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
     echo -e "${nocolor}"
-    add-apt-repository -yu ppa:bitcoin/bitcoin | tee -a "$LOGFILE"
-    echo -e "${white}"
-    echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
-    echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
-    echo '   build-essential g++ protobuf-compiler libboost-all-dev autotools-dev ' | tee -a "$LOGFILE"
-    echo '   automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev ' | tee -a "$LOGFILE"
-    echo '   make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config ' | tee -a "$LOGFILE"
-    echo '   libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev ' | tee -a "$LOGFILE"
-    echo '   libgmp3-dev libevent-dev jp2a pv virtualenv lsb-release figlet update-motd ' | tee -a "$LOGFILE"
-    echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
-	echo -e "${lightred}"
-	echo -e " This step can appear to hang for a minute or two so don't be alarmed. " 
-echo -e "-------------------------------------------------- " 
-	
+        else 	echo -e "${yellow}"
+        clear
+        echo  -e "----------------------------------------------------- " >> $LOGFILE 2>&1
+        echo  "    ** User chose not to install crypto packages **" >> $LOGFILE 2>&1
+        echo  -e "-----------------------------------------------------" >> $LOGFILE 2>&1
+        fi
+    echo -e "${lightgreen}"
+    echo -e "----------------------------------------------------- " | tee -a "$LOGFILE"
+    echo -e " $(date +%m.%d.%Y_%H:%M:%S) : CRYPTO PACKAGE SETUP COMPLETE " | tee -a "$LOGFILE"
+    echo -e "----------------------------------------------------- " | tee -a "$LOGFILE"
     echo -e "${nocolor}"
-    apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
-    build-essential g++ protobuf-compiler libboost-all-dev autotools-dev \
-    automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev \
-    make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config \
-    libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev \
-    libgmp3-dev libevent-dev jp2a pv virtualenv lsb-release figlet update-motd  | tee -a "$LOGFILE"
-    
-# need more testing to see if autoremove breaks the script or not
-# apt autoremove -y | tee -a "$LOGFILE"
-clear
-echo -e "${lightgreen}"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e " $(date +%m.%d.%Y_%H:%M:%S) : CRYPTO INSTALLED SUCCESFULLY " | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e "${nocolor}"
 }
 
 ################
