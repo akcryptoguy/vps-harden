@@ -1138,7 +1138,7 @@ echo " ${white}PasswordAuthentication settings:${lightred}" "$PASSWDAUTH" | tee 
             then echo -e " You installed Oracle's Ksplice to update without reboot" | tee -a "$LOGFILE"
             else echo -e " You chose NOT to auto-update OS with Oracle's Ksplice" | tee -a "$LOGFILE"
             fi
-echo -e -n "${yellow}-------------------------------------------------------- " | tee -a "$LOGFILE"	
+echo -e "${yellow}-------------------------------------------------------- " | tee -a "$LOGFILE"	
 echo -e " Installation log saved to" $LOGFILE | tee -a "$LOGFILE"
 echo -e " Before modification, your SSH config was backed up to" | tee -a "$LOGFILE"
 echo -e " --> $SSHDFILE.$BTIME.bak"				| tee -a "$LOGFILE"
