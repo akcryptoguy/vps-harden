@@ -247,7 +247,7 @@ echo -e "${nocolor}"
 #####################
 function crypto_packages() {
 echo -e "${lightcyan}"
-figlet User Setup | tee -a "$LOGFILE"
+figlet Crypto Setup | tee -a "$LOGFILE"
 echo -e "${yellow}"
 echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " $(date +%m.%d.%Y_%H:%M:%S) : QUERY TO INSTALL CRYPTO PKGS " | tee -a "$LOGFILE"
@@ -291,10 +291,10 @@ echo -e "${lightcyan}"
         echo '   make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config ' | tee -a "$LOGFILE"
         echo '   libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev ' | tee -a "$LOGFILE"
         echo '   libgmp3-dev libevent-dev jp2a pv virtualenv lsb-release update-motd ' | tee -a "$LOGFILE"
-        echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
+        echo -e "----------------------------------------------------------------------- " | tee -a "$LOGFILE"
         echo -e "${lightred}"
-        echo -e " This step can appear to hang for a minute or two so don't be alarmed. " 
-        echo -e "-------------------------------------------------- " 
+        echo -e " This step can appear to hang for a minute or two so don't be alarmed " 
+        echo -e "---------------------------------------------------------------------- " 
         echo -e "${nocolor}"
         apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
         build-essential g++ protobuf-compiler libboost-all-dev autotools-dev \
@@ -1119,6 +1119,11 @@ echo -e "---------------------------------------------------- " | tee -a "$LOGFI
 echo -e "${yellow}"
 echo -e " --> Your SSH port for remote access is" "$SSHPORTIS"	| tee -a "$LOGFILE"
 echo -e " --> Root login settings are:" "$ROOTLOGINP" | tee -a "$LOGFILE"
+    
+    if [ "${INSTALLCRYPTO,,}" = "yes" ] || [ "${INSTALLCRYPTO,,}" = "y" ]
+    then echo -e " --> Common crypto packages were installed" | tee -a "$LOGFILE" 
+    fi
+
     echo -e "${white}"
     if [ -n "${UNAME,,}" ] 
     then echo -e " We created a non-root user named (lower case):" "${UNAME,,}" | tee -a "$LOGFILE" 
