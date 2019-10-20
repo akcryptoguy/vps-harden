@@ -266,6 +266,10 @@ echo -e "${white}"
     echo '   libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev ' | tee -a "$LOGFILE"
     echo '   libgmp3-dev libevent-dev jp2a pv virtualenv lsb-release figlet update-motd ' | tee -a "$LOGFILE"
     echo -e "---------------------------------------------------------------------- " | tee -a "$LOGFILE"
+	echo -e "${lightred}"
+	echo -e " This step can appear to hang for a minute or two so don't be alarmed. " 
+echo -e "-------------------------------------------------- " 
+	
     echo -e "${nocolor}"
     apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
     build-essential g++ protobuf-compiler libboost-all-dev autotools-dev \
