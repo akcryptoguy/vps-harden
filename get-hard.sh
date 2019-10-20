@@ -573,16 +573,16 @@ function disable_passauth() {
 
 echo -e -n "${lightcyan}"
 figlet Pass Auth | tee -a "$LOGFILE"
-echo -e -n "${yellow}"
+echo -e "${yellow}"
 echo -e "----------------------------------------------- " | tee -a "$LOGFILE"
 echo -e " $(date +%m.%d.%Y_%H:%M:%S) : PASSWORD AUTHENTICATION " | tee -a "$LOGFILE"
-echo -e "----------------------------------------------- "
-echo -e -n "${lightcyan}"
+echo -e "----------------------------------------------- \n"
+echo -e "${lightcyan}"
     echo -e " You can log into your server using an RSA public-private key pair or"
     echo -e " a password.  Using RSA keys for login is tremendously more secure"
     echo -e " than just using a password. If you have installed an RSA key-pair"
-    echo -e " and use that to login, you should disable password authentication."
-echo -e -n "${nocolor}"
+    echo -e " and use that to login, you should disable password authentication.\n"
+echo -e "${nocolor}"
 PASSWDAUTH=$(sed -n -e '/.*PasswordAuthentication /p' $SSHDFILE)
 if [ -n "/root/.ssh/authorized_keys" ]
 then
