@@ -908,6 +908,8 @@ echo -e -n "${cyan}"
     echo -e -n "${nocolor}"
     wget -o /var/log/ksplicew1.log https://ksplice.oracle.com/uptrack/dist/xenial/ksplice-uptrack.deb
     dpkg --log "$LOGFILE" -i ksplice-uptrack.deb
+	sleep 1
+	pause
         if [ -e /etc/uptrack/uptrack.conf ]
         then         
         echo -e -n "${lightgreen}"
@@ -943,9 +945,10 @@ echo -e -n "${cyan}"
             echo -e "-------------------------------------------------------- " | tee -a "$LOGFILE"
             echo " $(date +%m.%d.%Y_%H:%M:%S) : FAIL : Ksplice was not Installed" | tee -a "$LOGFILE"
                     echo -e "-------------------------------------------------------- \n" | tee -a "$LOGFILE"
+					pause
             echo -e -n "${nocolor}"
         fi
-    else :
+else :
     clear
     echo -e -n "${yellow}"
     echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
