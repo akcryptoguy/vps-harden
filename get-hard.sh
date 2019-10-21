@@ -889,17 +889,17 @@ echo -e -n "${cyan}"
     echo -e -n "${white}"
     echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
     echo '   libgtk2-perl consolekit iproute libck-connector0 libcroco3 libglade2-0 ' | tee -a "$LOGFILE"
-    echo '   libpam-ck-connector librsvg2-2 librsvg2-common python-cairo ' | tee -a "$LOGFILE"
-    echo '   python-dbus python-gi python-glade2 python-gobject-2 ' | tee -a "$LOGFILE"
-    echo '   python-gtk2 python-pycurl python-yaml dbus-x11' | tee -a "$LOGFILE"
+    echo '   libpam-ck-connector librsvg2-2 librsvg2-common python-cairo python-gtk2 ' | tee -a "$LOGFILE"
+    echo '   python-dbus python-gi python-glade2 python-gobject-2 python-pycurl ' | tee -a "$LOGFILE"
+    echo '   python-yaml dbus-x11 python-six python3-yaml ' | tee -a "$LOGFILE"
     echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
     echo -e -n "${nocolor}"
     apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
     libgtk2-perl consolekit iproute libck-connector0 libcroco3 libglade2-0 \
-    libpam-ck-connector librsvg2-2 librsvg2-common python-cairo \
-    python-dbus python-gi python-glade2 python-gobject-2 \
-    python-gtk2 python-pycurl python-yaml dbus-x11 | tee -a "$LOGFILE"
-    echo -e -n "${yellow}"
+    libpam-ck-connector librsvg2-2 librsvg2-common python-cairo python-gtk2 \
+    python-dbus python-gi python-glade2 python-gobject-2 python-pycurl \
+    python-yaml dbus-x11 python-six python3-yaml | tee -a "$LOGFILE"
+	echo -e -n "${yellow}"
     echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
     echo -e " $(date +%m.%d.%Y_%H:%M:%S) : KSPLICE PACKAGES INSTALLED" | tee -a "$LOGFILE"
     echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
@@ -908,8 +908,6 @@ echo -e -n "${cyan}"
     echo -e -n "${nocolor}"
     wget -o /var/log/ksplicew1.log https://ksplice.oracle.com/uptrack/dist/xenial/ksplice-uptrack.deb
     dpkg --log "$LOGFILE" -i ksplice-uptrack.deb
-	sleep 1
-	pause
         if [ -e /etc/uptrack/uptrack.conf ]
         then         
         echo -e -n "${lightgreen}"
@@ -944,8 +942,7 @@ echo -e -n "${cyan}"
             clear
             echo -e "-------------------------------------------------------- " | tee -a "$LOGFILE"
             echo " $(date +%m.%d.%Y_%H:%M:%S) : FAIL : Ksplice was not Installed" | tee -a "$LOGFILE"
-                    echo -e "-------------------------------------------------------- \n" | tee -a "$LOGFILE"
-					pause
+            echo -e "-------------------------------------------------------- \n" | tee -a "$LOGFILE"
             echo -e -n "${nocolor}"
         fi
 else :
