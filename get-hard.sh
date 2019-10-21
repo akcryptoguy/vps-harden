@@ -262,7 +262,7 @@ echo -e -n "${lightcyan}"
         read -p " Would you like to install these packages now? y/n  " INSTALLCRYPTO
     echo -e -n "${nocolor}"
     
-    while [ "${INSTALLCRYPTO,,}" != "yes" ] && [ "${INSTALLCRYPTO,,}" != "no" ] && [ "${INSTALLCRYPTO,,}" != "y" ] && [ "${ADDUSER,,}" != "n" ]; do
+    while [ "${INSTALLCRYPTO,,}" != "yes" ] && [ "${INSTALLCRYPTO,,}" != "no" ] && [ "${INSTALLCRYPTO,,}" != "y" ] && [ "${INSTALLCRYPTO,,}" != "n" ]; do
     echo -e -n "${lightred}"
     read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " INSTALLCRYPTO
     echo -e -n "${nocolor}"
