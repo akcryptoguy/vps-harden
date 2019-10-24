@@ -855,7 +855,7 @@ function ksplice_install() {
     while [ "${KSPLICE,,}" != "yes" ] && [ "${KSPLICE,,}" != "no" ] && [ "${KSPLICE,,}" != "y" ] && [ "${KSPLICE,,}" != "n" ]; do
         echo -e "\n"
         echo -e -n "${lightred}"
-        read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " GETHARD
+        read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " KSPLICE
         echo -e -n "${nocolor}"
     done
     echo -e "\n"
