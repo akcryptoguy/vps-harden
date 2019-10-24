@@ -849,19 +849,20 @@ function ksplice_install() {
     echo -e " Uptrack installs these patches in memory for Ubuntu and Fedora"
     echo -e " Linux so reboots are not needed. It is free for non-commercial use."
     echo -e " To minimize server downtime, this is a good thing to install."
-    echo -e "\n"
     echo -e -n "${cyan}"
-    read -p " Would you like to install Oracle Ksplice Uptrack now? y/n  " KSPLICE
-    while [ "${KSPLICE,,}" != "yes" ] && [ "${KSPLICE,,}" != "no" ] && [ "${KSPLICE,,}" != "y" ] && [ "${KSPLICE,,}" != "n" ]; do
+            while :; do
+            echo -e "\n"
+            read -n 1 -s -r -p " Would you like to install Oracle Ksplice Uptrack now? y/n " KSPLICE
+            if [[ ${KSPLICE,,} == "y" || ${KSPLICE,,} == "Y" || ${KSPLICE,,} == "N" || ${KSPLICE,,} == "n" ]]
+            then
+                break
+            fi
+        done
+        echo -e "${nocolor}"
         echo -e "\n"
-        echo -e -n "${lightred}"
-        read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " KSPLICE
-        echo -e -n "${nocolor}"
-    done
-    echo -e "\n"
-    # check if KSPLICE is valid
-    if [ "${KSPLICE,,}" = "yes" ] || [ "${KSPLICE,,}" = "y" ]
-    then
+
+        if [ "${KSPLICE,,}" = "Y" ] || [ "${KSPLICE,,}" = "y" ]
+        then
         # install ksplice uptrack
         echo -e -n "${yellow}"
         echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
