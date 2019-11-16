@@ -120,7 +120,13 @@ function create_swap() {
         sleep 2
         echo -e -n "${nocolor}"
     else
-        fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile && cp /etc/fstab /etc/fstab.bak && echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+        # set swap to twice the physical RAM but not less than 2GB
+        PHYSRAM=$(grep MemTotal /proc/meminfo | awk '{print int($2 / 1024 / 1024 + 0.5)}')
+        let "SWAPSIZE=2*$PHYSRAM"
+        (($SWAPSIZE >= 1 && $SWAPSIZE >= 31)) && SWAPSIZE=31
+        (($SWAPSIZE <= 2)) && SWAPSIZE=2
+
+        fallocate -l ${SWAPSIZE}G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile && cp /etc/fstab /etc/fstab.bak && echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
         echo -e -n "${lightgreen}"
         echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
         echo -e " $(date +%m.%d.%Y_%H:%M:%S) : SWAP CREATED SUCCESSFULLY " | tee -a "$LOGFILE"
