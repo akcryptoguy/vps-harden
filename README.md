@@ -10,7 +10,7 @@ A lot of good virtual servers get destroyed every year because they are hacked b
 
 The following is a list of different sections of the script, which are broken up into separate functions which are called from the very end of the script. 
 
-1. CREATE SWAP / if no swap exists, create 2 GB swap
+1. CREATE SWAP / if no swap exists, set swap to 2x RAM (not less than 2GB)
 2. UPDATE AND UPGRADE / update operating system & pkgs
 3. INSTALL FAVORED PACKAGES / useful tools & utilities
 4. INSTALL CRYPTO PACKAGES / common crypto packages
