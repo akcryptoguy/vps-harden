@@ -85,6 +85,21 @@ function setup_environment() {
     SSHDFILE='/etc/ssh/sshd_config'
 }
 
+function check_distro() {
+    # currently only for Ubuntu 16.04
+    if [[ -r /etc/os-release ]]; then
+        . /etc/os-release
+        if [[ "${VERSION_ID}" != "16.04" ]] ; then
+            echo -e "This script only supports Ubuntu 16.04 LTS, exiting.\n"
+            exit 1
+        fi
+    else
+        # no, thats not ok!
+        echo -e "This script only supports Ubuntu 16.04, exiting.\n"
+        exit 1
+    fi
+}
+
 function begin_log() {
     # Create Log File and Begin
     echo -e -n "${lightcyan}"
@@ -1149,6 +1164,7 @@ EOF
     echo -e -n "${nocolor}"
 }
 
+check_distro
 setup_environment
 display_banner
 begin_log
