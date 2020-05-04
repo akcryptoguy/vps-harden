@@ -260,17 +260,20 @@ function crypto_packages() {
     echo " are plenty of other reasons to use them. If using the VPS for crypto,"
     echo " installing these packages now can save you some time later. "
     echo -e "\n"
-    echo -e -n "${cyan}"
-    read -p " Would you like to install these packages now? y/n  " INSTALLCRYPTO
-    echo -e -n "${nocolor}"
 
-    while [ "${INSTALLCRYPTO,,}" != "yes" ] && [ "${INSTALLCRYPTO,,}" != "no" ] && [ "${INSTALLCRYPTO,,}" != "y" ] && [ "${INSTALLCRYPTO,,}" != "n" ]; do
-        echo -e -n "${lightred}"
-        read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " INSTALLCRYPTO
-        echo -e -n "${nocolor}"
-    done
+        echo -e -n "${cyan}"
+            while :; do
+            echo -e "\n"
+            read -n 1 -s -r -p " Would you like to install these crypto packages now? y/n  " INSTALLCRYPTO
+            if [[ ${INSTALLCRYPTO,,} == "y" || ${INSTALLCRYPTO,,} == "Y" || ${INSTALLCRYPTO,,} == "N" || ${INSTALLCRYPTO,,} == "n" ]]
+            then
+                break
+            fi
+        done
+        echo -e "${nocolor}"
+
     # check if INSTALLCRYPTO is valid
-    if [ "${INSTALLCRYPTO,,}" = "yes" ] || [ "${INSTALLCRYPTO,,}" = "y" ]
+    if [ "${INSTALLCRYPTO,,}" = "Y" ] || [ "${INSTALLCRYPTO,,}" = "y" ]
     then echo -e "\n"
         echo -e -n "${yellow}"
         echo -e " Great; let's install them now... \n"
@@ -344,19 +347,21 @@ function add_user() {
     echo " authentication. Since using RSA public-private key authentication is"
     echo " infinitely more secure, I will not think less of you if you choose to"
     echo " use an RSA key and continue to login as root. I am able to create a "
-    echo " non-root user if you want me to, but it is not required. "
-    echo -e "\n"
-    echo -e -n "${cyan}"
-    read -p " Would you like to add a non-root user? y/n  " ADDUSER
-    echo -e -n "${nocolor}"
+    echo -e " non-root user if you want me to, but it is not required. \n"
+    
+            echo -e -n "${cyan}"
+            while :; do
+            echo -e "\n"
+            read -n 1 -s -r -p " Would you like to add a non-root user? y/n  " ADDUSER
+            if [[ ${ADDUSER,,} == "y" || ${ADDUSER,,} == "Y" || ${ADDUSER,,} == "N" || ${ADDUSER,,} == "n" ]]
+            then
+                break
+            fi
+        done
+        echo -e "${nocolor}"
 
-    while [ "${ADDUSER,,}" != "yes" ] && [ "${ADDUSER,,}" != "no" ] && [ "${ADDUSER,,}" != "y" ] && [ "${ADDUSER,,}" != "n" ]; do
-        echo -e -n "${lightred}"
-        read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " ADDUSER
-        echo -e -n "${nocolor}"
-    done
     # check if ADDUSER is valid
-    if [ "${ADDUSER,,}" = "yes" ] || [ "${ADDUSER,,}" = "y" ]
+    if [ "${ADDUSER,,}" = "Y" ] || [ "${ADDUSER,,}" = "y" ]
     then echo -e "\n"
         echo -e -n "${yellow}"
         echo -e " Great; let's set one up now... \n"
@@ -515,17 +520,20 @@ function prompt_rootlogin {
         echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
         echo -e " Your root login settings are: " "$ROOTLOGINP"  | tee -a "$LOGFILE"
         echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
-        echo -e -n "${cyan}"
-        read -p " Would you like to disable root login? y/n  " ROOTLOGIN
-        echo -e -n "${nocolor}"
-        while [ "${ROOTLOGIN,,}" != "yes" ] && [ "${ROOTLOGIN,,}" != "no" ] && [ "${ROOTLOGIN,,}" != "y" ] && [ "${ROOTLOGIN,,}" != "n" ]; do
+        
+            echo -e -n "${cyan}"
+            while :; do
             echo -e "\n"
-            echo -e -n "${lightred}"
-            read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " ROOTLOGIN
-            echo -e -n "${nocolor}"
+            read -n 1 -s -r -p " Would you like to disable root login? y/n  " ROOTLOGIN
+            if [[ ${ROOTLOGIN,,} == "y" || ${ROOTLOGIN,,} == "Y" || ${ROOTLOGIN,,} == "N" || ${ROOTLOGIN,,} == "n" ]]
+            then
+                break
+            fi
         done
+        echo -e "${nocolor}"
+        
         # check if ROOTLOGIN is valid
-        if [ "${ROOTLOGIN,,}" = "yes" ] || [ "${ROOTLOGIN,,}" = "y" ]
+        if [ "${ROOTLOGIN,,}" = "Y" ] || [ "${ROOTLOGIN,,}" = "y" ]
         then :
             # search for root login and change to no
             sed -i "s/.*PermitRootLogin.*/PermitRootLogin no/" $SSHDFILE >> $LOGFILE
@@ -605,18 +613,20 @@ function disable_passauth() {
         echo -e " Your current password authentication settings are   " >> $LOGFILE 2>&1
         echo -e "      ** $PASSWDAUTH ** " >> $LOGFILE 2>&1
         echo -e "--------------------------------------------------- \n" >> $LOGFILE 2>&1
+        
         echo -e -n "${cyan}"
-        read -p " Would you like to disable password login & require RSA key login? y/n  " PASSLOGIN
-        echo -e -n "${nocolor}"
-        while [ "${PASSLOGIN,,}" != "yes" ] && [ "${PASSLOGIN,,}" != "no" ] && [ "${PASSLOGIN,,}" != "y" ] && [ "${PASSLOGIN,,}" != "n" ]; do
+            while :; do
             echo -e "\n"
-            echo -e -n "${lightred}"
-            read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " PASSLOGIN
-            echo -e -n "${nocolor}"
+            read -n 1 -s -r -p " Would you like to disable password login & require RSA key login? y/n  " PASSLOGIN
+            if [[ ${PASSLOGIN,,} == "y" || ${PASSLOGIN,,} == "Y" || ${PASSLOGIN,,} == "N" || ${PASSLOGIN,,} == "n" ]]
+            then
+                break
+            fi
         done
-        echo -e "\n"
+        echo -e "${nocolor}\n"
+        
         # check if PASSLOGIN is valid
-        if [ "${PASSLOGIN,,}" = "yes" ] || [ "${PASSLOGIN,,}" = "y" ]
+        if [ "${PASSLOGIN,,}" = "Y" ] || [ "${PASSLOGIN,,}" = "y" ]
         then
             sed -i "s/PasswordAuthentication .*/PasswordAuthentication no/" $SSHDFILE >> $LOGFILE
             sed -i "s/#PasswordAuthentication .*/PasswordAuthentication no/" $SSHDFILE >> $LOGFILE
@@ -685,16 +695,19 @@ function ufw_config() {
     echo -e " to protect your server."
     echo -e
     echo -e " * If you already configured UFW, choose NO to keep your existing rules\n"
-    echo -e -n "${cyan}"
-    read -p " Would you like to enable UFW firewall and assign basic rules? y/n  " FIREWALLP
-    while [ "${FIREWALLP,,}" != "yes" ] && [ "${FIREWALLP,,}" != "no" ] && [ "${FIREWALLP,,}" != "y" ] && [ "${FIREWALLP,,}" != "n" ]; do
-        echo -e "\n"
-        echo -e -n "${lightred}"
-        read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " FIREWALLP
-        echo -e -n "${nocolor}"
-    done
-    echo -e "\n"
-    if [ "${FIREWALLP,,}" = "yes" ] || [ "${FIREWALLP,,}" = "y" ]
+    
+        echo -e -n "${cyan}"
+            while :; do
+            echo -e "\n"
+            read -n 1 -s -r -p " Would you like to enable UFW firewall and assign basic rules? y/n  " FIREWALLP
+            if [[ ${FIREWALLP,,} == "y" || ${FIREWALLP,,} == "Y" || ${FIREWALLP,,} == "N" || ${FIREWALLP,,} == "n" ]]
+            then
+                break
+            fi
+        done
+        echo -e "${nocolor}\n"
+    
+    if [ "${FIREWALLP,,}" = "Y" ] || [ "${FIREWALLP,,}" = "y" ]
     then	echo -e -n "${nocolor}"
         # make sure ufw is installed #
         apt-get install ufw -qqy >> $LOGFILE 2>&1
@@ -742,22 +755,23 @@ function server_hardening() {
     echo -e " $(date +%m.%d.%Y_%H:%M:%S) : QUERY TO HARDEN THE SERVER " | tee -a "$LOGFILE"
     echo -e "-------------------------------------------------- \n" | tee -a "$LOGFILE"
     echo -e -n "${lightcyan}"
-    echo -e " The next steps are to secure your server's shared memory, prevent"
-    echo -e " IP spoofing, enable DDOS protection, harden the networking layer, "
-    echo -e " and enable automatic installation of security updates."
-    echo -e "\n"
-    echo -e -n "${cyan}"
-    read -p " Would you like to perform these steps now? y/n  " GETHARD
-    echo -e -n "${nocolor}"
-    while [ "${GETHARD,,}" != "yes" ] && [ "${GETHARD,,}" != "no" ] && [ "${GETHARD,,}" != "y" ] && [ "${GETHARD,,}" != "n" ]; do
-        echo -e "\n"
-        echo -e -n "${lightred}"
-        read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " GETHARD
-        echo -e -n "${nocolor}"
-    done
-    echo -e "\n"
+    echo -e " The next steps are to secure your server's shared memory, enable"
+    echo -e " DDOS protection, harden the networking layer, and enable automatic"
+    echo -e " installation of security updates.\n"
+
+        echo -e -n "${cyan}"
+            while :; do
+            echo -e "\n"
+            read -n 1 -s -r -p " Would you like to perform these steps now? y/n  " GETHARD
+            if [[ ${GETHARD,,} == "y" || ${GETHARD,,} == "Y" || ${GETHARD,,} == "N" || ${GETHARD,,} == "n" ]]
+            then
+                break
+            fi
+        done
+        echo -e "${nocolor}\n"    
+    
     # check if GETHARD is valid
-    if [ "${GETHARD,,}" = "yes" ] || [ "${GETHARD,,}" = "y" ]
+    if [ "${GETHARD,,}" = "Y" ] || [ "${GETHARD,,}" = "y" ]
     then
 
         # secure shared memory
@@ -842,6 +856,13 @@ function server_hardening() {
 
 function ksplice_install() {
 
+    # This KSplice install script only works for Ubuntu 16.04 at the moment
+    if [[ -r /etc/os-release ]]; then
+        . /etc/os-release
+        if [[ "${VERSION_ID}" != "16.04" ]] ; then
+            echo -e "This KSplice install script only works for Ubuntu 16.04 at the moment, skipping.\n"
+        else 
+
     # -------> I still need to install an error check after installing Ksplice to make sure \
         #          the install completed before moving on the configuration
 
@@ -858,18 +879,18 @@ function ksplice_install() {
     echo -e " Normally, kernel updates in Linux require a system reboot. Ksplice"
     echo -e " Uptrack installs these patches in memory for Ubuntu and Fedora"
     echo -e " Linux so reboots are not needed. It is free for non-commercial use."
-    echo -e " To minimize server downtime, this is a good thing to install."
-    echo -e -n "${cyan}"
+    echo -e " To minimize server downtime, this is a good thing to install.\n"
+    
+        echo -e -n "${cyan}"
             while :; do
             echo -e "\n"
-            read -n 1 -s -r -p " Would you like to install Oracle Ksplice Uptrack now? y/n " KSPLICE
+            read -n 1 -s -r -p " Would you like to install Oracle Ksplice Uptrack now? y/n  " KSPLICE
             if [[ ${KSPLICE,,} == "y" || ${KSPLICE,,} == "Y" || ${KSPLICE,,} == "N" || ${KSPLICE,,} == "n" ]]
             then
                 break
             fi
         done
-        echo -e "${nocolor}"
-        echo -e "\n"
+        echo -e "${nocolor}\n" 
 
         if [ "${KSPLICE,,}" = "Y" ] || [ "${KSPLICE,,}" = "y" ]
         then
@@ -946,6 +967,12 @@ function ksplice_install() {
         echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
         echo -e -n "${nocolor}"
     fi
+
+        fi
+    else
+        # no, thats not ok!
+        echo -e "This script only supports Ubuntu, skipping.\n"
+    fi
 }
 
 ###################
@@ -964,20 +991,21 @@ function motd_install() {
     echo -e " The normal MOTD banner displayed after a successful SSH login"
     echo -e " is pretty boring so this mod edits it to include more useful"
     echo -e " information along with a login banner prohibiting unauthorized"
-    echo -e " access.  All modifications are strictly cosmetic."
-    echo -e "\n"
-    echo -e -n "${cyan}"
-    read -p " Would you like to enhance your MOTD & login banner? y/n  " MOTDP
-    echo -e -n "${nocolor}"
-    while [ "${MOTDP,,}" != "yes" ] && [ "${MOTDP,,}" != "no" ] && [ "${MOTDP,,}" != "y" ] && [ "${MOTDP,,}" != "n" ]; do
-        echo -e "\n"
-        echo -e -n "${lightred}"
-        read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " MOTDP
-        echo -e -n "${nocolor}"
-    done
-    echo -e "\n"
+    echo -e " access.  All modifications are strictly cosmetic.\n"
+
+        echo -e -n "${cyan}"
+            while :; do
+            echo -e "\n"
+            read -n 1 -s -r -p " Would you like to enhance your MOTD & login banner? y/n  " MOTDP
+            if [[ ${MOTDP,,} == "y" || ${MOTDP,,} == "Y" || ${MOTDP,,} == "N" || ${MOTDP,,} == "n" ]]
+            then
+                break
+            fi
+        done
+        echo -e "${nocolor}\n" 
+
     # check if MOTDP is affirmative
-    if [ "${MOTDP,,}" = "yes" ] || [ "${MOTDP,,}" = "y" ]
+    if [ "${MOTDP,,}" = "Y" ] || [ "${MOTDP,,}" = "y" ]
     then
         sudo apt-get -o Acquire::ForceIPv4=true update -y
         sudo apt-get -o Acquire::ForceIPv4=true install lsb-release update-motd curl -y
@@ -1032,20 +1060,21 @@ function restart_sshd() {
     echo " and firewall is enabled. You should keep this existing connection"
     echo " open while restarting SSHD just in case you have a problem or"
     echo " copied down the information incorrectly. This will prevent you"
-    echo " from getting locked out of your server."
-    echo -e "\n"
-    echo -e -n "${cyan}"
-    read -p " Would you like to restart SSHD and enable UFW now? y/n  " SSHDRESTART
-    echo -e -n "${nocolor}"
-    while [ "${SSHDRESTART,,}" != "yes" ] && [ "${SSHDRESTART,,}" != "no" ] && [ "${SSHDRESTART,,}" != "y" ] && [ "${SSHDRESTART,,}" != "n" ]; do
-        echo -e "\n"
-        echo -e -n "${lightred}"
-        read -p " --> I don't understand. Enter 'y' for yes or 'n' for no: " SSHDRESTART
-        echo -e -n "${nocolor}"
-    done
-    echo -e "\n"
+    echo -e " from getting locked out of your server.\n"
+
+        echo -e -n "${cyan}"
+            while :; do
+            echo -e "\n"
+            read -n 1 -s -r -p " Would you like to restart SSHD and enable UFW now? y/n  " SSHDRESTART
+            if [[ ${SSHDRESTART,,} == "y" || ${SSHDRESTART,,} == "Y" || ${SSHDRESTART,,} == "N" || ${SSHDRESTART,,} == "n" ]]
+            then
+                break
+            fi
+        done
+        echo -e "${nocolor}\n" 
+
     # check if SSHDRESTART is valid
-    if [ "${SSHDRESTART,,}" = "yes" ] || [ "${SSHDRESTART,,}" = "y" ]
+    if [ "${SSHDRESTART,,}" = "Y" ] || [ "${SSHDRESTART,,}" = "y" ]
     then
         # insert a pause or delay to add suspense
         systemctl restart sshd
