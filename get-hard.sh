@@ -775,17 +775,6 @@ function server_hardening() {
         else echo 'tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' >> /etc/fstab
         fi
 
-        # prevent IP spoofing
-        echo -e -n "${yellow}"
-        echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-        echo -e " $(date +%m.%d.%Y_%H:%M:%S) : PREVENTING IP SPOOFING " | tee -a "$LOGFILE"
-        echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-        echo -e -n "${white}"
-        echo -e " --> Updating /etc/host.conf to include 'nospoof' " | tee -a "$LOGFILE"
-        echo -e "---------------------------------------------------- \n " | tee -a "$LOGFILE"
-        sleep 2	; #  dramatic pause
-        cat etc/host.conf > /etc/host.conf
-
         # enable DDOS protection
         echo -e -n "${yellow}"
         echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
