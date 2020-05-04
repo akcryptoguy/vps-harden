@@ -234,7 +234,7 @@ function favored_packages() {
     echo -e -n "${nocolor}"
     apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
         htop nethogs ufw fail2ban wondershaper glances ntp figlet lsb-release \
-        update-motd unattended-upgrades secure-delete | tee -a "$LOGFILE"
+        update-motd unattended-upgrades secure-delete net-tools dnsutils | tee -a "$LOGFILE"
     echo -e -n "${lightgreen}"
     echo -e "----------------------------------------------------- " | tee -a "$LOGFILE"
     echo -e " $(date +%m.%d.%Y_%H:%M:%S) : FAVORED INSTALLED SUCCESFULLY " | tee -a "$LOGFILE"
