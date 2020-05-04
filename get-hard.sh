@@ -229,7 +229,7 @@ function favored_packages() {
     echo -e -n "${white}"
     echo ' # apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ' | tee -a "$LOGFILE"
     echo '   htop nethogs ufw fail2ban wondershaper glances ntp figlet lsb-release ' | tee -a "$LOGFILE"
-    echo '   update-motd unattended-upgrades secure-delete' | tee -a "$LOGFILE"
+    echo '   update-motd unattended-upgrades secure-delete net-tools dnsutils' | tee -a "$LOGFILE"
     echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
     echo -e -n "${nocolor}"
     apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install \
