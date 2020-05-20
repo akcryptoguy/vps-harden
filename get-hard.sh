@@ -612,7 +612,7 @@ function disable_passauth() {
         echo -e "--------------------------------------------------- " >> $LOGFILE 2>&1
         echo -e " Your current password authentication settings are   " >> $LOGFILE 2>&1
         echo -e "      ** $PASSWDAUTH ** " >> $LOGFILE 2>&1
-        echo -e "--------------------------------------------------- \n" >> $LOGFILE 2>&1
+        echo -e "--------------------------------------------------- " >> $LOGFILE 2>&1
         
         echo -e -n "${cyan}"
             while :; do
