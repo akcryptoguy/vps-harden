@@ -432,7 +432,7 @@ function collect_sshd() {
     echo -e -n "${lightcyan}"
     figlet SSH Config | tee -a "$LOGFILE"
     echo -e -n "${nocolor}"
-    SSHPORTWAS=$(sed -n -e '/^Port /p' $SSHDFILE)
+    SSHPORTWAS=$(sed -n -e '/Port /p' $SSHDFILE)
     echo -e -n "${yellow}"
     echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
     echo -e " $(date +%m.%d.%Y_%H:%M:%S) : CONFIGURE SSH SETTINGS " | tee -a "$LOGFILE"
