@@ -820,7 +820,13 @@ function server_hardening() {
         echo -e " Configure system to auto install security updates " | tee -a "$LOGFILE"
         echo -e "---------------------------------------------------- \n " | tee -a "$LOGFILE"
         sleep 2	; #  dramatic pause
-        cat etc/apt/apt.conf.d/10periodic > /etc/apt/apt.conf.d/10periodic
+
+        . /etc/os-release
+        if [[ "${VERSION_ID}" = "16.04" ]] 
+        then cat etc/apt/apt.conf.d/10periodic > /etc/apt/apt.conf.d/10periodic
+        else cat etc/apt/apt.conf.d/20auto-upgrades > /etc/apt/apt.conf.d/20auto-upgrades
+        fi
+
         cat etc/apt/apt.conf.d/50unattended-upgrades > /etc/apt/apt.conf.d/50unattended-upgrades
         # consider editing the above 50-unattended-upgrades to automatically reboot when necessary
 
