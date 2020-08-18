@@ -396,7 +396,7 @@ function add_user() {
             echo " $(date +%m.%d.%Y_%H:%M:%S) : SUCCESS : '${UNAME,,}' added to SUDO group" | tee -a "$LOGFILE"
             echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
             # copy SSH keys if they exist
-            if [ -n /root/.ssh/authorized_keys ]
+            if [ -e /root/.ssh/authorized_keys ]
             then mkdir /home/"${UNAME,,}"/.ssh
                 chmod 700 /home/"${UNAME,,}"/.ssh
                 # copy root SSH key to new non-root user
@@ -856,6 +856,96 @@ function server_hardening() {
     fi
 }
 
+##################
+## Google Auth  ##
+##################
+
+function google_auth() {
+    # prompt users to install Google Authenticator or not
+    echo -e -n "${lightcyan}"
+    figlet Goog Auth | tee -a "$LOGFILE"
+    echo -e -n "${yellow}"
+    echo -e "--------------------------------------------------- " | tee -a "$LOGFILE"
+        echo -e " $(date +%m.%d.%Y_%H:%M:%S) : QUERY TO INSTALL GOOGLE 2FA " | tee -a "$LOGFILE"
+    echo -e "--------------------------------------------------- \n" | tee -a "$LOGFILE"
+    echo -e -n "${lightcyan}"
+    echo -e " You can increase the security of your VPS by installing a 2-factor"
+    echo -e " authentication solution which will require a time-based, one-time"
+    echo -e " token in addition to your username and password.\n"
+
+        echo -e -n "${cyan}"
+            while :; do
+            echo -e "\n"
+            read -n 1 -s -r -p " Would you like to perform these steps now? y/n  " GOOGLEAUTH
+            if [[ ${GOOGLEAUTH,,} == "y" || ${GOOGLEAUTH,,} == "Y" || ${GOOGLEAUTH,,} == "N" || ${GOOGLEAUTH,,} == "n" ]]
+            then
+                break
+            fi
+        done
+        echo -e "${nocolor}\n"    
+    
+    # check if GOOGLEAUTH is valid
+    if [ "${GOOGLEAUTH,,}" = "Y" ] || [ "${GOOGLEAUTH,,}" = "y" ]
+    then
+
+        # installing google authenticator
+        echo -e -n "${yellow}"
+        echo -e "------------------------------------------------------- " | tee -a "$LOGFILE"
+        echo -e " $(date +%m.%d.%Y_%H:%M:%S) : INSTALLING GOOGLE AUTHENTICATOR " | tee -a "$LOGFILE"
+        echo -e "------------------------------------------------------- " | tee -a "$LOGFILE"
+        echo -e -n "${white}"
+
+        echo -e -n "${nocolor}"
+        apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install libpam-google-authenticator | tee -a "$LOGFILE"
+        google-authenticator
+
+        echo -e ' --> Enabling Google Authenticator in /etc/pam.d/sshd'  | tee -a "$LOGFILE"
+        sed -i "s/@include common-auth/#@include common-auth/" /etc/pam.d/sshd
+        echo 'auth required pam_google_authenticator.so' | sudo tee -a /etc/pam.d/sshd
+
+        echo -e ' --> Enabling Google Authenticator in /etc/ssh/sshd_config'  | tee -a "$LOGFILE"
+        sed -i "s/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/" /etc/ssh/sshd_config
+        sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/sshd_config
+        echo 'AuthenticationMethods publickey,keyboard-interactive' | sudo tee -a /etc/ssh/sshd_config
+        
+            # copy Google Auth key to new user if it exists
+            if [ "${UNAME,,}" ] && [ -e /root/.google_authenticator ]
+            then # copy root Google Authenticator file new non-root user
+                cp /root/.google_authenticator /home/"${UNAME,,}"/.google_authenticator
+                # fix permissions on RSA key
+                chmod 400 /home/"${UNAME,,}"/.google_authenticator
+                chown "${UNAME,,}":"${UNAME,,}" /home/"${UNAME,,}" -R
+                echo " $(date +%m.%d.%Y_%H:%M:%S) : SUCCESS : Google Auth file was applied to ${UNAME,,}'s profile" | tee -a "$LOGFILE"
+            else echo -e -n "${yellow}"
+                echo " $(date +%m.%d.%Y_%H:%M:%S) : Google Auth file not present for root, so none was copied." | tee -a "$LOGFILE"
+            fi
+
+        # Error Handling
+        if [ $? -eq 0 ]
+        then 	echo -e " \n" ; clear
+            echo -e -n "${green}"
+            echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
+            echo " $(date +%m.%d.%Y_%H:%M:%S) : SUCCESS : 2FA Installed" | tee -a "$LOGFILE"
+            echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
+            echo -e -n "${nocolor}"
+        else	clear
+            echo -e -n "${lightred}"
+            echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
+            echo " $(date +%m.%d.%Y_%H:%M:%S) : ERROR: 2FA Failed" | tee -a "$LOGFILE"
+            echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
+            echo -e -n "${nocolor}"
+        fi
+
+    else :
+        clear
+        echo -e -n "${yellow}"
+        echo -e "------------------------------------------------------- " | tee -a "$LOGFILE"
+        echo -e " *** User chose to not install Google Authenticator *** " | tee -a "$LOGFILE"
+        echo -e "------------------------------------------------------- " | tee -a "$LOGFILE"
+        echo -e -n "${nocolor}"
+    fi
+}
+
 #####################
 ## Ksplice Install ##
 #####################
@@ -1202,6 +1292,7 @@ prompt_rootlogin
 disable_passauth
 ufw_config
 server_hardening
+google_auth
 ksplice_install
 motd_install
 restart_sshd
