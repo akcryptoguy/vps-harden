@@ -86,7 +86,7 @@ Additionally, there are some additional files you can modify to suit your needs.
 ## Help, Issues and Questions
 
 I have tried to troubleshoot the script for errors and confirmed that it works with a VPS you configure on [Vultr](https://www.vultr.com/?ref=7568060), 
-[Digital Ocean](https://www.digitalocean.com/?refcode=bd6020302487), and [Be Your Own VPS](https://www.youtube.com/playlist?list=PLTblguczzdyajCPQGlpJjHUvSNV8WNsGQ). It works in all of these as long as you're using Ubuntu 16.04 LTS. I have not tested it with anything else.
+[Digital Ocean](https://www.digitalocean.com/?refcode=bd6020302487), and [Be Your Own VPS](https://www.youtube.com/playlist?list=PLTblguczzdyajCPQGlpJjHUvSNV8WNsGQ). It works in all of these as long as you're using Ubuntu 16.04, 18.04, or 20.04 LTS. I have not tested it with anything but Ubuntu.
 
 ## Social and Contact
 
