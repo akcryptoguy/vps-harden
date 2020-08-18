@@ -18,10 +18,11 @@ The following is a list of different sections of the script, which are broken up
 6. SSH CONFIG / change SSH port, disable root login
 7. UFW CONFIG / UFW - add rules, harden, enable firewall
 8. HARDENING / before rules, secure shared memory, etc
-9. KSPLICE INSTALL / automatically update without reboot
-10. MOTD EDIT / replace boring banner with customized one
-11. RESTART SSHD / apply settings by restarting systemctl
-12. INSTALL COMPLETE / display new SSH and login info
+9. GOOGLE AUTH / enable 2fa using Google Authenticator
+10. KSPLICE INSTALL / automatically update without reboot
+11. MOTD EDIT / replace boring banner with customized one
+12. RESTART SSHD / apply settings by restarting systemctl
+13. INSTALL COMPLETE / display new SSH and login info
 
 I aggregated these steps from several different server hardening guides and selected the most effective of them to include in this script. The goal is to make something simple enough for newcomers to use while still being practical and saving time for seasoned Linux veterans. I am certainly open to suggestions and would like to keep this easy and practical to use.
 

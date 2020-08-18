@@ -27,10 +27,11 @@ EOF
 # 6. SSH CONFIG / change SSH port, disable root login
 # 7. UFW CONFIG / UFW - add rules, harden, enable firewall
 # 8. HARDENING / before rules, secure shared memory, etc
-# 9. KSPLICE INSTALL / automatically update without reboot
-# 10. MOTD EDIT / replace boring banner with customized one
-# 11. RESTART SSHD / apply settings by restarting systemctl
-# 12. INSTALL COMPLETE / display new SSH and login info
+# 9. GOOGLE AUTH / enable 2fa using Google Authenticator
+# 10. KSPLICE INSTALL / automatically update without reboot
+# 11. MOTD EDIT / replace boring banner with customized one
+# 12. RESTART SSHD / apply settings by restarting systemctl
+# 13. INSTALL COMPLETE / display new SSH and login info
 
 # Add to log command and display output on screen
 # echo " $(date +%m.%d.%Y_%H:%M:%S) : $MESSAGE" | tee -a "$LOGFILE"
