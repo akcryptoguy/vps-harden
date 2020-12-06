@@ -64,7 +64,22 @@ When you are finished, you'll see confirmation that the script completed setup a
 
 <p align="center"><img src="/media/15 install complete.png" alt="Install Complete"></p>
 
-I would recommend that you take a screenshot of that page and save it for later. It has important information about your setup and if you don't keep note of the settings you entered, you could find yourself locked out of your server.
+I would recommend that you take a screenshot of that page and save it for later. It has important information about your setup and if you don't keep note of the settings you entered, you could find yourself locked out of your server.  If you chose to require RSA key for login and disabled password login, be sure that you have an RSA key installed as described in the next section.
+
+## (Optional) Post-Installation Hardening with RSA Key-pair
+
+In order to secure your server's root login via SSH, you may follow these steps on your VPS:
+```
+mkdir ~/.ssh && touch ~/.ssh/authorized_keys
+sudo chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys
+sudo nano ~/.ssh/authorized_keys
+```
+At this point you need to copy your RSA public key and paste it into the `authorized_keys` file and save the changes.  [Vultr's documentation](https://www.vultr.com/docs/how-do-i-generate-ssh-keys/) has a great guide on how to generate the key-pair. To activate the changes you need to restart the SSH service using this command: `sudo systemctl restart sshd`. Don't close out your existing session until you have made a test connection using your private key for authentication. If the connection works, it is now safe to edit the sshd_config using the command below to disable password authentication altgoether by changing the line to read “PasswordAuthentication no” and save the file save file.
+```
+sudo nano /etc/ssh/sshd_config
+```
+
+You will once more need to run `sudo systemctl restart sshd` to make those changes to sshd_config active and now your server will be secured using your RSA public/private key pair which is infinitely more secure than using a root password to login.
 
 
 Additionally, there are some additional files you can modify to suit your needs. I have listed a few of these files below along with why you might consider editing them.
